@@ -1,0 +1,23 @@
+<table>
+
+    <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>Rating</th>
+    </tr>
+
+    @for (facility of facilities; track facility.id) {
+
+        <tr>
+
+            <td>{{ facility.name }}</td>
+
+            <td>{{ facility.city }}</td>
+
+            <td>{{ facility.rating }}</td>
+
+        </tr>
+
+    }
+
+</table>
