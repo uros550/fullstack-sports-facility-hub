@@ -1,0 +1,124 @@
+<div class="details-container">
+  @if (facility) {
+    <!-- BACK BUTTON -->
+    <div class="navigation-header">
+      <button class="back-btn" (click)="return()">
+        <span class="arrow">←</span> Nazad na početnu
+      </button>
+    </div>
+
+    <!-- HERO HEADER SECTION -->
+    <div class="facility-hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="status-badge" [class.active]="facility.status === 'APPROVED'">
+          {{ facility.status === 'APPROVED' ? 'Aktivno' : 'Neaktivno' }}
+        </span>
+        <h1>{{ facility.name }}</h1>
+        <p class="location">
+          <span class="icon">📍</span> {{ facility.address }}, {{ facility.city }}
+        </p>
+        
+        <div class="rating-bar">
+          <span class="rating-pill like"><span class="icon">👍</span> {{ facility.likesCount || 0 }}</span>
+          <span class="rating-pill dislike"><span class="icon">👎</span> 0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT GRID -->
+    <div class="main-grid">
+      
+      <!-- LEFT COLUMN: Info & Pricing -->
+      <div class="info-column">
+        
+        <!-- About Card -->
+        <div class="card about-card">
+          <h2>O objektu</h2>
+          <p class="description">
+            {{ facility.description || 'Dobrodošli u naš sportski objekat. Nudimo vrhunske uslove za trening, rekreaciju i profesionalno bavljenje sportom u prijatnom i moderno opremljenom ambijentu.' }}
+          </p>
+          
+          <div class="specs-grid">
+            <div class="spec-item">
+              <span class="spec-label">🕒 Radno Vreme</span>
+              <span class="spec-value">{{ facility.workingHours || 'Nije definisano' }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">🏢 Matični Broj</span>
+              <span class="spec-value">{{ facility.mb || 'N/A' }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">📄 PIB</span>
+              <span class="spec-value">{{ facility.pib || 'N/A' }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">⚠️ Max Penali</span>
+              <span class="spec-value">{{ facility.maxPenalties || 'Bez limita' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Courts & Pricing Card -->
+        <div class="card courts-card">
+          <h2>Dostupni tereni & Cenovnik</h2>
+          <p class="section-subtitle">Sve cene su izražene po satu zakupa terena.</p>
+          
+          <div class="courts-list">
+            <!-- Mocked tereni (savršena struktura za tvoje buduće podatke) -->
+            <div class="court-row">
+              <div class="court-meta">
+                <h3>Glavna sportska hala</h3>
+                <span class="court-tag closed">Zatvoren teren</span>
+              </div>
+              <div class="court-price">
+                <span class="price">3,500 RSD</span>
+                <span class="unit">/ sat</span>
+              </div>
+            </div>
+
+            <div class="court-row">
+              <div class="court-meta">
+                <h3>Teren za mali fudbal (veštačka trava)</h3>
+                <span class="court-tag open">Otvoren teren</span>
+              </div>
+              <div class="court-price">
+                <span class="price">2,200 RSD</span>
+                <span class="unit">/ sat</span>
+              </div>
+            </div>
+
+            <div class="court-row">
+              <div class="court-meta">
+                <h3>Teniski teren (šljaka)</h3>
+                <span class="court-tag open">Otvoren teren</span>
+              </div>
+              <div class="court-price">
+                <span class="price">1,800 RSD</span>
+                <span class="unit">/ sat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Gallery -->
+      <div class="gallery-column">
+        <div class="card gallery-card">
+          <h2>Galerija slika</h2>
+          <div class="image-gallery">
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  } @else {
+    <!-- LOADER -->
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Učitavanje detalja o objektu...</p>
+    </div>
+  }
+</div>

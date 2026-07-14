@@ -1,0 +1,243 @@
+body{
+    background:#f4f6f9;
+}
+
+.page-container{
+
+    max-width:1500px;
+    margin:auto;
+    padding:40px;
+
+}
+
+h1{
+
+    text-align:center;
+    margin-bottom:35px;
+    color:#222;
+}
+
+.search-card{
+
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    margin-bottom:35px;
+
+}
+
+.search-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(5,1fr);
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+.search-grid input,
+.search-grid select{
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+    font-size:15px;
+
+}
+
+.search-grid button{
+
+    border:none;
+    border-radius:10px;
+
+    background:#16a34a;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-weight:bold;
+
+}
+
+.search-grid button:hover{
+
+    background:#15803d;
+
+}
+
+.content-layout{
+
+    display:grid;
+
+    grid-template-columns:3fr 1fr;
+
+    gap:30px;
+
+}
+
+
+
+.table-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+
+    padding:25px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:15px;
+
+}
+
+th{
+
+    background:#f5f5f5;
+
+    padding:15px;
+
+    text-align:left;
+
+}
+
+td{
+
+    padding:15px;
+
+    border-top:1px solid #eee;
+
+}
+
+tbody tr{
+
+    transition:.2s;
+
+}
+
+tbody tr:hover{
+
+    background:#f7fdf8;
+
+}
+
+.details-btn{
+
+    border:none;
+
+    background:#16a34a;
+
+    color:white;
+
+    padding:8px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.details-btn:hover{
+
+    background:#15803d;
+
+    transform:scale(1.05);
+
+}
+
+.sidebar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+.info-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+
+    padding:20px;
+
+}
+
+.big-number{
+
+    font-size:50px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    color:#16a34a;
+
+    margin-top:15px;
+
+}
+
+.promotion{
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:12px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.top-facility{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:12px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+@media (max-width:1000px){
+
+.content-layout{
+
+grid-template-columns:1fr;
+
+}
+
+.search-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}

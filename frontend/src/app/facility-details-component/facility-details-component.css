@@ -1,0 +1,387 @@
+/* --- CSS VARIJABLE & DIZAJN SISTEM --- */
+:host {
+  --primary: #10b981; /* Smaragdno zelena za sportski vajb */
+  --primary-hover: #059669;
+  --bg-dark: #0f172a; /* Tamni moderni tonovi za hero */
+  --bg-light: #f8fafc; /* Svetla čista pozadina */
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.12), 0 2px 8px -1px rgba(148, 163, 184, 0.08);
+  --radius: 16px;
+}
+
+/* --- KONTEJNER --- */
+.details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 80px 16px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-light);
+  min-height: 100vh;
+}
+
+/* --- DUGME NAZAD --- */
+.navigation-header {
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.back-btn:hover {
+  color: var(--primary);
+  background-color: #f1f5f9;
+}
+
+.back-btn .arrow {
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.back-btn:hover .arrow {
+  transform: translateX(-4px);
+}
+
+/* --- HERO SECTION --- */
+.facility-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-dark), #1e293b);
+  border-radius: var(--radius);
+  padding: 60px 40px;
+  color: #ffffff;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.3);
+}
+
+.facility-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #ef4444;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.status-badge.active {
+  background-color: var(--primary);
+}
+
+.facility-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.02em;
+}
+
+.facility-hero .location {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+  margin: 0 0 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rating-bar {
+  display: flex;
+  gap: 12px;
+}
+
+.rating-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.rating-pill.like {
+  color: #a7f3d0;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.rating-pill.dislike {
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* --- GRID LAYOUT --- */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1.2fr;
+  gap: 32px;
+}
+
+/* --- CARDS --- */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  margin-bottom: 32px;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.card h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 4px;
+  background-color: var(--primary);
+  border-radius: 2px;
+}
+
+/* --- ABOUT CARD --- */
+.description {
+  line-height: 1.7;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 28px;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.spec-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.spec-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* --- COURTS CARD --- */
+.section-subtitle {
+  color: var(--text-muted);
+  margin-top: -10px;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}
+
+.courts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.court-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.court-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.03);
+  border-color: #cbd5e1;
+}
+
+.court-meta h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.court-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.court-tag.open {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.court-tag.closed {
+  background-color: #f0fdf4;
+  color: #16a34a; /* Može i ista boja, ili plava za indoor */
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.court-price {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.unit {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* --- GALLERY CARD --- */
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.4));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+}
+
+/* --- LOADER --- */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- RESPONSIVENESS (MOBILNI TELEFONI) --- */
+@media (max-width: 992px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .facility-hero {
+    padding: 40px 20px;
+  }
+  
+  .facility-hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .specs-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .image-gallery {
+    grid-template-columns: 1fr;
+  }
+}

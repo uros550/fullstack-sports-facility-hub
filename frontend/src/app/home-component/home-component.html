@@ -1,23 +1,213 @@
-<table>
+<div class="page-container">
 
-    <tr>
-        <th>Name</th>
-        <th>City</th>
-        <th>Rating</th>
-    </tr>
+    <!-- SEARCH -->
+    <div class="search-card">
 
-    @for (facility of facilities; track facility.id) {
+        <h2>Find Sports Facilities</h2>
 
-        <tr>
+        <div class="search-grid">
 
-            <td>{{ facility.name }}</td>
+            <input type="text" placeholder="Facility name" [(ngModel)]="searchName">
 
-            <td>{{ facility.city }}</td>
+            <select multiple [(ngModel)]="selectedCities">
 
-            <td>{{ facility.rating }}</td>
+                @for (city of allCities; track city) {
 
-        </tr>
+                    <option [value]="city">
+                        {{ city }}
+                    </option>
 
-    }
+                }
+            </select>
 
-</table>
+            <select [(ngModel)]="selectedSportId">
+                <option [ngValue]="0">
+                    All Sports
+                </option>
+
+                @for(sport of allSports; track sport.id){
+
+                    <option [ngValue]="sport.id">
+                        {{sport.name}}
+                    </option>
+
+                }
+            </select>
+
+            <select [(ngModel)]="selectedCourtType">
+                <option value="">
+                    All Courts
+                </option>
+
+                <option value="OPEN">
+                    Open
+                </option>
+
+                <option value="CLOSED">
+                    Closed
+                </option>
+            </select>
+
+            <button (click)="searchFacilities()">Search</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="content-layout">
+
+        <!-- LEFT -->
+
+        <div class="table-card">
+
+            <h2>Sports Facilities</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <!-- name sort -->
+                        <th (click)="sortFacilities('name')" style="cursor: pointer; user-select: none;">
+                            Name 
+                            @if (sortColumn === 'name') {
+                                <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+                            } @else {
+                                <span style="color: #ccc;">↕</span>
+                            }
+                        </th>
+                        <!-- city sort -->
+                        <th (click)="sortFacilities('city')" style="cursor: pointer; user-select: none;">
+                            City 
+                            @if (sortColumn === 'city') {
+                                <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+                            } @else {
+                                <span style="color: #ccc;">↕</span>
+                            }
+                        </th>
+                        <!-- likes sort -->
+                        <th (click)="sortFacilities('likesCount')" style="cursor: pointer; user-select: none;">
+                            Likes 
+                            @if (sortColumn === 'likesCount') {
+                                <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+                            } @else {
+                                <span style="color: #ccc;">↕</span>
+                            }
+                        </th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for (facility of displayedFacilities; track facility.id) {
+
+                        <tr>
+
+                            <td>{{facility.name}}</td>
+                            <td>{{facility.city}}</td>
+                            <td>{{facility.likesCount}}</td>
+
+                            <td>
+
+                                <button class="details-btn" (click)="goToDetails(facility.id)">
+                                    Details
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+
+        <!-- RIGHT -->
+
+        <div class="sidebar">
+
+            <!-- ACTIVE -->
+
+            <div class="info-card">
+
+                <h3>Active Sports Facilities</h3>
+
+                <div class="big-number">
+
+                    {{activeFacilitiesCount}}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PROMOTIONS -->
+
+            <div class="info-card">
+
+                <h3>Current Promotions</h3>
+
+                @for (promotion of activePromotions; track promotion.id) {
+
+                    <div class="promotion">
+
+                        <strong>{{promotion.name}}</strong>
+
+                        <span>{{promotion.facilityName}}</span>
+
+                        <span>
+
+                            @if (promotion.discountType == 'PERCENTAGE') {
+
+                                {{promotion.discountValue}} %
+
+                            } @else {
+
+                                {{promotion.discountValue}} RSD
+
+                            }
+
+                        </span>
+
+                    </div>
+
+                }
+
+            </div>
+
+
+
+            <!-- TOP -->
+
+            <div class="info-card">
+
+                <h3>Top Rated Facilities</h3>
+
+                @for (facility of topFacilities; track facility.id) {
+
+                    <div class="top-facility">
+
+                        <strong>{{facility.name}}</strong>
+
+                        <span>{{facility.likesCount}} 👍</span>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+

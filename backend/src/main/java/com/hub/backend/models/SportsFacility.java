@@ -12,15 +12,15 @@ public class SportsFacility {
     private double latitude;
     private double longitude;
     private String workingHours;
-    private double rating;
     private int maxPenalties;
+    private int likesCount;
     private String status;
 
     //constructors
     public SportsFacility() {}
 
     public SportsFacility(int id, String name, String address, String city, String mb, String pib, String description,
-            double latitude, double longitude, String workingHours, double rating, int maxPenalties, String status) {
+            double latitude, double longitude, String workingHours, int maxPenalties, int likesCount, String status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -31,8 +31,8 @@ public class SportsFacility {
         this.latitude = latitude;
         this.longitude = longitude;
         this.workingHours = workingHours;
-        this.rating = rating;
         this.maxPenalties = maxPenalties;
+        this.likesCount = likesCount;
         this.status = status;
     }
 
@@ -97,17 +97,17 @@ public class SportsFacility {
     public void setWorkingHours(String workingHours) {
         this.workingHours = workingHours;
     }
-    public double getRating() {
-        return rating;
-    }
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
     public int getMaxPenalties() {
         return maxPenalties;
     }
     public void setMaxPenalties(int maxPenalties) {
         this.maxPenalties = maxPenalties;
+    }
+    public int getLikesCount() {
+        return likesCount;
+    }
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
     }
     public String getStatus() {
         return status;

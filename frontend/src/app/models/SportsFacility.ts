@@ -9,7 +9,7 @@ export class SportsFacility {
     latitude!: number;
     longitude!: number;
     workingHours!: string;
-    rating!: number;
     maxPenalties!: number;
+    likesCount!: number;
     status!: string;
 }

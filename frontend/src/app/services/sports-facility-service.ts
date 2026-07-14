@@ -13,5 +13,29 @@ export class SportsFacilityService {
   getAllFacilities() {
     return this.http.get<SportsFacility[]>(this.path);
   }
+
+  getAllActiveFacilities() {
+    return this.http.get<SportsFacility[]>(`${this.path}/active`);
+  }
+
+  getActiveFacilitiesCount() {
+    return this.http.get<number>(`${this.path}/count`);
+  }
+
+  getTop3Facilities() {
+    return this.http.get<SportsFacility[]>(`${this.path}/top3`);
+  }
+
+  getAllCities() {
+    return this.http.get<string[]>(`${this.path}/cities`);
+  }
+
+  searchFacilities(request: any) {
+    return this.http.post<SportsFacility[]>(`${this.path}/search`, request);
+  }
+
+  getFacilityById(id: number) {
+    return this.http.get<SportsFacility>(`${this.path}/${id}`);
+  }
   
 }
