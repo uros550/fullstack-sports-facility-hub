@@ -1,348 +1,420 @@
-/* --- CSS VARIABLES & DESIGN SYSTEM (rgb fallback) --- */
+/*design variables*/
 :host {
-  --primary: rgb(16, 185, 129); /* Emerald Green */
-  --primary-hover: rgb(5, 150, 105);
-  --bg-dark: rgb(15, 23, 42); /* Deep Navy Slate */
-  --bg-light: rgb(248, 250, 252);
-  --card-bg: rgb(255, 255, 255);
-  --text-main: rgb(30, 41, 59);
-  --text-muted: rgb(100, 116, 139);
-  --border-color: rgb(226, 232, 240);
-  --shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.12), 0 2px 8px -1px rgba(148, 163, 184, 0.08);
-  --radius: 16px;
+    --primary: rgb(16, 185, 129); /*emerald green*/
+    --primary-hover: rgb(5, 150, 105);
+    --bg-dark: rgb(15, 23, 42); /*deep navy slate*/
+    --bg-light: rgb(248, 250, 252);
+    --card-bg: rgb(255, 255, 255);
+    --text-main: rgb(30, 41, 59);
+    --text-muted: rgb(100, 116, 139);
+    --border-color: rgb(226, 232, 240);
+    --shadow: 0 4px 20px -2px rgba(148, 163, 184, .12), 0 2px 8px -1px rgba(148, 163, 184, .08);
+    --radius: 16px; /*rounded*/
 }
 
-/* --- MAIN CONTAINER --- */
+/*page*/
 .details-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 16px 80px 16px;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: var(--text-main);
-  background-color: var(--bg-light);
-  min-height: 100vh;
+    /*image url*/
+    background-image: url("/background-default.jpg");
+    /*cover whole screen*/
+    background-size: cover;
+    /*center image*/
+    background-position: center;
+    /*dont place 2 pictures if larger*/
+    background-repeat: no-repeat;
+    /*doesnt scroll with the page*/
+    background-attachment: fixed;
+    max-width: 1500px;
+    margin: auto; /*centers page if wider than max*/
+    padding: 40px;
 }
 
-/* --- BACK BUTTON --- */
+/*back navigation box*/
 .navigation-header {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
+/*back button*/
 .back-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-  padding: 8px 16px;
-  border-radius: 8px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer; /*cursor change when hovered*/
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: .2s; /*smooth color transition*/
+    padding: 8px 16px;
+    border-radius: 8px; /*rounded*/
 }
 
+/*back button when hovered*/
 .back-btn:hover {
-  color: var(--primary);
-  background-color: rgb(241, 245, 249);
+    color: var(--primary);
+    background-color: rgb(241, 245, 249);
 }
 
+/*back button arrow icon*/
 .back-btn .arrow {
-  font-size: 1.2rem;
-  transition: transform 0.2s ease;
+    font-size: 1.2rem;
+    transition: .2s; /*smooth movement*/
 }
 
+/*arrow icon when button hovered*/
 .back-btn:hover .arrow {
-  transform: translateX(-4px);
+    transform: translateX(-4px); /*moves left*/
 }
 
-/* --- HERO SECTION --- */
+/*hero section box*/
 .facility-hero {
-  position: relative;
-  background: linear-gradient(135deg, var(--bg-dark), rgb(30, 41, 59));
-  border-radius: var(--radius);
-  padding: 60px 40px;
-  color: rgb(255, 255, 255);
-  overflow: hidden;
-  margin-bottom: 32px;
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.3);
+    position: relative;
+    background: linear-gradient(135deg, var(--bg-dark), rgb(30, 41, 59));
+    border-radius: var(--radius); /*rounded*/
+    padding: 60px 40px;
+    color: rgb(255, 255, 255);
+    overflow: hidden; /*clips decorative light effect*/
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, .3);
 }
 
+/*decorative glowing light in hero*/
 .facility-hero::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(16, 185, 129, .15) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%; /*circle*/
+    pointer-events: none;
 }
 
+/*content inside hero banner*/
 .hero-content {
-  position: relative;
-  z-index: 2;
+    position: relative;
+    z-index: 2;
 }
 
+/*status badge inside hero*/
 .status-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background-color: rgb(239, 68, 68);
-  color: rgb(255, 255, 255);
-  margin-bottom: 16px;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 100px; /*capsule rounded*/
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    background-color: rgb(239, 68, 68);
+    color: rgb(255, 255, 255);
+    margin-bottom: 16px;
 }
 
+/*active status badge*/
 .status-badge.active {
-  background-color: var(--primary);
+    background-color: var(--primary);
 }
 
+/*hero title*/
 .facility-hero h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 0 0 12px 0;
-  letter-spacing: -0.02em;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+    letter-spacing: -.02em;
 }
 
+/*hero location*/
 .facility-hero .location {
-  font-size: 1.1rem;
-  color: rgb(203, 213, 225);
-  margin: 0 0 24px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    font-size: 1.1rem;
+    color: rgb(203, 213, 225);
+    margin: 0 0 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+/*rating bar layout*/
 .rating-bar {
-  display: flex;
-  gap: 12px;
+    display: flex;
+    gap: 12px;
 }
 
+/*rating capsule pill*/
 .rating-pill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 100px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 100px; /*capsule rounded*/
+    font-size: .95rem;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, .1);
+    backdrop-filter: blur(8px);
 }
 
+/*liked rating pill*/
 .rating-pill.like {
-  color: rgb(167, 243, 208);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+    color: rgb(167, 243, 208);
+    border: 1px solid rgba(16, 185, 129, .25);
 }
 
-/* --- GRID LAYOUT --- */
+/*main content layout grid*/
 .main-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1.2fr;
-  gap: 32px;
+    display: grid;
+    grid-template-columns: 1.6fr 1.2fr; /*columns ratio*/
+    gap: 32px;
 }
 
-/* --- CARDS --- */
+/*content card box*/
 .card {
-  background-color: var(--card-bg);
-  border-radius: var(--radius);
-  padding: 32px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  margin-bottom: 32px;
+    background-color: var(--card-bg);
+    border-radius: var(--radius); /*rounded*/
+    padding: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    margin-bottom: 32px;
 }
 
+/*card titles*/
 .card h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 20px 0;
-  letter-spacing: -0.01em;
-  position: relative;
-  padding-bottom: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    letter-spacing: -.01em;
+    position: relative;
+    padding-bottom: 12px;
 }
 
+/*decorative line under card titles*/
 .card h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 4px;
-  background-color: var(--primary);
-  border-radius: 2px;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 4px;
+    background-color: var(--primary);
+    border-radius: 2px; /*rounded*/
 }
 
-/* --- ABOUT CARD --- */
+/*about facility text*/
 .description {
-  line-height: 1.7;
-  color: var(--text-muted);
-  font-size: 1.05rem;
-  margin: 0; /* Cleared margin-bottom since the specs grid is removed */
+    line-height: 1.7;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin: 0;
 }
 
-/* --- COURTS CARD --- */
+/*court section details text*/
 .section-subtitle {
-  color: var(--text-muted);
-  margin-top: -10px;
-  margin-bottom: 24px;
-  font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: -10px;
+    margin-bottom: 24px;
+    font-size: .95rem;
 }
 
+/*courts list vertical box*/
 .courts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
+/*individual court row*/
 .court-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: rgb(248, 250, 252);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(248, 250, 252);
+    border-radius: 12px; /*rounded*/
+    border: 1px solid var(--border-color);
+    transition: .2s; /*smooth lift transitions*/
 }
 
+/*court row when hovered*/
 .court-row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
-  border-color: rgb(203, 213, 225);
+    transform: translateY(-2px); /*lifts slightly up*/
+    box-shadow: 0 6px 15px rgba(0, 0, 0, .03);
+    border-color: rgb(203, 213, 225);
 }
 
+/*court title*/
 .court-meta h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
 }
 
+/*court labels*/
 .court-tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px; /*rounded*/
+    font-size: .75rem;
+    font-weight: 600;
 }
 
+/*outdoor court tag*/
 .court-tag.open {
-  background-color: rgb(236, 253, 245);
-  color: rgb(5, 150, 105);
+    background-color: rgb(236, 253, 245);
+    color: rgb(5, 150, 105);
 }
 
+/*indoor court tag*/
 .court-tag.closed {
-  background-color: rgb(239, 246, 255);
-  color: rgb(37, 99, 235);
+    background-color: rgb(239, 246, 255);
+    color: rgb(37, 99, 235);
 }
 
+/*sport name tag*/
+.court-tag.sport-tag {
+    background-color: rgba(15, 23, 42, .05);
+    color: rgb(15, 23, 42);
+    border: 1px solid rgba(15, 23, 42, .1);
+}
+
+/*capacity tag*/
+.court-tag.capacity-tag {
+    background-color: rgba(100, 116, 139, .1);
+    color: rgb(71, 85, 105);
+}
+
+/*equipment description*/
+.court-desc {
+    font-size: .85rem;
+    color: rgb(100, 116, 139);
+    margin: 8px 0 0 0;
+    line-height: 1.4;
+}
+
+/*price and unit box*/
 .court-price {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
 }
 
+/*price number*/
 .price {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--primary);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary);
 }
 
+/*price unit*/
 .unit {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-weight: 500;
+    font-size: .8rem;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
-/* --- GALLERY CARD --- */
+/*fallback when no courts in DB*/
+.no-courts-msg {
+    color: rgb(148, 163, 184);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/*gallery grid layout*/
 .image-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /*2 equal columns*/
+    gap: 16px;
 }
 
+/*gallery card item*/
 .gallery-item {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  aspect-ratio: 4/3;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+    border-radius: 12px; /*rounded*/
+    overflow: hidden; /*keeps image in box on hover zoom*/
+    aspect-ratio: 4/3; /*standard proportions*/
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
 }
 
+/*gallery pictures*/
 .gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .3s; /*smooth zoom animation*/
 }
 
+/*overlay over gallery images*/
 .gallery-item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.4));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, .4));
+    opacity: 0;
+    transition: .3s; /*smooth shadow display*/
 }
 
+/*image zoom when hovered*/
 .gallery-item:hover img {
-  transform: scale(1.08);
+    transform: scale(1.08); /*slight zoom*/
 }
 
+/*overlay visible when hovered*/
 .gallery-item:hover::after {
-  opacity: 1;
+    opacity: 1;
 }
 
-/* --- LOADER --- */
+/*loading wrapper*/
 .loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: var(--text-muted);
 }
 
+/*spinner wheel*/
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid var(--border-color);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--border-color);
+    border-top-color: var(--primary);
+    border-radius: 50%; /*circle*/
+    animation: spin 1s linear infinite; /*infinite rotation*/
+    margin-bottom: 20px;
 }
 
+/*rotation animation*/
 @keyframes spin {
-  to { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* --- RESPONSIVENESS --- */
+/*adaptation for smaller screens (992px)*/
 @media (max-width: 992px) {
-  .main-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
+
+    .main-grid {
+        grid-template-columns: 1fr; /*one single column*/
+        gap: 0;
+    }
+
 }
 
+/*adaptation for mobile screens (768px)*/
 @media (max-width: 768px) {
-  .facility-hero {
-    padding: 40px 20px;
-  }
-  
-  .facility-hero h1 {
-    font-size: 1.8rem;
-  }
-  
-  .image-gallery {
-    grid-template-columns: 1fr;
-  }
+
+    .facility-hero {
+        padding: 40px 20px;
+    }
+    
+    .facility-hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .image-gallery {
+        grid-template-columns: 1fr; /*single gallery column*/
+    }
+
 }
