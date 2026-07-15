@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.SportsFacilityRepo;
+import com.hub.backend.models.Court;
 import com.hub.backend.models.SearchFacilitiesRequest;
 import com.hub.backend.models.SportsFacility;
 
@@ -52,5 +53,10 @@ public class SportsFacilityController {
     @GetMapping("/{id}")
     public SportsFacility getFacilityById(@PathVariable int id) {
         return new SportsFacilityRepo().getFacilityById(id);
+    }
+
+    @GetMapping("/courts/{facilityId}")
+    public List<Court> getCourtsByFacilityId(@PathVariable int facilityId) {
+        return new SportsFacilityRepo().getCourtsByFacilityId(facilityId);
     }
 }

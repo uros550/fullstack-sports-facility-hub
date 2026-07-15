@@ -2,26 +2,26 @@
 
   @if (facility) {
 
-    <!-- NAVIGATION: Simple back button -->
+    <!--return button-->
     <div class="navigation-header">
       <button class="back-btn" (click)="return()">
         <span class="arrow">←</span> Back to Home
       </button>
     </div>
 
-    <!-- HERO SECTION: Name, Address, City & Ratings -->
+    <!--basic facility info-->
     <div class="facility-hero">
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <!-- Status Badge -->
+        <!--status-->
         <span class="status-badge" [class.active]="facility.status === 'APPROVED'">
           {{ facility.status === 'APPROVED' ? 'Active' : 'Inactive' }}
         </span>
         
-        <!-- Facility Name -->
+        <!--facility name-->
         <h1>{{ facility.name }}</h1>
         
-        <!-- Location (Address & City) -->
+        <!--facility location-->
         <p class="location">
           <span class="icon">📍</span> {{ facility.address }}, {{ facility.city }}
         </p>
@@ -35,70 +35,70 @@
       </div>
     </div>
 
-    <!-- MAIN CONTENT GRID -->
+    <!--main info-->
     <div class="main-grid">
       
-      <!-- LEFT COLUMN: Description & Pricing -->
+      <!--description and courts-->
       <div class="info-column">
         
-        <!-- About Card: simplified to show only the description -->
+        <!--description-->
         <div class="card about-card">
           <h2>About the Facility</h2>
           <p class="description">
-            {{ facility.description || 'Welcome to our sports facility. We offer premium training and recreation conditions in a modern and comfortable environment.' }}
+            {{ facility.description }}
           </p>
         </div>
 
-        <!-- Courts & Pricing Card -->
+        <!--courts info-->
         <div class="card courts-card">
           <h2>Available Courts & Pricing</h2>
-          <p class="section-subtitle">All prices are listed per hour of court rental.</p>
+          <p class="section-subtitle">All prices are listed per hour of court rental (not per person).</p>
           
           <div class="courts-list">
-            <!-- Mocked courts (Ready to be dynamically mapped later) -->
-            <div class="court-row">
-              <div class="court-meta">
-                <h3>Main Sports Hall</h3>
-                <span class="court-tag closed">Indoor Court</span>
-              </div>
-              <div class="court-price">
-                <span class="price">3,500 RSD</span>
-                <span class="unit">/ hour</span>
-              </div>
-            </div>
+            
+            @for (court of courts; track court.id) {
+              <div class="court-row">
+                <div class="court-meta">
+                  <h3>{{ court.name }}</h3>
+                  
+                  <div class="tags-container" style="display: flex; gap: 8px; margin: 4px 0 8px 0; flex-wrap: wrap;">
+                    
+                    @if (court.sportName) {
+                      <span class="court-tag sport-tag">{{ court.sportName }}</span>
+                    }
+                    
+                    <span class="court-tag" [class.open]="court.type === 'OPEN'" [class.closed]="court.type === 'CLOSED'">
+                      {{ court.type === 'OPEN' ? 'Outdoor Court' : 'Indoor Court' }}
+                    </span>
 
-            <div class="court-row">
-              <div class="court-meta">
-                <h3>Mini Football Pitch (Artificial Grass)</h3>
-                <span class="court-tag open">Outdoor Court</span>
-              </div>
-              <div class="court-price">
-                <span class="price">2,200 RSD</span>
-                <span class="unit">/ hour</span>
-              </div>
-            </div>
+                    <span class="court-tag capacity-tag">
+                      👥 Max capacity: {{ court.capacity }}
+                    </span>
+                  </div>
+                  
+                  <p class="court-desc">{{ court.equipmentDescription }}</p>
+                </div>
 
-            <div class="court-row">
-              <div class="court-meta">
-                <h3>Tennis Court (Clay)</h3>
-                <span class="court-tag open">Outdoor Court</span>
+                <div class="court-price">
+                  <span class="price">{{ court.pricePerHour }} RSD</span>
+                  <span class="unit">/ hour</span>
+                </div>
               </div>
-              <div class="court-price">
-                <span class="price">1,800 RSD</span>
-                <span class="unit">/ hour</span>
-              </div>
-            </div>
+            } @empty {
+              <p class="no-courts-msg">No courts available for this facility at the moment.</p>
+            }
+
           </div>
-        </div>
 
+        </div>
+ 
       </div>
 
-      <!-- RIGHT COLUMN: Image Gallery -->
+      <!--hard-coded gallery-->
       <div class="gallery-column">
         <div class="card gallery-card">
           <h2>Image Gallery</h2>
           <div class="image-gallery">
-            <!-- Mocked sport images for illustration -->
             <div class="gallery-item">
               <img src="https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=600" alt="Gallery 1" />
             </div>
@@ -114,7 +114,6 @@
 
     </div>
   } @else {
-    <!-- LOADER -->
     <div class="loader-container">
       <div class="spinner"></div>
       <p>Loading facility details...</p>

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SportsFacilityService } from '../services/sports-facility-service';
 import { SportsFacility } from '../models/SportsFacility';
+import { Court } from '../models/Court';
 
 @Component({
   selector: 'app-facility-details-component',
@@ -15,6 +16,7 @@ export class FacilityDetailsComponent {
   private facilityService = inject(SportsFacilityService);
 
   facility!: SportsFacility;
+  courts: Court[] = [];
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -23,6 +25,9 @@ export class FacilityDetailsComponent {
       this.facilityService.getFacilityById(id).subscribe(data => {
         this.facility = data;
       });
+      this.facilityService.getAllCourtsById(id).subscribe(data => {
+        this.courts = data;
+      })
     }
   }
 

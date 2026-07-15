@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { SportsFacility } from '../models/SportsFacility';
+import { Court } from '../models/Court';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +37,10 @@ export class SportsFacilityService {
 
   getFacilityById(id: number) {
     return this.http.get<SportsFacility>(`${this.path}/${id}`);
+  }
+
+  getAllCourtsById(facilityId: number) {
+    return this.http.get<Court[]>(`${this.path}/courts/${facilityId}`);
   }
   
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.Court;
 import com.hub.backend.models.SearchFacilitiesRequest;
 import com.hub.backend.models.SportsFacility;
 
@@ -290,6 +291,40 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
 
 
         return sf;
+    }
+
+    @Override
+    public List<Court> getCourtsByFacilityId(int facilityId) {
+        
+        List<Court> courts = new ArrayList<>();
+        String query = "SELECT c.*, s.name AS sportName FROM court c LEFT JOIN sport s ON c.sportId = s.id WHERE c.facilityId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+        ){
+            
+            stmt.setInt(1, facilityId);
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Court court = new Court(
+                    rs.getInt("id"),
+                    rs.getInt("facilityId"),
+                    rs.getInt("sportId"),
+                    rs.getString("name"),
+                    rs.getString("type"),
+                    rs.getInt("capacity"),
+                    rs.getString("equipmentDescription"),
+                    rs.getDouble("pricePerHour"),
+                    rs.getString("sportName") //sport name for details
+                );
+                courts.add(court);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return courts;
     }
     
 }
