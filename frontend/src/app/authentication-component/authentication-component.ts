@@ -37,15 +37,16 @@ export class AuthenticationComponent {
   }
 
   login() {
-    this.errorMessage = '';
     this.authenticationService.login(this.username, this.password).subscribe(data => {
       if (data != null) {
         localStorage.setItem("loggedUser", JSON.stringify(data));
         
         if (data.role === "ATHLETE") {
+          this.close();
           this.router.navigate(["/athlete-dashboard"]);
         }
         else if (data.role === "EMPLOYEE") {
+          this.close();
           this.router.navigate(["/employee-dashboard"]);
         }
         else {
