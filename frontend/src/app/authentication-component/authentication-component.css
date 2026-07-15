@@ -1,0 +1,166 @@
+/*backdrop covering the whole screen*/
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, .6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .2s ease-out;
+}
+
+/*modal white box*/
+.modal-container {
+    background-color: rgb(255, 255, 255);
+    padding: 32px;
+    border-radius: 16px; /*rounded*/
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
+    position: relative;
+    font-family: system-ui, -apple-system, sans-serif;
+    animation: slideUp .25s ease-out;
+}
+
+/*close button (X)*/
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: rgb(148, 163, 184);
+    cursor: pointer; /*cursor change when hovered*/
+    line-height: 1;
+    padding: 4px;
+    border-radius: 50%; /*circle*/
+    transition: .2s; /*smooth transition*/
+}
+
+/*close button when hovered*/
+.close-btn:hover {
+    color: rgb(15, 23, 42);
+    background-color: rgb(241, 245, 249);
+}
+
+/*auth title*/
+.auth-box h2 {
+    margin: 0 0 8px 0;
+    color: rgb(15, 23, 42);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+/*subtitle text under title*/
+.subtitle {
+    color: rgb(100, 116, 139);
+    font-size: .9rem;
+    margin: 0 0 24px 0;
+}
+
+/*input fields wrapping box*/
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+/*input label text*/
+.input-group label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: rgb(71, 85, 105);
+}
+
+/*text inputs*/
+.input-group input {
+    padding: 10px 14px;
+    border: 1px solid rgb(203, 213, 225);
+    border-radius: 8px; /*rounded*/
+    font-size: .95rem;
+    outline: none;
+    transition: .2s; /*smooth glow transition*/
+}
+
+/*input when focused/clicked*/
+.input-group input:focus {
+    border-color: rgb(16, 185, 129);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
+}
+
+/*container for forgot password link*/
+.forgot-link-container {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/*submit button for form*/
+.auth-submit-btn {
+    width: 100%;
+    background-color: rgb(16, 185, 129);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 12px;
+    border-radius: 8px; /*rounded*/
+    font-weight: 600;
+    font-size: .95rem;
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s; /*smooth color change*/
+}
+
+/*submit button when hovered*/
+.auth-submit-btn:hover {
+    background-color: rgb(5, 150, 105);
+}
+
+/*bottom text for switching modal mode*/
+.switch-mode {
+    margin-top: 24px;
+    text-align: center;
+    font-size: .9rem;
+    color: rgb(100, 116, 139);
+}
+
+/*simple link style*/
+.switch-link {
+    font-size: .85rem;
+    color: rgb(100, 116, 139);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*simple link when hovered*/
+.switch-link:hover {
+    color: rgb(16, 185, 129);
+}
+
+/*bold green link style*/
+.switch-link-bold {
+    color: rgb(16, 185, 129);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*bold link when hovered*/
+.switch-link-bold:hover {
+    text-decoration: underline;
+}
+
+/*animations*/
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

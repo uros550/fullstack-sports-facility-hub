@@ -1,0 +1,22 @@
+/*app*/
+:host {
+  display: flex;
+  flex-direction: column; /*top to bottom*/
+  min-height: 100vh; /*100% screen*/
+}
+
+/*header*/
+.header {
+  flex-shrink: 0;
+}
+
+/*data*/
+.data {
+  flex-grow: 1; /*pushes footer to the bottom*/
+  background-color:aliceblue;
+}
+
+/*footer*/
+.footer {
+  flex-shrink: 0;
+}

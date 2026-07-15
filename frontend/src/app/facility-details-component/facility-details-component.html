@@ -1,27 +1,36 @@
 <div class="details-container">
+
   @if (facility) {
-    <!-- BACK BUTTON -->
+
+    <!-- NAVIGATION: Simple back button -->
     <div class="navigation-header">
       <button class="back-btn" (click)="return()">
-        <span class="arrow">←</span> Nazad na početnu
+        <span class="arrow">←</span> Back to Home
       </button>
     </div>
 
-    <!-- HERO HEADER SECTION -->
+    <!-- HERO SECTION: Name, Address, City & Ratings -->
     <div class="facility-hero">
       <div class="hero-overlay"></div>
       <div class="hero-content">
+        <!-- Status Badge -->
         <span class="status-badge" [class.active]="facility.status === 'APPROVED'">
-          {{ facility.status === 'APPROVED' ? 'Aktivno' : 'Neaktivno' }}
+          {{ facility.status === 'APPROVED' ? 'Active' : 'Inactive' }}
         </span>
+        
+        <!-- Facility Name -->
         <h1>{{ facility.name }}</h1>
+        
+        <!-- Location (Address & City) -->
         <p class="location">
           <span class="icon">📍</span> {{ facility.address }}, {{ facility.city }}
         </p>
         
+        <!-- Likes -->
         <div class="rating-bar">
-          <span class="rating-pill like"><span class="icon">👍</span> {{ facility.likesCount || 0 }}</span>
-          <span class="rating-pill dislike"><span class="icon">👎</span> 0</span>
+          <span class="rating-pill like">
+            <span class="icon">👍</span> {{ facility.likesCount || 0 }}
+          </span>
         </div>
       </div>
     </div>
@@ -29,73 +38,54 @@
     <!-- MAIN CONTENT GRID -->
     <div class="main-grid">
       
-      <!-- LEFT COLUMN: Info & Pricing -->
+      <!-- LEFT COLUMN: Description & Pricing -->
       <div class="info-column">
         
-        <!-- About Card -->
+        <!-- About Card: simplified to show only the description -->
         <div class="card about-card">
-          <h2>O objektu</h2>
+          <h2>About the Facility</h2>
           <p class="description">
-            {{ facility.description || 'Dobrodošli u naš sportski objekat. Nudimo vrhunske uslove za trening, rekreaciju i profesionalno bavljenje sportom u prijatnom i moderno opremljenom ambijentu.' }}
+            {{ facility.description || 'Welcome to our sports facility. We offer premium training and recreation conditions in a modern and comfortable environment.' }}
           </p>
-          
-          <div class="specs-grid">
-            <div class="spec-item">
-              <span class="spec-label">🕒 Radno Vreme</span>
-              <span class="spec-value">{{ facility.workingHours || 'Nije definisano' }}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">🏢 Matični Broj</span>
-              <span class="spec-value">{{ facility.mb || 'N/A' }}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">📄 PIB</span>
-              <span class="spec-value">{{ facility.pib || 'N/A' }}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">⚠️ Max Penali</span>
-              <span class="spec-value">{{ facility.maxPenalties || 'Bez limita' }}</span>
-            </div>
-          </div>
         </div>
 
         <!-- Courts & Pricing Card -->
         <div class="card courts-card">
-          <h2>Dostupni tereni & Cenovnik</h2>
-          <p class="section-subtitle">Sve cene su izražene po satu zakupa terena.</p>
+          <h2>Available Courts & Pricing</h2>
+          <p class="section-subtitle">All prices are listed per hour of court rental.</p>
           
           <div class="courts-list">
-            <!-- Mocked tereni (savršena struktura za tvoje buduće podatke) -->
+            <!-- Mocked courts (Ready to be dynamically mapped later) -->
             <div class="court-row">
               <div class="court-meta">
-                <h3>Glavna sportska hala</h3>
-                <span class="court-tag closed">Zatvoren teren</span>
+                <h3>Main Sports Hall</h3>
+                <span class="court-tag closed">Indoor Court</span>
               </div>
               <div class="court-price">
                 <span class="price">3,500 RSD</span>
-                <span class="unit">/ sat</span>
+                <span class="unit">/ hour</span>
               </div>
             </div>
 
             <div class="court-row">
               <div class="court-meta">
-                <h3>Teren za mali fudbal (veštačka trava)</h3>
-                <span class="court-tag open">Otvoren teren</span>
+                <h3>Mini Football Pitch (Artificial Grass)</h3>
+                <span class="court-tag open">Outdoor Court</span>
               </div>
               <div class="court-price">
                 <span class="price">2,200 RSD</span>
-                <span class="unit">/ sat</span>
+                <span class="unit">/ hour</span>
               </div>
             </div>
 
             <div class="court-row">
               <div class="court-meta">
-                <h3>Teniski teren (šljaka)</h3>
-                <span class="court-tag open">Otvoren teren</span>
+                <h3>Tennis Court (Clay)</h3>
+                <span class="court-tag open">Outdoor Court</span>
               </div>
               <div class="court-price">
                 <span class="price">1,800 RSD</span>
-                <span class="unit">/ sat</span>
+                <span class="unit">/ hour</span>
               </div>
             </div>
           </div>
@@ -103,12 +93,21 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: Gallery -->
+      <!-- RIGHT COLUMN: Image Gallery -->
       <div class="gallery-column">
         <div class="card gallery-card">
-          <h2>Galerija slika</h2>
+          <h2>Image Gallery</h2>
           <div class="image-gallery">
-            
+            <!-- Mocked sport images for illustration -->
+            <div class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=600" alt="Gallery 1" />
+            </div>
+            <div class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=600" alt="Gallery 2" />
+            </div>
+            <div class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=600" alt="Gallery 3" />
+            </div>
           </div>
         </div>
       </div>
@@ -118,7 +117,7 @@
     <!-- LOADER -->
     <div class="loader-container">
       <div class="spinner"></div>
-      <p>Učitavanje detalja o objektu...</p>
+      <p>Loading facility details...</p>
     </div>
   }
 </div>

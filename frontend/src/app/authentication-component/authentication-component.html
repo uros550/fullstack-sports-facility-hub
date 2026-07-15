@@ -1,0 +1,96 @@
+@if (isOpen()) {
+  
+  <div class="modal-backdrop">
+    
+    <div class="modal-container">
+      
+      <!--close button-->
+      <button class="close-btn" (click)="close()">×</button>
+
+      <!--login-->
+      @if (getMode() === 'LOGIN') {
+        <div class="auth-box">
+          <h2>Welcome Back</h2>
+          <p class="subtitle">Enter your details to sign in.</p>
+          
+          <!--ngSubmit automatically prevents page reload-->
+          <form>  <!--(ngSubmit)="login()"-->
+            <div class="input-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="name@example.com" />
+            </div>
+            <div class="input-group">
+              <label>Password</label>
+              <input type="password" placeholder="••••••••" />
+            </div>
+            <div class="forgot-link-container">
+              <a class="switch-link" (click)="changeMode('FORGOT')">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="auth-submit-btn">Sign In</button>
+          </form>
+
+          <div class="switch-mode">
+            Don't have an account? 
+            <a class="switch-link-bold" (click)="changeMode('REGISTER')">Sign Up</a>
+          </div>
+        </div>
+      }
+
+      <!--register-->
+      @if (getMode() === 'REGISTER') {
+        <div class="auth-box">
+          <h2>Create an Account</h2>
+          <p class="subtitle">Join our sports community.</p>
+          
+          <!--ngSubmit automatically prevents page reload-->
+          <form> <!--(ngSubmit)="register()"-->
+            <div class="input-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Name Surname" />
+            </div>
+            <div class="input-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="name@example.com" />
+            </div>
+            <div class="input-group">
+              <label>Password</label>
+              <input type="password" placeholder="••••••••" />
+            </div>
+            
+            <button type="submit" class="auth-submit-btn">Register</button>
+          </form>
+
+          <div class="switch-mode">
+            Already have an account? 
+            <a class="switch-link-bold" (click)="changeMode('LOGIN')">Sign In</a>
+          </div>
+        </div>
+      }
+
+      <!--forgot password-->
+      @if (getMode() === 'FORGOT') {
+        <div class="auth-box">
+          <h2>Forgot Password</h2>
+          <p class="subtitle">Enter your email to receive a recovery link.</p>
+          
+          <!--ngSubmit automatically prevents page reload-->
+          <form>  <!--(ngSubmit)="resetPassword()"-->
+            <div class="input-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="name@example.com" />
+            </div>
+            
+            <button type="submit" class="auth-submit-btn">Send Link</button>
+          </form>
+
+          <div class="switch-mode">
+            Go back to 
+            <a class="switch-link-bold" (click)="changeMode('LOGIN')">Sign In</a>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+}

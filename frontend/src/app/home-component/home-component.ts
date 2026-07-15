@@ -84,7 +84,11 @@ export class HomeComponent implements OnInit {
   sortFacilities(column: string) {
 
     if (this.sortColumn === column) {
-      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+      if(this.sortDir === 'asc') {
+        this.sortDir = 'desc';
+      } else{
+        this.sortDir = 'asc';
+      }
     } else {
       this.sortColumn = column;
       this.sortDir = 'asc';
