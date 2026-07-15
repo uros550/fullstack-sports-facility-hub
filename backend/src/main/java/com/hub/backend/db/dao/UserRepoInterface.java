@@ -1,5 +1,7 @@
 package com.hub.backend.db.dao;
 
-public class UserRepoInterface {
-    
+import com.hub.backend.models.User;
+
+public interface UserRepoInterface {
+    User login(User user);
 }

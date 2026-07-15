@@ -14,15 +14,32 @@
           <p class="subtitle">Enter your details to sign in.</p>
           
           <!--ngSubmit automatically prevents page reload-->
-          <form>  <!--(ngSubmit)="login()"-->
+          <form (ngSubmit)="login()">
             <div class="input-group">
-              <label>Email Address</label>
-              <input type="email" placeholder="name@example.com" />
+              <label>Username</label>
+              <input 
+                type="text" 
+                name="username" 
+                [(ngModel)]="username" 
+                placeholder="username" 
+                required />
             </div>
             <div class="input-group">
               <label>Password</label>
-              <input type="password" placeholder="••••••••" />
+              <input 
+                type="password" 
+                name="password" 
+                [(ngModel)]="password" 
+                placeholder="••••••••" 
+                required />
             </div>
+
+            @if (errorMessage) {
+              <div class="error-message">
+                {{ errorMessage }}
+              </div>
+            }
+
             <div class="forgot-link-container">
               <a class="switch-link" (click)="changeMode('FORGOT')">Forgot password?</a>
             </div>

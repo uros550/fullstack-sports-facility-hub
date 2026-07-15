@@ -1,25 +1,40 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { User } from '../models/User';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   
-  //like getters but better
-  isOpen = signal<boolean>(false);
-  mode = signal<string>('LOGIN');
+  private http = inject(HttpClient);
+  private path = 'http://localhost:8080/users';
+
+  private _isOpen: boolean = false;
+  private _mode: string = 'LOGIN';
+
+  isOpen(): boolean {
+    return this._isOpen;
+  }
+
+  getMode(): string {
+    return this._mode;
+  }
 
   open() {
-    this.mode.set('LOGIN');
-    this.isOpen.set(true);
+    this._mode = 'LOGIN';
+    this._isOpen = true;
   }
 
   close() {
-    this.isOpen.set(false);
+    this._isOpen = false;
   }
 
   setMode(newMode: string) {
-    this.mode.set(newMode);
+    this._mode = newMode;
   }
 
+  login(username: string, password: string) {
+    return this.http.post<User>(`${this.path}/login`, {username, password});
+  }
 }
