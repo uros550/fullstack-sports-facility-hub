@@ -8,5 +8,5 @@ export class User {
   phone!: string;
   profilePicture!: string;
   role!: 'ATHLETE' | 'EMPLOYEE' | 'ADMIN';
-  status!: 'APPROVED' | 'PENDING';
+  status!: 'APPROVED' | 'PENDING' | 'REJECTED';
 }

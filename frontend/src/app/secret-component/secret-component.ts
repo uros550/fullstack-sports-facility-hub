@@ -25,6 +25,7 @@ export class SecretComponent {
         localStorage.setItem("loggedUser", JSON.stringify(data));
         
         if (data.role === "ADMIN") {
+          this.authenticationService.currentUser.set(data);
           this.router.navigate(["/admin-dashboard"]);
         }
         else {

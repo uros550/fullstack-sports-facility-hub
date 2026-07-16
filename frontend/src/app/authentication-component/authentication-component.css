@@ -95,6 +95,51 @@
     box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
 }
 
+/*dropdown select fields*/
+.input-group select {
+    padding: 10px 14px;
+    border: 1px solid rgb(203, 213, 225);
+    border-radius: 8px; /*rounded*/
+    font-size: .95rem;
+    outline: none;
+    background-color: rgb(255, 255, 255);
+    transition: .2s; /*smooth glow transition*/
+}
+
+/*dropdown when focused/clicked*/
+.input-group select:focus {
+    border-color: rgb(16, 185, 129);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
+}
+
+/*multi-select box for sports*/
+.input-group .multi-select {
+    height: 120px;
+    padding: 8px;
+}
+
+/*field validation error text*/
+.field-error {
+    color: rgb(239, 68, 68);
+    font-size: .8rem;
+    margin-top: 4px;
+}
+
+/*dynamic section title in step 2*/
+.dynamic-section h3 {
+    margin: 0 0 16px 0;
+    color: rgb(15, 23, 42);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/*helper text for selections*/
+.helper-text {
+    color: rgb(148, 163, 184);
+    font-size: .8rem;
+    margin: -4px 0 8px 0;
+}
+
 /*container for forgot password link*/
 .forgot-link-container {
     text-align: right;
@@ -118,6 +163,66 @@
 /*submit button when hovered*/
 .auth-submit-btn:hover {
     background-color: rgb(5, 150, 105);
+}
+
+/*submit button when disabled*/
+.auth-submit-btn:disabled {
+    background-color: rgb(226, 232, 240);
+    color: rgb(148, 163, 184);
+    cursor: not-allowed;
+}
+
+/*container for multiple action buttons*/
+.action-buttons-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/*utility class to fill remaining space*/
+.flex-fill {
+    flex: 1;
+}
+
+/*back button for secondary action*/
+.back-btn {
+    background-color: rgb(241, 245, 249);
+    color: rgb(71, 85, 105);
+    border: 1px solid rgb(226, 232, 240);
+    padding: 12px 20px;
+    border-radius: 8px; /*rounded*/
+    font-weight: 600;
+    font-size: .95rem;
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s; /*smooth color change*/
+}
+
+/*back button when hovered*/
+.back-btn:hover {
+    background-color: rgb(226, 232, 240);
+    color: rgb(15, 23, 42);
+}
+
+/*general error alert banner*/
+.error-message {
+    color: rgb(220, 38, 38);
+    background-color: rgba(239, 68, 68, .1);
+    border: 1px solid rgba(239, 68, 68, .2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: .85rem;
+    margin-bottom: 16px;
+}
+
+/*general success alert banner*/
+.success-message {
+    color: rgb(5, 150, 105);
+    background-color: rgba(16, 185, 129, .1);
+    border: 1px solid rgba(16, 185, 129, .2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: .85rem;
+    margin-bottom: 16px;
 }
 
 /*bottom text for switching modal mode*/

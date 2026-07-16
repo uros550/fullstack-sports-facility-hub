@@ -9,6 +9,8 @@ export class AuthenticationService {
   
   private http = inject(HttpClient);
   private path = 'http://localhost:8080/users';
+  
+  currentUser = signal<User | null>(JSON.parse(localStorage.getItem('loggedUser') || 'null'));
 
   private _isOpen: boolean = false;
   private _mode: string = 'LOGIN';
@@ -36,5 +38,9 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     return this.http.post<User>(`${this.path}/login`, {username, password});
+  }
+
+  register(user: any) {
+    return this.http.post(`${this.path}/register`, user, { responseType: 'text' });
   }
 }

@@ -4,4 +4,5 @@ import com.hub.backend.models.User;
 
 public interface UserRepoInterface {
     User login(User user);
+    String register(User user);
 }
