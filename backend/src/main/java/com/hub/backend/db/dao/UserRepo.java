@@ -1,10 +1,16 @@
 package com.hub.backend.db.dao;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.backend.db.DB;
 import com.hub.backend.models.User;
@@ -160,5 +166,64 @@ public class UserRepo implements UserRepoInterface {
             e.printStackTrace();
         }
         return "Success";
+    }
+
+    @Override
+    public String saveProfilePicture(String username, MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return "File is empty";
+        }
+
+        try {
+            //prepare dir
+            String uploadDir = "uploads/profilePictures/";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            //get extension (jpg default)
+            String originalFilename = file.getOriginalFilename();
+            String extension = ".jpg";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+            //generate unique filename
+            String fileName = username + "_" + System.currentTimeMillis() + extension;
+            Path filePath = Paths.get(uploadDir + fileName);
+            //save file
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            //update in database users profilePicture
+            String ImagePath = "uploads/profilePictures/" + fileName;
+            return updateProfilePicture(username, ImagePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @Override
+    public String updateProfilePicture(String username, String imagePath) {
+        
+        String query = "update user set profilePicture = ? where username = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setString(1, imagePath);
+            stm.setString(2, username);
+
+            int rows = stm.executeUpdate();
+
+            if (rows > 0) {
+                return "Success";
+            } else {
+                return "User not found";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }    
 }

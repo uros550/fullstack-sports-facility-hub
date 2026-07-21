@@ -60,7 +60,36 @@
         <p class="subtitle">Join our sports community.</p>
         
         <form (ngSubmit)="goToExtendedRegister()">
-          
+
+          <!--avatar upload section-->
+          <div class="avatar-section">
+            <div class="avatar-preview">
+              @if (imagePreview) {
+                <img [src]="imagePreview" class="preview-img" alt="Profile preview" />
+              } @else {
+                <div class="avatar-placeholder">
+                  {{ firstName.charAt(0) || '?' }}
+                </div>
+              }
+            </div>
+
+            <div class="avatar-controls">
+              <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
+              <button type="button" class="avatar-btn" (click)="fileInput.click()">Upload Photo</button>
+              <button type="button" class="avatar-btn" (click)="generateAvatar()">Generate Avatar</button>
+            </div>
+
+            @if (isGeneratedAvatar) {
+              <div class="avatar-save-wrapper">
+                @if (!isAvatarSaved) {
+                  <button type="button" class="save-avatar-btn" (click)="saveAvatarAsFile()">Save as profile picture</button>
+                } @else {
+                  <span class="avatar-saved-tag">✓ Avatar saved</span>
+                }
+              </div>
+            }
+          </div>
+
           <div class="input-group">
 
             <label>Username</label>

@@ -76,6 +76,95 @@
     margin: 0 0 20px 0;
 }
 
+/*avatar upload section*/
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px;
+    background-color: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 12px;
+}
+
+/*avatar preview circle*/
+.avatar-preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(16, 185, 129);
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    color: rgb(255, 255, 255);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/*avatar controls buttons*/
+.avatar-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.avatar-btn {
+    background-color: rgb(255, 255, 255);
+    color: rgb(51, 65, 85);
+    border: 1px solid rgb(203, 213, 225);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.avatar-btn:hover {
+    background-color: rgb(241, 245, 249);
+    border-color: rgb(148, 163, 184);
+}
+
+.avatar-save-wrapper {
+    margin-top: 2px;
+}
+
+.save-avatar-btn {
+    background-color: rgb(16, 185, 129);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.save-avatar-btn:hover {
+    background-color: rgb(5, 150, 105);
+}
+
+.avatar-saved-tag {
+    color: rgb(5, 150, 105);
+    font-size: .78rem;
+    font-weight: 700;
+}
+
 /*input fields wrapping box*/
 .input-group {
     display: flex;

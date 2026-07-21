@@ -43,4 +43,12 @@ export class AuthenticationService {
     return this.http.post(`${this.path}/register`, user, { responseType: 'text' }); //string response not json
   }
 
+  uploadProfilePicture(username: string, file: File) {
+    //data struct
+    const data = new FormData();
+    data.append('username', username);
+    data.append('image', file);
+    return this.http.post(`${this.path}/upload-image`, data, { responseType: 'text' });
+  }
+
 }

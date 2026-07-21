@@ -31,6 +31,13 @@ export class AuthenticationComponent implements OnInit {
   sports = signal<Sport[]>([]);
   selectedSports: number[] = [];
 
+  //avatar and image upload
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  currentSeed = '';
+  isGeneratedAvatar = false;
+  isAvatarSaved = false;
+
   //messages
   errorMessage = '';
   successMessage = '';
@@ -92,7 +99,12 @@ export class AuthenticationComponent implements OnInit {
   }
 
   //REGISTRATION
-  register() {
+  register() {    
+    //avatar not saved check
+    if (this.isGeneratedAvatar && !this.isAvatarSaved) {
+      this.errorMessage = 'Please click "Save as profile picture" for generated avatar.';
+      return;
+    }
     //validation for employee (athlete can be without fav sport)
     if (this.role === 'EMPLOYEE') {
       if (!this.facilityName || !this.facilityAddress || !this.facilityCity || !this.facilityMb || !this.facilityPib) {
@@ -102,7 +114,7 @@ export class AuthenticationComponent implements OnInit {
     }
     this.errorMessage = '';
 
-    //checks
+    //other checks
     if (this.role === 'EMPLOYEE') {
       if (!/^\d{8}$/.test(this.facilityMb)) {
         this.errorMessage = 'Matični broj mora imati tačno 8 cifara.';
@@ -136,8 +148,17 @@ export class AuthenticationComponent implements OnInit {
 
     this.authenticationService.register(registrationData).subscribe( data => {
       if (data === 'Success') {
-        this.successMessage = 'Successfully signed up.';
-        this.changeMode('LOGIN')
+        if (this.selectedFile) {
+          //send profile picture
+          this.authenticationService.uploadProfilePicture(this.username, this.selectedFile).subscribe(() => {
+            this.successMessage = 'Successfully signed up.';
+            this.changeMode('LOGIN');
+          });
+        } 
+        else {
+          this.successMessage = 'Successfully signed up.';
+          this.changeMode('LOGIN');
+        }
       }
       else {
         this.errorMessage = data;
@@ -161,6 +182,45 @@ export class AuthenticationComponent implements OnInit {
       this.selectedSports.pop(); //remove sixth
     } else {
       this.errorMessage = '';
+    }
+  }
+  
+  //AVATAR & FILE UPLOAD
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.isGeneratedAvatar = false;
+      this.isAvatarSaved = false;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  generateAvatar() {
+    this.currentSeed = Math.random().toString(36).substring(7);
+    this.imagePreview = `https://api.dicebear.com/9.x/bottts/png?seed=${this.currentSeed}&size=128`;
+    this.isGeneratedAvatar = true;
+    this.isAvatarSaved = false;
+    this.selectedFile = null;
+  }
+
+  async saveAvatarAsFile() {
+    if (!this.imagePreview) return;
+
+    try {
+      const response = await fetch(this.imagePreview);
+      const blob = await response.blob();
+      const fileName = `avatar-${this.currentSeed}.png`;
+      this.selectedFile = new File([blob], fileName, { type: 'image/png' });
+      this.isAvatarSaved = true;
+      this.errorMessage = '';
+    } catch (error) {
+      this.errorMessage = 'Failed to process generated avatar.';
     }
   }
 
