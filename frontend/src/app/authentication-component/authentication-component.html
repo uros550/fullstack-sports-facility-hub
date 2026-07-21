@@ -10,28 +10,25 @@
       <!--login-->
       @if (getMode() === 'LOGIN') {
         <div class="auth-box">
+
           <h2>Welcome Back</h2>
           <p class="subtitle">Enter your details to sign in.</p>
           
           <!--ngSubmit automatically prevents page reload-->
           <form (ngSubmit)="login()">
+
             <div class="input-group">
+
               <label>Username</label>
-              <input 
-                type="text" 
-                name="username" 
-                [(ngModel)]="username" 
-                placeholder="username" 
-                required />
+              <input type="text" name="username" [(ngModel)]="username" placeholder="username" required />
+
             </div>
+
             <div class="input-group">
+              
               <label>Password</label>
-              <input 
-                type="password" 
-                name="password" 
-                [(ngModel)]="password" 
-                placeholder="••••••••" 
-                required />
+              <input type="password" name="password" [(ngModel)]="password" placeholder="••••••••" required />
+
             </div>
 
             @if (errorMessage) {
@@ -45,255 +42,212 @@
             </div>
             
             <button type="submit" class="auth-submit-btn">Sign In</button>
+
           </form>
 
           <div class="switch-mode">
             Don't have an account? 
             <a class="switch-link-bold" (click)="changeMode('REGISTER')">Sign Up</a>
           </div>
+
         </div>
       }
 
       @if (getMode() === 'REGISTER') {
-        <div class="auth-box">
-          <h2>Create an Account</h2>
-          <p class="subtitle">Join our sports community.</p>
+      <div class="auth-box">
+
+        <h2>Create an Account</h2>
+        <p class="subtitle">Join our sports community.</p>
+        
+        <form (ngSubmit)="goToExtendedRegister()">
           
-          <form #step1Form="ngForm" (ngSubmit)="step1Form.valid && goToExtendedRegister()">
-            
-            <div class="input-group">
-              <label>Korisničko ime</label>
-              <input 
-                type="text" 
-                name="regUsername" 
-                [(ngModel)]="username" 
-                #uName="ngModel"
-                placeholder="Username" 
-                required 
-                minlength="3" />
-              @if (uName.invalid && uName.touched) {
-                <span class="field-error">Korisničko ime mora imati bar 3 karaktera.</span>
-              }
-            </div>
+          <div class="input-group">
 
-            <div class="input-group">
-              <label>Lozinka</label>
-              <input 
-                type="password" 
-                name="regPassword" 
-                [(ngModel)]="password" 
-                #pass="ngModel"
-                placeholder="••••••••" 
-                required 
-                minlength="6" />
-              @if (pass.invalid && pass.touched) {
-                <span class="field-error">Lozinka mora imati bar 6 karaktera.</span>
-              }
-            </div>
+            <label>Username</label>
+            <input type="text" name="regUsername" [(ngModel)]="username" placeholder="Username" required />
 
-            <div class="input-group">
-              <label>Ime</label>
-              <input 
-                type="text" 
-                name="firstName" 
-                [(ngModel)]="firstName" 
-                #fName="ngModel"
-                placeholder="Ime" 
-                required />
-            </div>
-
-            <div class="input-group">
-              <label>Prezime</label>
-              <input 
-                type="text" 
-                name="lastName" 
-                [(ngModel)]="lastName" 
-                #lName="ngModel"
-                placeholder="Prezime" 
-                required />
-            </div>
-
-            <div class="input-group">
-              <label>Kontakt telefon</label>
-              <input 
-                type="text" 
-                name="phone" 
-                [(ngModel)]="phone" 
-                #ph="ngModel"
-                placeholder="06xxxxxxx" 
-                required />
-            </div>
-
-            <div class="input-group">
-              <label>Email adresa</label>
-              <input 
-                type="email" 
-                name="email" 
-                [(ngModel)]="email" 
-                #em="ngModel"
-                placeholder="name@example.com" 
-                required 
-                email />
-              @if (em.invalid && em.touched) {
-                <span class="field-error">Unesite ispravnu email adresu.</span>
-              }
-            </div>
-
-            <div class="input-group">
-              <label>Registrujem se kao</label>
-              <select name="role" [(ngModel)]="role">
-                <option value="ATHLETE">Sportista</option>
-                <option value="EMPLOYEE">Zaposleni u objektu</option>
-              </select>
-            </div>
-
-            @if (errorMessage) {
-              <div class="error-message">
-                {{ errorMessage }}
-              </div>
-            }
-            
-            <button type="submit" class="auth-submit-btn" [disabled]="step1Form.invalid">Continue</button>
-          </form>
-
-          <div class="switch-mode">
-            Already have an account? 
-            <a class="switch-link-bold" (click)="changeMode('LOGIN')">Sign In</a>
           </div>
-        </div>
-      }
 
-      <!-- 3. EXTENDED REGISTER MODE (Korak 2 - Specifični podaci na osnovu Role) -->
+          <div class="input-group">
+
+            <label>Password</label>
+            <input type="password" name="regPassword" [(ngModel)]="password" placeholder="••••••••" required />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>First Name</label>
+            <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="First Name" required />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Last Name</label>
+            <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Last Name" required />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Phone Number</label>
+            <input type="text" name="phone" [(ngModel)]="phone" placeholder="06xxxxxxx" required />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Email Address</label>
+            <input type="email" name="email" [(ngModel)]="email" placeholder="name@example.com" required />
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Register as</label>
+            <select name="role" [(ngModel)]="role">
+              <option value="ATHLETE">Athlete</option>
+              <option value="EMPLOYEE">Employee</option>
+            </select>
+
+          </div>
+
+          @if (errorMessage) {
+            <div class="error-message">
+              {{ errorMessage }}
+            </div>
+          }
+          
+          <button type="submit" class="auth-submit-btn">Continue</button>
+          
+        </form>
+
+        <div class="switch-mode">
+          Already have an account?
+          <a class="switch-link-bold" (click)="changeMode('LOGIN')">Sign In</a>
+        </div>
+
+      </div>
+    }
+
       @if (getMode() === 'EXTENDED_REGISTER') {
         <div class="auth-box">
-          <h2>Additional Details</h2>
-          <p class="subtitle">Complete your profile setup.</p>
+
+        <h2>Additional Details</h2>
+        <p class="subtitle">Complete your profile setup.</p>
+        
+        <form (ngSubmit)="register()">
           
-          <form #step2Form="ngForm" (ngSubmit)="step2Form.valid && register()">
-            
-            <!-- Zaposleni (EMPLOYEE) -->
-            @if (role === 'EMPLOYEE') {
-              <div class="dynamic-section">
-                <h3>Podaci o objektu</h3>
-                
-                <div class="input-group">
-                  <label>Naziv sportskog objekta</label>
-                  <input 
-                    type="text" 
-                    name="facilityName" 
-                    [(ngModel)]="facilityName" 
-                    placeholder="Naziv objekta" 
-                    required />
-                </div>
+          @if (role === 'EMPLOYEE') {
+            <div class="dynamic-section">
 
-                <div class="input-group">
-                  <label>Adresa sedišta</label>
-                  <input 
-                    type="text" 
-                    name="facilityAddress" 
-                    [(ngModel)]="facilityAddress" 
-                    placeholder="Adresa objekta" 
-                    required />
-                </div>
+              <h3>Facility Details</h3>
+              
+              <div class="input-group">
 
-                <!-- DODATO: Grad (facilityCity) -->
-                <div class="input-group">
-                  <label>Grad sedišta</label>
-                  <input 
-                    type="text" 
-                    name="facilityCity" 
-                    [(ngModel)]="facilityCity" 
-                    placeholder="Grad objekta" 
-                    required />
-                </div>
+                <label>Facility Name</label>
+                <input type="text" name="facilityName" [(ngModel)]="facilityName" placeholder="Facility name" required />
 
-                <div class="input-group">
-                  <label>Matični broj (tačno 8 cifara)</label>
-                  <input 
-                    type="text" 
-                    name="facilityMb" 
-                    [(ngModel)]="facilityMb" 
-                    #mb="ngModel"
-                    placeholder="12345678" 
-                    required 
-                    pattern="^\d{8}$" />
-                  @if (mb.invalid && mb.touched) {
-                    <span class="field-error">Matični broj mora imati tačno 8 cifara.</span>
-                  }
-                </div>
-
-                <div class="input-group">
-                  <label>PIB (tačno 9 cifara, ne počinje sa 0)</label>
-                  <input 
-                    type="text" 
-                    name="facilityPib" 
-                    [(ngModel)]="facilityPib" 
-                    #pib="ngModel"
-                    placeholder="123456789" 
-                    required 
-                    pattern="^[1-9]\d{8}$" />
-                  @if (pib.invalid && pib.touched) {
-                    <span class="field-error">PIB mora imati 9 cifara i ne sme početi sa nulom.</span>
-                  }
-                </div>
               </div>
-            }
 
-            <!-- Sportista (ATHLETE) -->
-            @if (role === 'ATHLETE') {
-              <div class="dynamic-section">
-                <div class="input-group">
-                  <label>Izaberite sportove koji vas zanimaju (najviše 5)</label>
-                  <p class="helper-text">(Držite Ctrl / Cmd za izbor više stavki, može ostati prazno)</p>
-                  
-                  <select multiple name="sports" (change)="onSportsChange($event)" class="multi-select">
-                    @for (sport of sports(); track sport.id) {
-                      <option [value]="sport.id">{{ sport.name }}</option>
-                    }
-                  </select>
-                </div>
-              </div>
-            }
+              <div class="input-group">
 
-            @if (errorMessage) {
-              <div class="error-message">
-                {{ errorMessage }}
-              </div>
-            }
-            @if (successMessage) {
-              <div class="success-message">
-                {{ successMessage }}
-              </div>
-            }
+                <label>Facility Address</label>
+                <input type="text" name="facilityAddress" [(ngModel)]="facilityAddress" placeholder="Facility address" required />
 
-            <div class="action-buttons-row">
-              <button type="button" class="back-btn" (click)="changeMode('REGISTER')">Back</button>
-              <button type="submit" class="auth-submit-btn flex-fill" [disabled]="step2Form.invalid">Complete Registration</button>
+              </div>
+
+              <div class="input-group">
+
+                <label>Facility City</label>
+                <input type="text" name="facilityCity" [(ngModel)]="facilityCity" placeholder="Location of the facility" required />
+
+              </div>
+
+              <div class="input-group">
+
+                <label>Registration Number (8 digits)</label>
+                <input type="text" name="facilityMb" [(ngModel)]="facilityMb" placeholder="12345678" required pattern="^\d{8}$" />
+
+              </div>
+
+              <div class="input-group">
+
+                <label>Tax ID / PIB (9 digits)</label>
+                <input type="text" name="facilityPib" [(ngModel)]="facilityPib" placeholder="123456789" required pattern="^[1-9]\d{8}$" />
+
+              </div>
+
             </div>
-          </form>
-        </div>
-      }
-      
+          }
+
+          @if (role === 'ATHLETE') {
+            <div class="dynamic-section">
+
+              <div class="input-group">
+
+                <label>Select sports of interest (up to 5)</label>
+                <p class="helper-text">(Hold Ctrl / Cmd to select multiple)</p>
+                
+                <select multiple name="sports" [(ngModel)]="selectedSports" (ngModelChange)="onSportsChange()" class="multi-select">
+                  @for (sport of sports(); track sport.id) {
+                    <option [ngValue]="sport.id">{{ sport.name }}</option>
+                  }
+                </select>
+
+              </div>
+
+            </div>
+          }
+
+          @if (errorMessage) {
+            <div class="error-message">
+              {{ errorMessage }}
+            </div>
+          }
+
+          @if (successMessage) {
+            <div class="success-message">
+              {{ successMessage }}
+            </div>
+          }
+
+          <div class="action-buttons-row">
+            <button type="button" class="back-btn" (click)="changeMode('REGISTER')">Back</button>
+            <button type="submit" class="auth-submit-btn flex-fill">Complete Registration</button>
+          </div>
+
+        </form>
+
+      </div>
+    }
+          
       <!--forgot password-->
       @if (getMode() === 'FORGOT') {
         <div class="auth-box">
+
           <h2>Forgot Password</h2>
           <p class="subtitle">Enter your email to receive a recovery link.</p>
           
-          <!--ngSubmit automatically prevents page reload-->
-          <form>  <!--(ngSubmit)="resetPassword()"-->
+          <form (ngSubmit)="resetPassword()">
+
             <div class="input-group">
+
               <label>Email Address</label>
-              <input type="email" placeholder="name@example.com" />
+              <input type="email" name="forgotEmail" [(ngModel)]="email" placeholder="name@example.com" required />
+
             </div>
             
             <button type="submit" class="auth-submit-btn">Send Link</button>
+
           </form>
 
           <div class="switch-mode">
             Go back to 
             <a class="switch-link-bold" (click)="changeMode('LOGIN')">Sign In</a>
           </div>
+
         </div>
       }
 

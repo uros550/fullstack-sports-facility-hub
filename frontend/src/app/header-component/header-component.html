@@ -1,19 +1,25 @@
 <header class="header">
 
     <div class="logo" routerLink="/home">
+
         <span class="logo-icon">⚽</span>
         <span class="logo-text">Sports hub</span>
+
     </div>
 
     <div class="auth-section">
+
         @if (currentUser(); as user) {
             <!--user logged in-->
             <div class="profile-widget">
-                <div class="profile-trigger" (click)="toggleDropdown($event)">
+
+                <div class="profile-trigger" (click)="toggleDropdown()">
+
                     <div class="avatar-circle">
                         {{ user.username.charAt(0).toUpperCase() }}
                     </div>
                     <span class="username-text">{{ user.username }}</span>
+                    
                 </div>
 
                 <!--dropdown menu-->
@@ -23,7 +29,7 @@
                             <p class="user-role">{{ user.role }}</p>
                         </div>
                         <button class="dropdown-item" (click)="logout()">
-                            <span>🚪</span> Sign out
+                            Sign out
                         </button>
                     </div>
                 }

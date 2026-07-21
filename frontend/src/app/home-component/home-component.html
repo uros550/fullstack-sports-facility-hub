@@ -66,34 +66,28 @@
                 <thead>
 
                     <tr>
-                        <!-- name sort -->
+                        <!--name sort-->
                         <th (click)="sortFacilities('name')" style="cursor: pointer; user-select: none;">
                             Name 
                             @if (sortColumn === 'name') {
                                 <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
-                            } @else {
-                                <span style="color: #ccc;">↕</span>
                             }
                         </th>
-                        <!-- city sort -->
+                        <!--city sort-->
                         <th (click)="sortFacilities('city')" style="cursor: pointer; user-select: none;">
                             City 
                             @if (sortColumn === 'city') {
                                 <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
-                            } @else {
-                                <span style="color: #ccc;">↕</span>
                             }
                         </th>
-                        <!-- likes sort -->
+                        <!--likes sort-->
                         <th (click)="sortFacilities('likesCount')" style="cursor: pointer; user-select: none;">
-                            Likes 
+                            Rating 
                             @if (sortColumn === 'likesCount') {
                                 <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
-                            } @else {
-                                <span style="color: #ccc;">↕</span>
                             }
                         </th>
-                        <th></th>
+                        <th></th> <!--for button-->
                     </tr>
 
                 </thead>
@@ -106,7 +100,17 @@
 
                             <td>{{facility.name}}</td>
                             <td>{{facility.city}}</td>
-                            <td>{{facility.likesCount}}</td>
+                            <td>
+                                {{facility.likesCount}}
+                                
+                                @if (facility.likesCount < 0) {
+                                    👎
+                                }
+                                @else {
+                                    👍
+                                }
+                                
+                            </td>
 
                             <td>
 

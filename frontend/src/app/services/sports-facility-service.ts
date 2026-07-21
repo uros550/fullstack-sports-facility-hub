@@ -19,12 +19,20 @@ export class SportsFacilityService {
     return this.http.get<SportsFacility[]>(`${this.path}/active`);
   }
 
+  getTop3Facilities() {
+    return this.http.get<SportsFacility[]>(`${this.path}/top3`);
+  }
+
+  getFacilityById(id: number) {
+    return this.http.get<SportsFacility>(`${this.path}/${id}`);
+  }
+
   getActiveFacilitiesCount() {
     return this.http.get<number>(`${this.path}/count`);
   }
 
-  getTop3Facilities() {
-    return this.http.get<SportsFacility[]>(`${this.path}/top3`);
+  getAllCourtsById(facilityId: number) {
+    return this.http.get<Court[]>(`${this.path}/courts/${facilityId}`);
   }
 
   getAllCities() {
@@ -33,14 +41,6 @@ export class SportsFacilityService {
 
   searchFacilities(request: any) {
     return this.http.post<SportsFacility[]>(`${this.path}/search`, request);
-  }
-
-  getFacilityById(id: number) {
-    return this.http.get<SportsFacility>(`${this.path}/${id}`);
-  }
-
-  getAllCourtsById(facilityId: number) {
-    return this.http.get<Court[]>(`${this.path}/courts/${facilityId}`);
   }
   
 }

@@ -1,157 +1,175 @@
 /*header*/
 .header {
-  display: flex;
-  justify-content: space-between; /*logo to left and sign in to right*/
-  align-items: center;
-  padding: 16px 32px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    justify-content: space-between; /*logo to left and sign in to right*/
+    align-items: center;
+    padding: 16px 32px;
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(226, 232, 240);
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
 /*logo style*/
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer; /*after hovered change cursor*/
-  user-select: none; /*cant be selected*/
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer; /*after hovered change cursor*/
+    user-select: none; /*cant be selected*/
 }
 
 .logo-icon {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 .logo-text {
-  font-weight: 800;
-  font-size: 1.2rem;
-  color: rgb(7, 7, 36);
-  text-transform: uppercase;
-  letter-spacing: -0.5px;
-  transition: color 0.2s ease;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: rgb(7, 7, 36);
+    text-transform: uppercase;
+    letter-spacing: -.5px;
+    transition: color .2s ease;
 }
 
 /*color change when hovered*/
 .logo:hover .logo-text {
-  color: rgb(47, 181, 130);
+    color: rgb(47, 181, 130);
 }
 
 /*sign in button style*/
 .sign-in-button {
-  background-color: rgb(248, 244, 244);
-  color: rgb(7, 7, 36);
-  border: 1px solid rgb(248, 244, 244);
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
+    background-color: rgb(248, 244, 244);
+    color: rgb(7, 7, 36);
+    border: 1px solid rgb(248, 244, 244);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: .9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .2s ease;
 }
 
 /*when hovered*/
 .sign-in-button:hover {
-  background-color: rgb(47, 181, 130);
-  color: white;
-  border-color: rgb(47, 181, 130);
+    background-color: rgb(47, 181, 130);
+    color: rgb(255, 255, 255);
+    border-color: rgb(47, 181, 130);
 }
 
 /*auth section style*/
 .auth-section {
-  position: relative;
+    position: relative;
 }
 
 /*profile widget style*/
 .profile-widget {
-  position: relative; /*dropdown positioning relative to this*/
+    position: relative; /*dropdown positioning relative to this*/
 }
 
 .profile-trigger {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer; /*after hovered change cursor*/
-  padding: 6px 12px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-  user-select: none; /*cant be selected*/
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer; /*after hovered change cursor*/
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background-color .2s ease;
+    user-select: none; /*cant be selected*/
 }
 
 /*when hovered*/
 .profile-trigger:hover {
-  background-color: rgb(248, 244, 244);
+    background-color: rgb(248, 244, 244);
 }
 
 /*avatar circle style*/
 .avatar-circle {
-  width: 32px;
-  height: 32px;
-  background-color: rgb(47, 181, 130);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.95rem;
+    width: 32px;
+    height: 32px;
+    background-color: rgb(47, 181, 130);
+    color: rgb(255, 255, 255);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .95rem;
 }
 
 .username-text {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: rgb(7, 7, 36);
+    font-weight: 600;
+    font-size: .9rem;
+    color: rgb(7, 7, 36);
 }
 
 /*dropdown menu style*/
 .dropdown-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  width: 150px;
-  z-index: 100;
-  overflow: hidden;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background-color: rgb(7, 7, 36);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px -4px rgba(7, 7, 36, .3);
+    min-width: 130px;
+    z-index: 100;
+    overflow: hidden;
+    padding: 4px;
+    animation: fadeIn .15s ease-out;
 }
 
 .dropdown-header {
-  padding: 10px 12px;
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    background-color: rgba(255, 255, 255, .05);
+    border-radius: 6px;
+    margin-bottom: 3px;
+    text-align: center;
 }
 
 .user-role {
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    margin: 0;
+    font-size: .65rem;
+    font-weight: 700;
+    color: rgb(47, 181, 130);
+    text-transform: uppercase;
+    letter-spacing: .6px;
 }
 
 /*dropdown item style*/
 .dropdown-item {
-  width: 100%;
-  padding: 10px 12px;
-  background: none;
-  border: none;
-  text-align: left;
-  font-size: 0.85rem;
-  color: #ef4444; /*red color for sign out*/
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background-color 0.15s ease;
+    width: 100%;
+    padding: 8px 10px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    font-size: .8rem;
+    color: rgb(248, 113, 113);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .15s ease;
 }
 
 /*when hovered*/
 .dropdown-item:hover {
-  background-color: #fef2f2;
+    background-color: rgba(239, 68, 68, .15);
+    color: rgb(252, 165, 165);
+}
+
+/*dropdown open animation*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

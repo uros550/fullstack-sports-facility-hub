@@ -28,12 +28,12 @@ export class AuthenticationComponent implements OnInit {
   facilityMb = '';
   facilityPib = '';
 
+  sports = signal<Sport[]>([]);
+  selectedSports: number[] = [];
+
   //messages
   errorMessage = '';
   successMessage = '';
-
-  sports = signal<Sport[]>([]);
-  selectedSports: number[] = [];
 
   private authenticationService = inject(AuthenticationService);
   private sportService = inject(SportService);
@@ -45,31 +45,29 @@ export class AuthenticationComponent implements OnInit {
     })
   }
 
-  isOpen():boolean {
+  //pop-up methods
+  isOpen(): boolean {
     return this.authenticationService.isOpen();
   }
-
   getMode(): string {
     return this.authenticationService.getMode();
   }
-
-  close() {
-    this.resetFields();
-    this.authenticationService.close();
-  }
-
   changeMode(newMode: string) {
     this.errorMessage = '';
     this.successMessage = '';
     this.authenticationService.setMode(newMode);
   }
+  close() {
+    this.resetFields();
+    this.authenticationService.close();
+  }
 
+  //LOGIN
   login() {
     this.authenticationService.login(this.username, this.password).subscribe(data => {
       if (data != null) {
         localStorage.setItem("loggedUser", JSON.stringify(data));
 
-        
         if (data.role === "ATHLETE" && data.status === "APPROVED") {
           this.authenticationService.currentUser.set(data);
           this.close();
@@ -93,32 +91,19 @@ export class AuthenticationComponent implements OnInit {
     })
   }
 
-  goToExtendedRegister() {
-    this.errorMessage = '';
-    this.changeMode('EXTENDED_REGISTER');
-  }
-
-  onSportsChange(event: any) {
-    const selected = Array.from(event.target.selectedOptions).map((o: any) => Number(o.value));
-    
-    if (selected.length > 5) {
-      this.errorMessage = 'Možete izabrati najviše 5 sportova.';
-      event.target.value = this.selectedSports; // Vraćamo vizuelni prikaz na staro
-    } else {
-      this.errorMessage = '';
-      this.selectedSports = selected;
-    }
-  }
-
+  //REGISTRATION
   register() {
+    //validation for employee (athlete can be without fav sport)
+    if (this.role === 'EMPLOYEE') {
+      if (!this.facilityName || !this.facilityAddress || !this.facilityCity || !this.facilityMb || !this.facilityPib) {
+        this.errorMessage = 'Please fill in all facility details.';
+        return;
+      }
+    }
     this.errorMessage = '';
 
     //checks
     if (this.role === 'EMPLOYEE') {
-      if (!this.facilityName || !this.facilityAddress || !this.facilityMb || !this.facilityPib) {
-        this.errorMessage = 'All fields are';
-        return;
-      }
       if (!/^\d{8}$/.test(this.facilityMb)) {
         this.errorMessage = 'Matični broj mora imati tačno 8 cifara.';
         return;
@@ -159,6 +144,30 @@ export class AuthenticationComponent implements OnInit {
       }
     })
   }
+  
+  goToExtendedRegister() {
+    //validation
+    if (!this.username || !this.password || !this.firstName || !this.lastName || !this.phone || !this.email) {
+      this.errorMessage = 'Please fill in all fields.';
+      return;
+    }
+    this.errorMessage = '';
+    this.changeMode('EXTENDED_REGISTER');
+  }
+
+  onSportsChange() {
+    if (this.selectedSports.length > 5) {
+      this.errorMessage = 'Maximum of 5 sports selected';
+      this.selectedSports.pop(); //remove sixth
+    } else {
+      this.errorMessage = '';
+    }
+  }
+
+  //RESETS
+  resetPassword() {
+
+  }
 
   resetFields() {
     this.username = '';
@@ -170,6 +179,7 @@ export class AuthenticationComponent implements OnInit {
     this.role = 'ATHLETE';
     this.facilityName = '';
     this.facilityAddress = '';
+    this.facilityCity = '';
     this.facilityMb = '';
     this.facilityPib = '';
     this.selectedSports = [];

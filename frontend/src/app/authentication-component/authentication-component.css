@@ -17,17 +17,29 @@
 /*modal white box*/
 .modal-container {
     background-color: rgb(255, 255, 255);
-    padding: 32px;
+    padding: 28px 32px;
     border-radius: 16px; /*rounded*/
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    max-height: 90vh; /*keeps modal strictly inside screen*/
+    overflow-y: auto; /*scrolls internal content if needed*/
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
     position: relative;
     font-family: system-ui, -apple-system, sans-serif;
     animation: slideUp .25s ease-out;
 }
 
-/*close button (X)*/
+/*custom smooth scrollbar for modal*/
+.modal-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+    background-color: rgb(203, 213, 225);
+    border-radius: 4px;
+}
+
+/*close button*/
 .close-btn {
     position: absolute;
     top: 16px;
@@ -61,7 +73,7 @@
 .subtitle {
     color: rgb(100, 116, 139);
     font-size: .9rem;
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
 }
 
 /*input fields wrapping box*/
@@ -69,7 +81,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 /*input label text*/
@@ -176,7 +188,7 @@
 .action-buttons-row {
     display: flex;
     gap: 12px;
-    margin-top: 24px;
+    margin-top: 20px;
 }
 
 /*utility class to fill remaining space*/
@@ -227,7 +239,7 @@
 
 /*bottom text for switching modal mode*/
 .switch-mode {
-    margin-top: 24px;
+    margin-top: 20px;
     text-align: center;
     font-size: .9rem;
     color: rgb(100, 116, 139);

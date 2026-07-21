@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { AuthenticationService } from '../services/authentication-service';
 import { Router, RouterLink } from '@angular/router';
 
@@ -14,6 +14,7 @@ export class HeaderComponent {
   private elementRef = inject(ElementRef);
   private router = inject(Router);
 
+  //state
   currentUser = this.authenticationService.currentUser;
   isDropdownOpen = false;
 
@@ -21,8 +22,7 @@ export class HeaderComponent {
     this.authenticationService.open();
   }
 
-  toggleDropdown(event: Event) {
-    event.stopPropagation();
+  toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
@@ -33,6 +33,7 @@ export class HeaderComponent {
     this.router.navigate(['/home']);
   }
 
+  //close drop down when clicking outside
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
