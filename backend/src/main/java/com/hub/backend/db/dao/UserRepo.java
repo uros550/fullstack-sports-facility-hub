@@ -19,7 +19,7 @@ public class UserRepo implements UserRepoInterface {
         try (
             Connection conn = DB.source().getConnection();
             PreparedStatement stm = conn.prepareStatement(query);
-        ) {
+        ){
             stm.setString(1, user.getUsername());
             stm.setString(2, user.getPassword());
             
@@ -60,10 +60,10 @@ public class UserRepo implements UserRepoInterface {
             Connection conn = DB.source().getConnection();
             PreparedStatement stmCheckUser  = conn.prepareStatement(qCheckUser);
             PreparedStatement stmCheckEmail = conn.prepareStatement(qCheckEmail);
-            PreparedStatement stmGetFac     = conn.prepareStatement(qGetFacility);
-            PreparedStatement stmCountEmp   = conn.prepareStatement(qCountEmployee);
+            PreparedStatement stmGetFacility = conn.prepareStatement(qGetFacility);
+            PreparedStatement stmCountEmployee = conn.prepareStatement(qCountEmployee);
             PreparedStatement stmInsertUser = conn.prepareStatement(qInsertUser, Statement.RETURN_GENERATED_KEYS);      //get id
-            PreparedStatement stmInsertRel  = conn.prepareStatement(qInsertFacEmp);
+            PreparedStatement stmInsertFacEmp = conn.prepareStatement(qInsertFacEmp);
             PreparedStatement stmInsertSport = conn.prepareStatement(qInsertSport);
         ){
             conn.setAutoCommit(false);
@@ -90,15 +90,15 @@ public class UserRepo implements UserRepoInterface {
                 }
 
                 //check facility exists
-                stmGetFac.setString(1, user.getFacilityMb());
-                stmGetFac.setString(2, user.getFacilityPib());
-                rs = stmGetFac.executeQuery();
+                stmGetFacility.setString(1, user.getFacilityMb());
+                stmGetFacility.setString(2, user.getFacilityPib());
+                rs = stmGetFacility.executeQuery();
                 if (rs.next()) facilityId = rs.getInt("id");
                 //exists
                 if (facilityId != -1) {
                     //check if already 2 employees
-                    stmCountEmp.setInt(1, facilityId);
-                    rs = stmCountEmp.executeQuery();
+                    stmCountEmployee.setInt(1, facilityId);
+                    rs = stmCountEmployee.executeQuery();
                     if (rs.next() && rs.getInt(1) >= 2) {
                         return "Already maximum number of employees.";
                     }
@@ -114,8 +114,9 @@ public class UserRepo implements UserRepoInterface {
                 }
             }
             
+            ///CHANGE LATER
             //pictures
-            user.setProfilePicture("C:\\Users\\uros550\\Pictures\\profilePictures\\default.jpg");
+            user.setProfilePicture(null);
 
             //insert new user pending
             int generatedUserId = -1;
@@ -138,9 +139,9 @@ public class UserRepo implements UserRepoInterface {
 
             //insert into facilityEmployee
             if ("EMPLOYEE".equals(user.getRole())) {
-                stmInsertRel.setInt(1, facilityId);
-                stmInsertRel.setInt(2, generatedUserId);
-                stmInsertRel.executeUpdate();
+                stmInsertFacEmp.setInt(1, facilityId);
+                stmInsertFacEmp.setInt(2, generatedUserId);
+                stmInsertFacEmp.executeUpdate();
             }
 
             //insert into userSport
@@ -148,9 +149,9 @@ public class UserRepo implements UserRepoInterface {
                 for (Integer sportId : user.getSports()) {
                     stmInsertSport.setInt(1, generatedUserId);
                     stmInsertSport.setInt(2, sportId);
-                    stmInsertSport.addBatch();
+                    //doesn't require batch execution, max 5 updates
+                    stmInsertSport.executeUpdate();
                 }
-                stmInsertSport.executeBatch();
             }
 
             conn.commit();

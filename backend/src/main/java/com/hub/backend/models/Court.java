@@ -1,6 +1,7 @@
 package com.hub.backend.models;
 
 public class Court {
+    
     private int id;
     private int facilityId;
     private int sportId;
@@ -14,8 +15,7 @@ public class Court {
     //constructors
     public Court() {}
 
-    public Court(int id, int facilityId, int sportId, String name, String type, 
-                 int capacity, String equipmentDescription, double pricePerHour, String sportName) {
+    public Court(int id, int facilityId, int sportId, String name, String type, int capacity, String equipmentDescription, double pricePerHour, String sportName) {
         this.id = id;
         this.facilityId = facilityId;
         this.sportId = sportId;
@@ -82,5 +82,4 @@ public class Court {
     public void setSportName(String sportName) {
         this.sportName = sportName;
     }
-    
 }

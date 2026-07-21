@@ -5,5 +5,7 @@ import java.util.List;
 import com.hub.backend.models.Sport;
 
 public interface SportRepoInterface {
+
     List<Sport> getAllSports();
+
 }

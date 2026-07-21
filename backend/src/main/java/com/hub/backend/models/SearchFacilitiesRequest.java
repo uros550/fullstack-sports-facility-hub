@@ -9,14 +9,13 @@ public class SearchFacilitiesRequest {
     private Integer sportId;
     private String courtType;
 
-    //constructors
+    //constructor
     public SearchFacilitiesRequest() {}
 
+    //getters and setters
     public String getName() {
         return name;
     }
-
-    //getters and setters
     public void setName(String name) {
         this.name = name;
     }
@@ -38,5 +37,4 @@ public class SearchFacilitiesRequest {
     public void setCourtType(String courtType) {
         this.courtType = courtType;
     }
-    
 }

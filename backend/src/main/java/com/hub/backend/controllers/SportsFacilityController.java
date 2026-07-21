@@ -30,14 +30,24 @@ public class SportsFacilityController {
         return new SportsFacilityRepo().getAllActiveFacilities();
     }
 
+    @GetMapping("/top3") //active top3
+    public List<SportsFacility> getTop3Facilities() {
+        return new SportsFacilityRepo().getTop3Facilities();
+    }
+
+    @GetMapping("/{id}")
+    public SportsFacility getFacilityById(@PathVariable int id) {
+        return new SportsFacilityRepo().getFacilityById(id);
+    }
+
     @GetMapping("/count")
     public int getActiveFacilitiesCount() {
         return new SportsFacilityRepo().getActiveFacilitiesCount();
     }
-
-    @GetMapping("/top3")
-    public List<SportsFacility> getTop3Facilities() {
-        return new SportsFacilityRepo().getTop3Facilities();
+    
+    @GetMapping("/courts/{facilityId}")
+    public List<Court> getCourtsByFacilityId(@PathVariable int facilityId) {
+        return new SportsFacilityRepo().getCourtsByFacilityId(facilityId);
     }
 
     @GetMapping("/cities")
@@ -50,13 +60,4 @@ public class SportsFacilityController {
         return new SportsFacilityRepo().searchFacilities(request);
     }
 
-    @GetMapping("/{id}")
-    public SportsFacility getFacilityById(@PathVariable int id) {
-        return new SportsFacilityRepo().getFacilityById(id);
-    }
-
-    @GetMapping("/courts/{facilityId}")
-    public List<Court> getCourtsByFacilityId(@PathVariable int facilityId) {
-        return new SportsFacilityRepo().getCourtsByFacilityId(facilityId);
-    }
 }

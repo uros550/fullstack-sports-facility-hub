@@ -22,7 +22,7 @@ public class PromotionRepo implements PromotionRepoInterface {
         try (
             Connection conn = DB.source().getConnection();
             PreparedStatement stm = conn.prepareStatement(query);
-        ) {
+        ){
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 
@@ -45,7 +45,6 @@ public class PromotionRepo implements PromotionRepoInterface {
                 );
                 activePromotions.add(p);
             }    
-
         } catch (Exception e) {
             e.printStackTrace();
         }

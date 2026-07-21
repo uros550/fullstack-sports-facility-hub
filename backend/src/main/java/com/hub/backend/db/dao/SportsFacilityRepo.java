@@ -46,7 +46,6 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
             e.printStackTrace();
         }
 
-
         return facilities;
     }
 
@@ -83,29 +82,7 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
             e.printStackTrace();
         }
 
-
         return facilities;
-    }
-
-    @Override
-    public int getActiveFacilitiesCount() {
-
-        int count = 0;
-        String query = "select count(*) from sportsfacility where status = 'APPROVED'";
-
-        try (
-            Connection conn = DB.source().getConnection();
-            PreparedStatement stm = conn.prepareStatement(query);
-        ){
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
-        } catch (Exception e) { 
-            e.printStackTrace(); 
-        }
-
-        return count;
     }
 
     @Override
@@ -145,6 +122,100 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
     }
 
     @Override
+    public SportsFacility getFacilityById(int id) {
+        
+        String query = "select * from sportsFacility where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, id);
+
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                SportsFacility sf = new SportsFacility(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("mb"),
+                    rs.getString("pib"),
+                    rs.getString("description"),
+                    rs.getDouble("latitude"),
+                    rs.getDouble("longitude"),
+                    rs.getString("workingHours"),
+                    rs.getInt("maxPenalties"),
+                    rs.getInt("likesCount"),
+                    rs.getString("status")
+                );
+                return sf;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public int getActiveFacilitiesCount() {
+
+        int count = 0;
+        String query = "select count(*) from sportsfacility where status = 'APPROVED'";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+
+        return count;
+    }
+
+    @Override
+    public List<Court> getCourtsByFacilityId(int facilityId) {
+        
+        List<Court> courts = new ArrayList<>();
+        String query = "SELECT c.*, s.name AS sportName FROM court c LEFT JOIN sport s ON c.sportId = s.id WHERE c.facilityId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+        ){
+            
+            stmt.setInt(1, facilityId);
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Court court = new Court(
+                    rs.getInt("id"),
+                    rs.getInt("facilityId"),
+                    rs.getInt("sportId"),
+                    rs.getString("name"),
+                    rs.getString("type"),
+                    rs.getInt("capacity"),
+                    rs.getString("equipmentDescription"),
+                    rs.getDouble("pricePerHour"),
+                    rs.getString("sportName") //sport name for details
+                );
+                courts.add(court);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return courts;
+    }
+
+    @Override
     public List<String> getAllCities() {
         
         List<String> allCities = new ArrayList<>();
@@ -163,7 +234,6 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
         }
 
         return allCities;
-
     }
 
     @Override
@@ -251,80 +321,6 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
         }
 
         return facilities;
-    }
-
-    @Override
-    public SportsFacility getFacilityById(int id) {
-        
-        SportsFacility sf = null;
-        String query = "select * from sportsFacility where id = ?";
-
-        try (
-            Connection conn = DB.source().getConnection();
-            PreparedStatement stm = conn.prepareStatement(query);
-        ){
-            stm.setInt(1, id);
-
-            ResultSet rs = stm.executeQuery();
-
-            if (rs.next()) {
-                sf = new SportsFacility(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("address"),
-                    rs.getString("city"),
-                    rs.getString("mb"),
-                    rs.getString("pib"),
-                    rs.getString("description"),
-                    rs.getDouble("latitude"),
-                    rs.getDouble("longitude"),
-                    rs.getString("workingHours"),
-                    rs.getInt("maxPenalties"),
-                    rs.getInt("likesCount"),
-                    rs.getString("status")
-                );
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return sf;
-    }
-
-    @Override
-    public List<Court> getCourtsByFacilityId(int facilityId) {
-        
-        List<Court> courts = new ArrayList<>();
-        String query = "SELECT c.*, s.name AS sportName FROM court c LEFT JOIN sport s ON c.sportId = s.id WHERE c.facilityId = ?";
-
-        try (
-            Connection conn = DB.source().getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
-        ){
-            
-            stmt.setInt(1, facilityId);
-            
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Court court = new Court(
-                    rs.getInt("id"),
-                    rs.getInt("facilityId"),
-                    rs.getInt("sportId"),
-                    rs.getString("name"),
-                    rs.getString("type"),
-                    rs.getInt("capacity"),
-                    rs.getString("equipmentDescription"),
-                    rs.getDouble("pricePerHour"),
-                    rs.getString("sportName") //sport name for details
-                );
-                courts.add(court);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return courts;
-    }
-    
+    }  
+     
 }

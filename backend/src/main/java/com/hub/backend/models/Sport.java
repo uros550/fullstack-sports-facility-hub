@@ -34,5 +34,4 @@ public class Sport {
     public void setRequiredPlayers(int requiredPlayers) {
         this.requiredPlayers = requiredPlayers;
     }
-    
 }

@@ -10,11 +10,11 @@ public interface SportsFacilityRepoInterface {
 
     List<SportsFacility> getAllFacilites();
     List<SportsFacility> getAllActiveFacilities();
-    int getActiveFacilitiesCount();
     List<SportsFacility> getTop3Facilities();
+    SportsFacility getFacilityById(int id);
+    int getActiveFacilitiesCount();
+    List<Court> getCourtsByFacilityId(int facilityId);
     List<String> getAllCities();
     List<SportsFacility> searchFacilities(SearchFacilitiesRequest request);
-    public SportsFacility getFacilityById(int id);
-    List<Court> getCourtsByFacilityId(int facilityId);
 
 }

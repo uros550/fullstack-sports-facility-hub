@@ -27,7 +27,6 @@ public class User {
     public User() {}
 
     public User(int id, String firstName, String lastName, String username, String email, String password, String phone,String profilePicture, String role, String status) {
-
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -139,5 +138,4 @@ public class User {
     public void setSports(List<Integer> sports) {
         this.sports = sports;
     }
-
 }

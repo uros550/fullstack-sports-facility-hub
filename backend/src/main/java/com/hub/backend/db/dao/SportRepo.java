@@ -33,8 +33,8 @@ public class SportRepo implements SportRepoInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
         return allSports;
-
     }
     
 }

@@ -3,6 +3,7 @@ package com.hub.backend.models;
 import java.time.LocalDateTime;
 
 public class Promotion {
+    
     private int id;
     private String name;
     private int facilityId;
@@ -14,11 +15,9 @@ public class Promotion {
     private LocalDateTime endDate;
 
     //constructors
-    public Promotion() {
-    }
+    public Promotion() {}
 
-    public Promotion(int id, String name, int facilityId, String facilityName, int sportId, String discountType, float discountValue,
-            LocalDateTime startDate, LocalDateTime endDate) {
+    public Promotion(int id, String name, int facilityId, String facilityName, int sportId, String discountType, float discountValue, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.name = name;
         this.facilityId = facilityId;

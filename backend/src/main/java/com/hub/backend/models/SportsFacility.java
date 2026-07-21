@@ -19,8 +19,7 @@ public class SportsFacility {
     //constructors
     public SportsFacility() {}
 
-    public SportsFacility(int id, String name, String address, String city, String mb, String pib, String description,
-            double latitude, double longitude, String workingHours, int maxPenalties, int likesCount, String status) {
+    public SportsFacility(int id, String name, String address, String city, String mb, String pib, String description, double latitude, double longitude, String workingHours, int maxPenalties, int likesCount, String status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -114,7 +113,5 @@ public class SportsFacility {
     }
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    
+    }   
 }
