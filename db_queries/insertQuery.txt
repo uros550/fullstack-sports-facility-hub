@@ -1,0 +1,266 @@
+USE sportshub;
+
+-- =====================================================
+-- 1. SPORT
+-- =====================================================
+INSERT INTO Sport (id, name, requiredPlayers) VALUES
+(1, 'Football', 12),
+(2, 'Basketball', 10),
+(3, 'Tennis', 2),
+(4, 'Volleyball', 12),
+(5, 'Swimming', 1),
+(6, 'Padel', 4),
+(7, 'Table Tennis', 2),
+(8, 'Handball', 14);
+
+-- =====================================================
+-- 2. USER (Profilne slike: 'uploads/profilePictures/...' ili NULL)
+-- =====================================================
+INSERT INTO User (id, firstName, lastName, username, email, password, phone, profilePicture, role, status) VALUES
+-- Admin
+(1, 'Admin', 'Adminovic', 'admin', 'admin@sportshub.com', 'admin123', '0600000000', 'uploads/profilePictures/admin.jpg', 'ADMIN', 'APPROVED'),
+
+-- Zaposleni (EMPLOYEE)
+(2, 'Marko', 'Markovic', 'marko', 'marko@sportshub.com', 'marko123', '0610000000', 'uploads/profilePictures/marko.jpg', 'EMPLOYEE', 'APPROVED'),
+(3, 'Jovan', 'Jovanovic', 'jovan', 'jovan@sportshub.com', 'jovan123', '0610000001', 'uploads/profilePictures/jovan.jpg', 'EMPLOYEE', 'APPROVED'),
+(4, 'Petar', 'Petrovic', 'petar', 'petar@sportshub.com', 'petar123', '0610000002', NULL, 'EMPLOYEE', 'APPROVED'),
+(5, 'Nikola', 'Nikolic', 'nikola', 'nikola@sportshub.com', 'nikola123', '0610000003', 'uploads/profilePictures/nikola.jpg', 'EMPLOYEE', 'APPROVED'),
+(6, 'Milan', 'Milanovic', 'milan', 'milan@sportshub.com', 'milan123', '0610000004', NULL, 'EMPLOYEE', 'APPROVED'),
+(7, 'Dejan', 'Dejanovic', 'dejan', 'dejan@sportshub.com', 'dejan123', '0610000005', 'uploads/profilePictures/dejan.jpg', 'EMPLOYEE', 'APPROVED'),
+
+-- Sportisti (ATHLETE)
+(8, 'Luka', 'Lukic', 'luka', 'luka@gmail.com', 'luka123', '0620000000', 'uploads/profilePictures/luka.jpg', 'ATHLETE', 'APPROVED'),
+(9, 'Bogdan', 'Bogdanovic', 'bogdan', 'bogdan@gmail.com', 'bogdan123', '0620000001', 'uploads/profilePictures/bogdan.jpg', 'ATHLETE', 'APPROVED'),
+(10, 'Ana', 'Anic', 'ana', 'ana@gmail.com', 'ana123', '0620000002', 'uploads/profilePictures/ana.jpg', 'ATHLETE', 'APPROVED'),
+(11, 'Milos', 'Milosevic', 'milos', 'milos@gmail.com', 'milos123', '0620000003', 'uploads/profilePictures/milos.jpg', 'ATHLETE', 'PENDING'),
+(12, 'Stefan', 'Stefanovic', 'stefan', 'stefan@gmail.com', 'stefan123', '0620000004', NULL, 'ATHLETE', 'APPROVED'),
+(13, 'Jelena', 'Jankovic', 'jelena', 'jelena@gmail.com', 'jelena123', '0620000005', 'uploads/profilePictures/jelena.jpg', 'ATHLETE', 'APPROVED'),
+(14, 'Sara', 'Saric', 'sara', 'sara@gmail.com', 'sara123', '0620000006', NULL, 'ATHLETE', 'APPROVED'),
+(15, 'Milica', 'Milankovic', 'milica', 'milica@gmail.com', 'milica123', '0620000007', 'uploads/profilePictures/milica.jpg', 'ATHLETE', 'APPROVED'),
+(16, 'Viktor', 'Viktorovic', 'viktor', 'viktor@gmail.com', 'viktor123', '0620000008', NULL, 'ATHLETE', 'APPROVED'),
+(17, 'Djordje', 'Djordjevic', 'djordje', 'djordje@gmail.com', 'djordje123', '0620000009', 'uploads/profilePictures/djordje.jpg', 'ATHLETE', 'APPROVED');
+
+-- =====================================================
+-- 3. USER - SPORT (M:N)
+-- =====================================================
+INSERT INTO UserSport (userId, sportId) VALUES
+(1, 2), (1, 3), (1, 5),
+(8, 2), (8, 1), (8, 6),
+(9, 2), (9, 5),
+(10, 3), (10, 6),
+(12, 1), (12, 8),
+(13, 3), (13, 7),
+(14, 4), (14, 5),
+(15, 6), (15, 2),
+(16, 5), (16, 1),
+(17, 8), (17, 2);
+
+-- =====================================================
+-- 4. SPORTS FACILITY (12 Objekata širom Srbije)
+-- =====================================================
+INSERT INTO SportsFacility (id, name, address, city, mb, pib, description, latitude, longitude, workingHours, maxPenalties, likesCount, status) VALUES
+(1, 'Zavod za sport i medicinu sporta RS - Košutnjak', 'Kneza Višeslava 72', 'Beograd', '07012345', '100012345', 'Nacionalni trenažni centar sa otvorenim bazenima, atletskom stazom, tenisom i trim stazom u prirodi.', 44.7672, 20.4358, '07:00 - 22:30', 3, 12, 'APPROVED'),
+(2, 'SC Tašmajdan', 'Beogradska 71', 'Beograd', '07054321', '100054321', 'Kultni sportski centar sa zatvorenim i otvorenim bazenom, halom za košarku i teretanom.', 44.8086, 20.4722, '06:30 - 23:00', 3, 18, 'APPROVED'),
+(3, 'SC Milan Gale Muškatirović - 25. Maj', 'Tadeuša Košćuška 63', 'Beograd', '07099887', '100099887', 'Prelep kompleks na obali Dunava sa olimpijskim bazenima, tenisom i padel terenima.', 44.8286, 20.4525, '07:00 - 22:00', 2, 15, 'APPROVED'),
+(4, 'SC 11. April', 'Autoput za Zagreb 2', 'Novi Beograd', '07112233', '100112233', 'Centralni sportski objekat Novog Beograda sa otvorenim bazenima, tenisom i zatvorenim salama.', 44.8189, 20.3951, '07:00 - 22:00', 3, 9, 'APPROVED'),
+(5, 'SPC Vojvodina - SPENS', 'Sutjeska 2', 'Novi Sad', '87654321', '987654321', 'Najveći sportsko-poslovni centar u Vojvodini sa velikom dvoranom, ledenim dvoranom i bazenima.', 45.2464, 19.8492, '07:00 - 22:00', 2, 22, 'APPROVED'),
+(6, 'SC Sajmište', 'Hajduk Veljkova 11', 'Novi Sad', '87611223', '987112233', 'Otvoreni tereni za fudbal, tenis, košarku i bazenski kompleks u blizini Novosadskog sajma.', 45.2533, 19.8278, '08:00 - 22:00', 3, 5, 'APPROVED'),
+(7, 'SC Čair', 'Devetog Jadranskog Korpusa bb', 'Niš', '56473829', '556677889', 'Glavni sportski kompleks u Nišu sa velikom halom, zatvorenim bazenom i terenskim kompleksom.', 43.3167, 21.9085, '08:00 - 22:00', 4, 14, 'APPROVED'),
+(8, 'SPD Radnički', 'Trg topolivaca 4', 'Kragujevac', '34011223', '234011223', 'Kragujevački sportski centar SBB Hala Jezero i zatvoreni bazeni sa vrhunskim uslovima za dvoranske sportove.', 44.0125, 20.9208, '07:30 - 22:30', 3, 8, 'APPROVED'),
+(9, 'SRC Prozivka', 'Nade Dimić 2', 'Subotica', '24055667', '345055667', 'Moderan sportsko-rekreativni centar u Subotici sa vaterpolo bazenima i salama za fitnes.', 46.0845, 19.6631, '07:00 - 21:30', 2, 7, 'APPROVED'),
+(10, 'SC Mladost', 'Miloša Trebinjca 10', 'Pančevo', '13088990', '456088990', 'Gradski sportski centar Pančevo sa namenskim terenima za rukomet, fudbal i tenis.', 44.8683, 20.6489, '08:00 - 22:00', 3, 4, 'APPROVED'),
+(11, 'SC Park', 'Vojvode Stepe 40', 'Inđija', '22033445', '567033445', 'Savremena sportska hala i tereni u Inđiji prilagođeni rekreativcima i profesionalcima.', 45.0489, 20.0811, '08:00 - 21:00', 3, 3, 'APPROVED'),
+(12, 'SC Bobana Momčilović Veličković', 'Zeleni bulevar 25', 'Bor', '19044556', '678044556', 'Višenamenski sportski objekat na istoku Srbije sa velikim kapacitetom za košarku i rukomet.', 44.0742, 22.0988, '08:00 - 21:00', 3, 2, 'PENDING');
+
+-- =====================================================
+-- 5. FACILITY EMPLOYEE (M:N)
+-- =====================================================
+INSERT INTO FacilityEmployee (facilityId, employeeId) VALUES
+(1, 2), (1, 4),
+(2, 2),
+(3, 3),
+(4, 5),
+(5, 3), (5, 6),
+(6, 6),
+(7, 2), (7, 7),
+(8, 7),
+(9, 4),
+(10, 5),
+(11, 6),
+(12, 7);
+
+-- =====================================================
+-- 6. COURT (Tereni u objektima)
+-- =====================================================
+INSERT INTO Court (id, facilityId, sportId, name, type, capacity, equipmentDescription, pricePerHour) VALUES
+-- Košutnjak (1)
+(1, 1, 5, 'Olimpijski Bazen na otvorenom', 'OPEN', 50, 'Standardna 50m staza, skakaonica, prateća oprema.', 800.00),
+(2, 1, 3, 'Teniski Teren Košutnjak 1', 'OPEN', 4, 'Šljaka, reflektori.', 1500.00),
+(3, 1, 6, 'Padel Teren 1', 'OPEN', 4, 'Panoramsko staklo, veštačka trava najnovije generacije.', 2400.00),
+
+-- Tašmajdan (2)
+(4, 2, 2, 'Glavna Hala Tašmajdan', 'CLOSED', 20, 'Parket, profi zglobni obruči, semafor.', 5000.00),
+(5, 2, 5, 'Zatvoreni Bazen Tašmajdan', 'CLOSED', 30, 'Grejana voda 26C, staze 25m.', 1200.00),
+
+-- 25. Maj (3)
+(6, 3, 5, 'Bazen sa pogledom na Dunav', 'OPEN', 40, 'Olimpijske dimenzije, ležaljke.', 1000.00),
+(7, 3, 6, 'Padel 25. Maj A', 'CLOSED', 4, 'Zatvorena padel konstrukcija, klimatizovano.', 2800.00),
+
+-- 11. April (4)
+(8, 4, 3, 'Teniski Teren Beton 1', 'CLOSED', 4, 'Tvrda podloga, klimatizovano.', 2000.00),
+(9, 4, 1, 'Mali Fudbal Balon', 'CLOSED', 12, 'Veštačka trava, svlačionice sa tuševima.', 4500.00),
+
+-- SPENS (5)
+(10, 5, 2, 'SPENS Mala Dvorana', 'CLOSED', 20, 'Vrhunski parket, semafor.', 4200.00),
+(11, 5, 7, 'Sala za Stoni Tenis', 'CLOSED', 6, '4 profesionalna Stiga stola.', 1200.00),
+
+-- Sajmište (6)
+(12, 6, 1, 'Fudbalski Teren Sajmište', 'OPEN', 14, 'Prirodna trava, reflektori.', 3500.00),
+
+-- Čair (7)
+(13, 7, 1, 'Čair Otvoreni Fudbal', 'OPEN', 14, 'Prirodna trava, golovi standardnih dimenzija.', 3000.00),
+(14, 7, 3, 'Zatvoreni Tenis Čair', 'CLOSED', 4, 'Betonska podloga, klimatizovano.', 2200.00),
+(15, 7, 8, 'Hala Čair - Rukomet', 'CLOSED', 20, 'Sertifikovan rukometni parket i golovi.', 4800.00),
+
+-- SPD Radnički (8)
+(16, 8, 2, 'Hala Jezero Kragujevac', 'CLOSED', 20, 'Olimpijski standardi košarka.', 4000.00),
+(17, 8, 8, 'Rukometna Sala Radnički', 'CLOSED', 20, 'Semafor, golovi, guma podloga.', 3800.00),
+
+-- Prozivka (9)
+(18, 9, 5, 'Prozivka Vaterpolo Bazen', 'CLOSED', 30, 'Dubina 2m, vaterpolo golovi.', 1500.00),
+
+-- Mladost Pančevo (10)
+(19, 10, 1, 'Mladost Balon Fudbal', 'CLOSED', 12, 'Veštačka trava sa gumenim granulatom.', 3800.00),
+
+-- SC Park Inđija (11)
+(20, 11, 4, 'Odbojkaška Sala Park', 'CLOSED', 12, 'Mreža sa podešavanjem visine, profi podloga.', 3200.00),
+
+-- SC Bor (12)
+(21, 12, 2, 'Košarkaška Hala Bor', 'CLOSED', 20, 'Standardni tereni za treninge i utakmice.', 3000.00);
+
+-- =====================================================
+-- 7. FACILITY IMAGE (Slike na: 'uploads/facilityPictures/...')
+-- =====================================================
+INSERT INTO FacilityImage (id, facilityId, imageUrl) VALUES
+(1, 1, 'uploads/facilityPictures/kosutnjak_bazen.jpg'),
+(2, 1, 'uploads/facilityPictures/kosutnjak_tenis.jpg'),
+(3, 1, 'uploads/facilityPictures/kosutnjak_padel.jpg'),
+(4, 2, 'uploads/facilityPictures/tasmajdan_hala.jpg'),
+(5, 2, 'uploads/facilityPictures/tasmajdan_bazen.jpg'),
+(6, 3, 'uploads/facilityPictures/25maj_bazen.jpg'),
+(7, 3, 'uploads/facilityPictures/25maj_padel.jpg'),
+(8, 4, 'uploads/facilityPictures/11april_spolja.jpg'),
+(9, 4, 'uploads/facilityPictures/11april_tenis.jpg'),
+(10, 5, 'uploads/facilityPictures/spens_spolja.jpg'),
+(11, 5, 'uploads/facilityPictures/spens_dvorana.jpg'),
+(12, 6, 'uploads/facilityPictures/sajmiste_fudbal.jpg'),
+(13, 7, 'uploads/facilityPictures/cair_fudbal.jpg'),
+(14, 7, 'uploads/facilityPictures/cair_bazen.jpg'),
+(15, 8, 'uploads/facilityPictures/radnicki_jezero.jpg'),
+(16, 9, 'uploads/facilityPictures/prozivka_bazen.jpg'),
+(17, 10, 'uploads/facilityPictures/mladost_pancevo.jpg'),
+(18, 11, 'uploads/facilityPictures/indjija_park.jpg'),
+(19, 12, 'uploads/facilityPictures/bor_hala.jpg');
+
+-- =====================================================
+-- 8. TRAINER
+-- =====================================================
+INSERT INTO Trainer (id, firstName, lastName, specialization, rating, pricePerHour, sportId, facilityId, isActive) VALUES
+(1, 'Zeljko', 'Obradovic', 'Košarkaška taktika i napredni treninzi', 4.95, 6000.00, 2, 2, 1),
+(2, 'Nenad', 'Zimonjic', 'Tenis - dubl i singl tehnika', 4.80, 3500.00, 3, 1, 1),
+(3, 'Dragan', 'Stojkovic', 'Fudbalska koordinacija i kondicija', 4.20, 5000.00, 1, 7, 1),
+(4, 'Milorad', 'Cavic', 'Tehnika plivanja i kraul stil', 4.90, 4500.00, 5, 3, 1),
+(5, 'Vanja', 'Udovicic', 'Vaterpolo i kondiciona priprema u vodi', 4.75, 4000.00, 5, 9, 1),
+(6, 'Viktor', 'Troicki', 'Padel i tenis taktička priprema', 4.65, 3800.00, 6, 3, 1);
+
+-- =====================================================
+-- 9. PROMOTION (Uključuju jul 2026.)
+-- =====================================================
+INSERT INTO Promotion (id, name, facilityId, sportId, discountType, discountValue, startDate, endDate) VALUES
+-- AKTIVNE PROMOCIJE
+(1, 'Letnja košarkaška akcija', 2, 2, 'PERCENTAGE', 20.00, '2026-06-01 00:00:00', '2026-08-31 23:59:59'),
+(2, 'Happy Hour Tenis Niš', 7, 3, 'FIXED', 500.00, '2026-07-10 10:00:00', '2026-07-25 14:00:00'),
+(3, 'SPENS Vikend Popust', 5, 1, 'PERCENTAGE', 15.00, '2026-01-01 00:00:00', '2026-12-31 23:59:59'),
+(4, 'Košutnjak Padel Leto', 1, 6, 'PERCENTAGE', 25.00, '2026-07-01 00:00:00', '2026-07-31 23:59:59'),
+(5, '25. Maj Plivački Popust', 3, 5, 'FIXED', 200.00, '2026-06-15 00:00:00', '2026-08-15 23:59:59'),
+
+-- ISTEKLE PROMOCIJE
+(6, 'Zimska čarolija 2025', 7, 1, 'PERCENTAGE', 25.00, '2025-12-01 00:00:00', '2026-01-15 23:59:59'),
+
+-- BUDUĆE PROMOCIJE
+(7, 'Jesenji rukometni kup', 8, 8, 'PERCENTAGE', 30.00, '2026-09-01 00:00:00', '2026-10-31 23:59:59');
+
+-- =====================================================
+-- 10. RESERVATION
+-- =====================================================
+INSERT INTO Reservation (id, facilityId, courtId, athleteId, sportId, startTime, endTime, status, missingPlayers) VALUES
+(1, 2, 4, 8, 2, '2026-07-15 18:00:00', '2026-07-15 20:00:00', 'CONFIRMED', 2),
+(2, 7, 14, 10, 3, '2026-07-16 09:00:00', '2026-07-16 11:00:00', 'CONFIRMED', 0),
+(3, 7, 13, 9, 1, '2026-07-17 20:00:00', '2026-07-17 21:00:00', 'PENDING', 4),
+(4, 1, 3, 15, 6, '2026-07-20 17:00:00', '2026-07-20 19:00:00', 'CONFIRMED', 1),
+(5, 3, 7, 8, 6, '2026-07-21 19:00:00', '2026-07-21 20:30:00', 'CONFIRMED', 0),
+(6, 5, 10, 12, 2, '2026-07-14 15:00:00', '2026-07-14 16:00:00', 'CANCELLED', 0);
+
+-- =====================================================
+-- 11. TRAINING
+-- =====================================================
+INSERT INTO Training (id, trainerId, athleteId, facilityId, courtId, startTime, endTime, price, status) VALUES
+(1, 1, 8, 2, 4, '2026-07-18 10:00:00', '2026-07-18 12:00:00', 12000.00, 'CONFIRMED'),
+(2, 4, 10, 3, 6, '2026-07-19 08:00:00', '2026-07-19 09:30:00', 6200.00, 'PENDING'),
+(3, 6, 15, 1, 3, '2026-07-22 18:00:00', '2026-07-22 19:30:00', 5000.00, 'CONFIRMED');
+
+-- =====================================================
+-- 12. JOIN REQUEST
+-- =====================================================
+INSERT INTO JoinRequest (id, reservationId, athleteId, status) VALUES
+(1, 1, 9, 'ACCEPTED'),
+(2, 3, 8, 'PENDING'),
+(3, 4, 10, 'ACCEPTED');
+
+-- =====================================================
+-- 13. FACILITY REVIEW
+-- =====================================================
+INSERT INTO FacilityReview (id, facilityId, athleteId, liked, comment, reviewDate) VALUES
+(1, 1, 8, 1, 'Košutnjak je neprikosnoven! Padel tereni u šumi su pun pogodak.', '2026-07-10 12:00:00'),
+(2, 1, 9, 1, 'Otvoreni bazeni čisti, prirodna hladovina je super.', '2026-07-11 14:30:00'),
+(3, 2, 10, 1, 'Taš je klasik, sala je uvek u vrhunskom stanju.', '2026-07-12 09:15:00'),
+(4, 3, 13, 1, 'Pogled na Dunav sa 25. maja ulepša svaki trening plivanja.', '2026-07-13 10:00:00'),
+(5, 5, 12, 1, 'SPENS ima sve na jednom mestu, uvek rado dolazimo na stoni tenis.', '2026-07-13 11:00:00'),
+(6, 7, 8, 0, 'Sve je u redu na Čairu, ali bi svlačionice mogle malo bolje da se održavaju.', '2026-07-13 15:22:00'),
+(7, 8, 17, 1, 'SBB Hala Jezero u Kragujevcu ima sjajan parket za rukomet.', '2026-07-14 18:40:00'),
+(8, 9, 16, 1, 'Prozivka u Subotici ima odlične bazene i grejanje vode je stabilno.', '2026-07-15 08:30:00');
+
+-- =====================================================
+-- 14. FACILITY BLOCK
+-- =====================================================
+INSERT INTO FacilityBlock (facilityId, athleteId) VALUES
+(1, 11),
+(2, 11);
+
+-- =====================================================
+-- 15. EQUIPMENT
+-- =====================================================
+INSERT INTO Equipment (id, name, sportId, price, stock, imageUrl) VALUES
+(1, 'Spalding TF-1000 Košarkaška lopta', 2, 8500.00, 15, 'uploads/equipment/spalding_tf1000.jpg'),
+(2, 'Babolat Pure Drive Teniski reket', 3, 21000.00, 5, 'uploads/equipment/babolat_pure_drive.jpg'),
+(3, 'Nike Strike Fudbalska lopta', 1, 3200.00, 30, 'uploads/equipment/nike_strike.jpg'),
+(4, 'Babolat Padel Reket Technical Viper', 6, 24500.00, 8, 'uploads/equipment/padel_reket.jpg'),
+(5, 'Speedo Naočare za plivanje Fastskin', 5, 4200.00, 20, 'uploads/equipment/speedo_naocare.jpg'),
+(6, 'Markeri za ekipu (10 komada)', 1, 1500.00, 0, 'uploads/equipment/markeri.jpg');
+
+-- =====================================================
+-- 16. ORDER
+-- =====================================================
+INSERT INTO `Order` (id, athleteId, orderDate, status) VALUES
+(1, 8, '2026-07-11 16:00:00', 'PICKED_UP'),
+(2, 9, '2026-07-13 14:00:00', 'ACCEPTED'),
+(3, 15, '2026-07-18 11:20:00', 'PENDING');
+
+-- =====================================================
+-- 17. ORDER ITEM
+-- =====================================================
+INSERT INTO OrderItem (id, orderId, equipmentId, quantity, priceAtPurchase) VALUES
+(1, 1, 1, 1, 8500.00),
+(2, 1, 3, 2, 3200.00),
+(3, 2, 2, 1, 21000.00),
+(4, 3, 4, 1, 24500.00);
