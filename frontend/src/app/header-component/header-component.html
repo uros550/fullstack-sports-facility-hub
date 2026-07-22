@@ -15,10 +15,8 @@
 
                 <div class="profile-trigger" (click)="toggleDropdown()">
 
-                    <div class="avatar-circle">
-                        {{ user.username.charAt(0).toUpperCase() }}
-                    </div>
                     <span class="username-text">{{ user.username }}</span>
+                    <img class="avatar-image" [src]="getProfilePicture()" alt="Profile picture">
                     
                 </div>
 

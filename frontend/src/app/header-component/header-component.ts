@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { AuthenticationService } from '../services/authentication-service';
 import { Router, RouterLink } from '@angular/router';
+import { User } from '../models/User';
 
 @Component({
   selector: 'app-header-component',
@@ -20,6 +21,16 @@ export class HeaderComponent {
 
   openAuthentication() {
     this.authenticationService.open();
+  }
+
+  getProfilePicture(): string {
+    const user = this.currentUser();
+    //doesnt have pfp
+    if (!user?.profilePicture) {
+      return 'default-pfp.jpg';
+    }
+    //has pfp
+    return `http://localhost:8080/${user.profilePicture}`;
   }
 
   toggleDropdown() {
