@@ -119,10 +119,6 @@ public class UserRepo implements UserRepoInterface {
                     return "Maximum of 5 sports.";
                 }
             }
-            
-            ///CHANGE LATER
-            //pictures
-            user.setProfilePicture(null);
 
             //insert new user pending
             int generatedUserId = -1;
@@ -165,7 +161,7 @@ public class UserRepo implements UserRepoInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "Success";
+        return "";
     }
 
     @Override

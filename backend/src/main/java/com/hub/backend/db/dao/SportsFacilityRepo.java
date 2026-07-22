@@ -216,10 +216,31 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
     }
 
     @Override
+    public List<String> getImagesByFacilityId(int facilityId) {
+        
+        List<String> images = new ArrayList<>();
+        String query = "select imageUrl from facilityImage where facilityId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, facilityId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                images.add(rs.getString("imageUrl"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return images;
+    }  
+
+    @Override
     public List<String> getAllCities() {
         
         List<String> allCities = new ArrayList<>();
-        String query = "select distinct city from sportsFacility";
+        String query = "select distinct city from sportsFacility where status = 'APPROVED'";
 
         try (
             Connection conn = DB.source().getConnection();
@@ -321,6 +342,6 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
         }
 
         return facilities;
-    }  
+    }
      
 }

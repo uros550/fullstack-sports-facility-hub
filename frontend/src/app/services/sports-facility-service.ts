@@ -35,6 +35,10 @@ export class SportsFacilityService {
     return this.http.get<Court[]>(`${this.path}/courts/${facilityId}`);
   }
 
+  getFacilityImagesById(facilityId: number) {
+    return this.http.get<string[]>(`${this.path}/images/${facilityId}`);
+  }
+
   getAllCities() {
     return this.http.get<string[]>(`${this.path}/cities`);
   }

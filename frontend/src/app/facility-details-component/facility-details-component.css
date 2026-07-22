@@ -335,6 +335,19 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
 }
 
+/*no images message*/
+.no-images {
+    grid-column: 1 / -1; /*takes both columns*/
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 30px 10px;
+    background-color: var(--bg-light);
+    border-radius: 12px;
+    border: 1px dashed var(--border-color);
+    margin: 0;
+}
+
 /*gallery pictures*/
 .gallery-item img {
     width: 100%;

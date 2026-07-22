@@ -32,6 +32,7 @@ export class AuthenticationComponent implements OnInit {
   selectedSports: number[] = [];
 
   //avatar and image upload
+  useDefaultPhoto: boolean = true;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
   currentSeed = '';
@@ -156,8 +157,8 @@ export class AuthenticationComponent implements OnInit {
           });
         } 
         else {
-          this.successMessage = 'Successfully signed up.';
           this.changeMode('LOGIN');
+          this.successMessage = 'Successfully signed up.';
         }
       }
       else {

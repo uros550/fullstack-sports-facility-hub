@@ -94,21 +94,19 @@
  
       </div>
 
-      <!--hard-coded gallery-->
+      <!--gallery-->
       <div class="gallery-column">
         <div class="card gallery-card">
-          <h2>Image Gallery</h2>
+          <h2>Facility gallery</h2>
+          
           <div class="image-gallery">
-            <!--temporary photos-->
-            <div class="gallery-item">
-              <img src="https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=600" alt="Gallery 1" />
-            </div>
-            <div class="gallery-item">
-              <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=600" alt="Gallery 2" />
-            </div>
-            <div class="gallery-item">
-              <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=600" alt="Gallery 3" />
-            </div>
+            @for (img of images; track img) {
+              <div class="gallery-item">
+                <img [src]="baseUrl + img"/>
+              </div>
+            } @empty {
+              <p class="no-images">No images available.</p>
+            }
           </div>
         </div>
       </div>

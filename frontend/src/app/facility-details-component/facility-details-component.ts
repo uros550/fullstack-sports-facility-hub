@@ -18,6 +18,9 @@ export class FacilityDetailsComponent {
   facility!: SportsFacility;
   courts: Court[] = [];
 
+  images: string[] = [];
+  baseUrl: string = 'http://localhost:8080/';
+
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     
@@ -27,6 +30,9 @@ export class FacilityDetailsComponent {
       });
       this.facilityService.getAllCourtsById(id).subscribe(data => {
         this.courts = data;
+      })
+      this.facilityService.getFacilityImagesById(id).subscribe(data => {
+        this.images = data;
       })
     }
   }
