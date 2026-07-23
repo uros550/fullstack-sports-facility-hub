@@ -1,1 +1,68 @@
-<p>athlete-component works!</p>
+<div class="page-container">
+
+    <div class="dashboard-layout">
+
+        <!--sidebar menu-->
+        <aside class="sidebar">
+
+            <h2 class="sidebar-title">
+                Athlete Menu
+            </h2>
+
+            <button class="menu-item active">
+                👤
+                <span>Profile</span>
+            </button>
+
+            <button class="menu-item">
+                📅
+                <span>Reservations</span>
+            </button>
+
+            <button class="menu-item">
+                👥
+                <span>Find Teammates</span>
+            </button>
+
+            <button class="menu-item">
+                🏋️
+                <span>Training</span>
+            </button>
+
+            <button class="menu-item">
+                🛒
+                <span>Equipment Store</span>
+            </button>
+
+            <button class="menu-item">
+                📊
+                <span>Statistics</span>
+            </button>
+
+        </aside>
+
+
+        <!--content-->
+        <section class="content-card">
+
+            <div class="content-header">
+
+                <h1>Welcome back, {{currentUser?.firstName}} {{currentUser?.lastName}}</h1>
+
+                <p>
+                    Manage your profile, reservations and sports activities.
+                </p>
+
+            </div>
+
+            <div class="content-placeholder">
+
+                Athlete Profile Component goes here.
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>

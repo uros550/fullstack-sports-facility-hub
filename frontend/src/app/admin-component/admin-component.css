@@ -1,0 +1,120 @@
+/*same background*/
+.page-container {
+    background-image: url("/background-default.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: calc(100vh - 140px);
+    padding: 40px;
+}
+
+.dashboard-layout {
+    max-width: 1500px;
+    margin: auto;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.sidebar {
+    width: 280px;
+    background: white;
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .12);
+    position: sticky;
+    top: 25px;
+}
+
+/*admin badge*/
+.admin-badge {
+    display: inline-block;
+    background-color: rgb(16, 185, 129);
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+}
+
+.sidebar-title {
+    margin: 0 0 25px 0;
+    color: rgb(15, 23, 42);
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgb(226, 232, 240);
+    padding-bottom: 15px;
+}
+
+.menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(15, 23, 42);
+    transition: .25s;
+    position: relative;
+}
+
+.menu-item:hover {
+    background: rgb(241, 245, 249);
+    transform: translateX(6px);
+}
+
+.menu-item.active {
+    background: rgb(15, 23, 42);
+    color: white;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .35);
+}
+
+.menu-item.active:hover {
+    transform: none;
+}
+
+.content-card {
+    flex: 1;
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .12);
+    padding: 35px;
+    min-height: 700px;
+}
+
+.content-header {
+    border-bottom: 1px solid rgb(226, 232, 240);
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+}
+
+.content-header h1 {
+    margin: 0;
+    color: rgb(15, 23, 42);
+    font-size: 2rem;
+}
+
+.content-header p {
+    margin-top: 10px;
+    color: rgb(100, 116, 139);
+}
+
+.content-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    border: 2px dashed rgb(203, 213, 225);
+    border-radius: 16px;
+    color: rgb(100, 116, 139);
+    font-size: 18px;
+}

@@ -118,11 +118,11 @@ export class AuthenticationComponent implements OnInit {
     //other checks
     if (this.role === 'EMPLOYEE') {
       if (!/^\d{8}$/.test(this.facilityMb)) {
-        this.errorMessage = 'Matični broj mora imati tačno 8 cifara.';
+        this.errorMessage = 'MB exactly 8 numbers.';
         return;
       }
       if (!/^[1-9]\d{8}$/.test(this.facilityPib)) {
-        this.errorMessage = 'PIB mora imati tačno 9 cifara i ne sme početi sa nulom.';
+        this.errorMessage = 'PIB exactly 9 numbers, not starting with 0.';
         return;
       }
     }

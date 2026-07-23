@@ -1,1 +1,67 @@
-<p>employee-component works!</p>
+<div class="page-container">
+
+  <div class="dashboard-layout">
+
+    <!--sidebar menu-->
+    <aside class="sidebar">
+
+      <h2 class="sidebar-title">
+        Employee Menu
+      </h2>
+
+      <button class="menu-item active">
+        👤
+        <span>Profile & Facilities</span>
+      </button>
+
+      <button class="menu-item">
+        ✚
+        <span>Add Facility / Courts</span>
+      </button>
+
+      <button class="menu-item">
+        📅
+        <span>Reservations & Check-in</span>
+      </button>
+
+      <button class="menu-item">
+        🏷️
+        <span>Promotions & Equipment</span>
+      </button>
+
+      <button class="menu-item">
+        📆
+        <span>Interactive Calendar</span>
+      </button>
+
+      <button class="menu-item">
+        📊
+        <span>PDF Reports</span>
+      </button>
+
+    </aside>
+
+    <!--content-->
+    <section class="content-card">
+
+      <div class="content-header">
+
+        <h1>Welcome back, {{currentUser?.firstName}} {{currentUser?.lastName}}</h1>
+
+        <p>
+          Manage your sports facilities, courts, reservations, calendar and equipment inventory.
+        </p>
+
+      </div>
+
+      <div class="content-placeholder">
+
+        Facility Management & Overview Component goes here.
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
