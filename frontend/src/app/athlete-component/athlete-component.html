@@ -9,57 +9,76 @@
                 Athlete Menu
             </h2>
 
-            <button class="menu-item active">
+            <button class="menu-item" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">
                 👤
                 <span>Profile</span>
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" [class.active]="activeTab === 'reservations'" (click)="setActiveTab('reservations')">
                 📅
                 <span>Reservations</span>
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" [class.active]="activeTab === 'teammates'" (click)="setActiveTab('teammates')">
                 👥
                 <span>Find Teammates</span>
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" [class.active]="activeTab === 'training'" (click)="setActiveTab('training')">
                 🏋️
                 <span>Training</span>
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" [class.active]="activeTab === 'store'" (click)="setActiveTab('store')">
                 🛒
                 <span>Equipment Store</span>
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" [class.active]="activeTab === 'statistics'" (click)="setActiveTab('statistics')">
                 📊
                 <span>Statistics</span>
             </button>
 
         </aside>
 
-
-        <!--content-->
+        <!--content area-->
         <section class="content-card">
 
             <div class="content-header">
-
                 <h1>Welcome back, {{currentUser?.firstName}} {{currentUser?.lastName}}</h1>
-
-                <p>
-                    Manage your profile, reservations and sports activities.
-                </p>
-
             </div>
 
-            <div class="content-placeholder">
-
-                Athlete Profile Component goes here.
-
-            </div>
+            <!--dynamic content based on activeTab-->
+            @switch (activeTab) {
+                @case ('profile') {
+                    <app-athlete-profile-component></app-athlete-profile-component>
+                }
+                @case ('reservations') {
+                    <div class="content-placeholder">
+                        Reservations Component goes here.
+                    </div>
+                }
+                @case ('teammates') {
+                    <div class="content-placeholder">
+                        Find Teammates Component goes here.
+                    </div>
+                }
+                @case ('training') {
+                    <div class="content-placeholder">
+                        Training Component goes here.
+                    </div>
+                }
+                @case ('store') {
+                    <div class="content-placeholder">
+                        Equipment Store Component goes here.
+                    </div>
+                }
+                @case ('statistics') {
+                    <div class="content-placeholder">
+                        Statistics Component goes here.
+                    </div>
+                }
+            }
 
         </section>
 

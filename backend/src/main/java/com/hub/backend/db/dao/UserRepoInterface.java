@@ -1,7 +1,10 @@
 package com.hub.backend.db.dao;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hub.backend.models.AthleteProfile;
 import com.hub.backend.models.User;
 
 public interface UserRepoInterface {
@@ -10,5 +13,7 @@ public interface UserRepoInterface {
     String register(User user);
     String saveProfilePicture(String username, MultipartFile file);
     String updateProfilePicture(String username, String imagePath);
+    AthleteProfile getProfileById(int id);
+    List<Integer> getUserSportIds(int userId);
 
 }

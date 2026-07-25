@@ -1,0 +1,104 @@
+@if (profile) {
+    <div class="profile-layout">
+
+        <!--left side-->
+        <div class="profile-avatar-section">
+
+            <div class="profile-picture-wrapper">
+
+                @if (profile.profilePicture) {
+                    <img [src]="'http://localhost:8080/' + profile.profilePicture" alt="Profile Picture" class="profile-picture">
+                } @else {
+                    <img src="/default-pfp.jpg" alt="Default Profile Picture" class="profile-picture">
+                }
+
+            </div>
+            <button class="upload-btn">Change Photo</button>
+        
+        </div>
+
+        <!--profile fields-->
+        <div class="profile-fields-section">
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label>First Name</label>
+                    <input type="text" [(ngModel)]="profile.firstName" placeholder="Enter first name">
+                
+                </div>
+
+                <div class="field">
+
+                    <label>Last Name</label>
+                    <input type="text" [(ngModel)]="profile.lastName" placeholder="Enter last name">
+                
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label>Username</label>
+                    <input type="text" [value]="profile.username" disabled class="disabled-input">
+
+                </div>
+
+                <div class="field">
+
+                    <label>E-mail</label>
+                    <input type="email" [(ngModel)]="profile.email" placeholder="Enter email address">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Phone</label>
+                    <input type="text" [(ngModel)]="profile.phone" placeholder="Enter phone number">
+
+                </div>
+                
+            </div>
+
+            <div class="field full-width">
+
+                <label>Favourite Sports (max 5)</label>
+
+                 <div class="sports-grid">
+
+                    @for (sport of allSports; track sport.id) {
+
+                        <label class="sport-checkbox">
+
+                            <input
+                                type="checkbox"
+                                [checked]="selectedSports.includes(sport.id)"
+                                [disabled]="selectedSports.length >= 5 && !selectedSports.includes(sport.id)"
+                                (change)="toggleSport(sport.id)">
+
+                            <span>{{ sport.name }}</span>
+
+                        </label>
+
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="save-btn" (click)="saveChanges()">Save Changes</button>
+            </div>
+
+        </div>
+
+    </div>
+} 
+@else {
+    <div class="negative-state">
+        <p>Profile data could not be loaded.</p>
+    </div>
+}

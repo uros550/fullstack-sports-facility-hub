@@ -9,10 +9,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.AthleteProfile;
 import com.hub.backend.models.User;
 
 public class UserRepo implements UserRepoInterface {
@@ -221,5 +224,58 @@ public class UserRepo implements UserRepoInterface {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Override
+    public AthleteProfile getProfileById(int id) {
+        
+        String query = "select id, firstName, lastName, username, email, phone, profilePicture from user where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, id);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                AthleteProfile profile = new AthleteProfile(
+                    rs.getInt("id"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("phone"),
+                    rs.getString("profilePicture")
+                );
+                return profile;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Integer> getUserSportIds(int userId) {
+
+        List<Integer> sportIds = new ArrayList<>();
+        String query = "select sportId from usersport where userId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()) {
+                sportIds.add(rs.getInt("sportId"));
+            }
+            return sportIds;
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+        return sportIds;
     }    
+    
 }
