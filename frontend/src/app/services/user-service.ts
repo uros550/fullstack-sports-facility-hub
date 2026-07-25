@@ -17,5 +17,13 @@ export class UserService {
   getUserSportIds(id: number) {
     return this.http.get<number[]>(`${this.path}/sports/${id}`);
   }
+
+  updateProfile(profile: AthleteProfile) {
+    return this.http.put(`${this.path}/profile`, profile, { responseType: 'text' });
+  }
   
+  updateUserSports(userId: number, sportIds: number[]) {
+    return this.http.put(`${this.path}/sports/${userId}`, sportIds, { responseType: 'text' });
+  }
+
 }

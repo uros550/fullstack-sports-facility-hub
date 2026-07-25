@@ -15,11 +15,16 @@ import { Sport } from '../models/Sport';
 })
 export class AthleteProfileComponent implements OnInit {
 
+  originalProfile: AthleteProfile | null = null;
   profile: AthleteProfile | null = null;
   allSports: Sport[] = [];
+  originalSports: number[] = [];
   selectedSports: number[] = [];
+  selectedImage: File | null = null;
 
   currentUser: User | null = null;
+
+  successMessage: string = '';
 
   private userService = inject(UserService);
   private sportService = inject(SportService);
@@ -40,6 +45,7 @@ export class AthleteProfileComponent implements OnInit {
       this.userService.getProfileById(this.currentUser.id).subscribe(data => {
         if(data) {
           this.profile = data;
+          this.originalProfile = data;
         }
       });
 
@@ -49,6 +55,7 @@ export class AthleteProfileComponent implements OnInit {
 
       this.userService.getUserSportIds(this.currentUser.id).subscribe(data => {
         this.selectedSports = data;
+        this.originalSports = data;
       });
 
     }
@@ -69,8 +76,35 @@ export class AthleteProfileComponent implements OnInit {
 
   }
 
-  saveChanges(): void {
-    //CHANGE LATER
-    console.log('Saved profile:', this.profile);
+  saveChanges() {
+    if (this.profile) {
+      this.successMessage = '';
+      
+      this.userService.updateProfile(this.profile).subscribe(data => {
+        if (data === 'Success') {
+          this.successMessage = 'Successfully changed profile';
+
+          this.userService.updateUserSports(this.profile!.id, this.selectedSports).subscribe(data => {
+            if (data === 'Success') {
+              this.successMessage = 'Successfully change profile and sports'
+              this.originalProfile = structuredClone(this.profile);
+              this.originalSports = [...this.selectedSports];
+            }
+            else {
+              this.successMessage = 'Error changing sports';
+            }
+          })
+
+        }
+        else {
+          this.successMessage = 'Error changing profile';
+        }
+      })
+    }
+  }
+
+  cancelChanges() {
+    this.profile = structuredClone(this.originalProfile);
+    this.selectedSports = [...this.originalSports];
   }
 }

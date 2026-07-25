@@ -15,5 +15,7 @@ public interface UserRepoInterface {
     String updateProfilePicture(String username, String imagePath);
     AthleteProfile getProfileById(int id);
     List<Integer> getUserSportIds(int userId);
+    String updateProfile(AthleteProfile newProfile);
+    String updateUserSportIds(int userId, List<Integer> newSportIds);
 
 }

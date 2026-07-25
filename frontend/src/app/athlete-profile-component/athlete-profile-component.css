@@ -132,6 +132,13 @@
     cursor: pointer;
 }
 
+.success-message {
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #16a34a;
+}
+
 .form-actions {
     margin-top: 10px;
     display: flex;
@@ -154,6 +161,21 @@
 .save-btn:hover {
     background-color: rgb(30, 41, 59);
     transform: translateY(-1px);
+}
+
+.cancel-btn {
+    background: white;
+    color: rgb(15,23,42);
+    border: 1px solid rgb(203,213,225);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.cancel-btn:hover {
+    background: rgb(241,245,249);
 }
 
 .negative-state {

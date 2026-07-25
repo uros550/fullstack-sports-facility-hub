@@ -267,6 +267,7 @@ public class UserRepo implements UserRepoInterface {
             PreparedStatement stm = conn.prepareStatement(query);
         ){
             stm.setInt(1, userId);
+
             ResultSet rs = stm.executeQuery();
             while(rs.next()) {
                 sportIds.add(rs.getInt("sportId"));
@@ -276,6 +277,65 @@ public class UserRepo implements UserRepoInterface {
             e.printStackTrace();    
         }
         return sportIds;
+    }
+
+    @Override
+    public String updateProfile(AthleteProfile newProfile) {
+
+        String query = "update user set firstName = ?, lastName = ?, email = ?, phone = ? where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setString(1, newProfile.getFirstName());
+            stm.setString(2, newProfile.getLastName());
+            stm.setString(3, newProfile.getEmail());
+            stm.setString(4, newProfile.getPhone());
+            stm.setInt(5, newProfile.getId());
+
+            int rowsAffected = stm.executeUpdate();
+
+            if (rowsAffected > 0) {
+                return "Success";
+            } else {
+                return "User not found";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+        return "";
+    }
+
+    @Override
+    public String updateUserSportIds(int userId, List<Integer> newSportIds) {
+        String query1 = "delete from usersport where userId = ?";
+        String query2 = "insert into usersport(userId, sportId) values (?, ?)";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm1 = conn.prepareStatement(query1);
+            PreparedStatement stm2 = conn.prepareStatement(query2);
+        ){
+            conn.setAutoCommit(false);
+
+            stm1.setInt(1, userId);
+            stm1.executeUpdate();
+
+            if (newSportIds != null && !newSportIds.isEmpty()) {
+                for (int sportId : newSportIds) {
+                    stm2.setInt(1, userId);
+                    stm2.setInt(2, sportId);
+                    stm2.executeUpdate();
+                }
+            }
+            
+            conn.commit();
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+        return "";
     }    
     
 }

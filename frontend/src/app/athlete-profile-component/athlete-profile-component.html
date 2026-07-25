@@ -89,8 +89,22 @@
 
             </div>
 
+            @if (successMessage) {
+                <div class="success-message">
+                    {{ successMessage }}
+                </div>
+            }
+
             <div class="form-actions">
-                <button type="button" class="save-btn" (click)="saveChanges()">Save Changes</button>
+
+                <button type="button" class="cancel-btn" (click)="cancelChanges()">
+                    Cancel
+                </button>
+
+                <button type="button" class="save-btn" (click)="saveChanges()"> 
+                    Save Changes
+                </button>
+
             </div>
 
         </div>

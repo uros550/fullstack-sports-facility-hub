@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +45,18 @@ public class UserController {
     @GetMapping("/sports/{id}")
     public List<Integer> getUserSportIds(@PathVariable int id) {
         return new UserRepo().getUserSportIds(id);
+    }
+
+    //update user profile
+    @PutMapping("/profile")
+    public String updateProfile(@RequestBody AthleteProfile profile) {
+        return new UserRepo().updateProfile(profile);
+    }
+    
+    //update user sports
+    @PutMapping("/sports/{id}")
+    public String updateUserSportIds(@PathVariable int id, @RequestBody List<Integer> sportIds) {
+        return new UserRepo().updateUserSportIds(id, sportIds);
     }
 
 }
