@@ -32,7 +32,7 @@ public class UserController {
         return new UserRepo().register(u);
     }
 
-    @PostMapping("/upload-image")
+    @PutMapping("/upload-image")
     public String uploadProfilePicture(@RequestParam("username") String username, @RequestParam("image") MultipartFile file) {
         return new UserRepo().saveProfilePicture(username, file);
     }
@@ -51,6 +51,11 @@ public class UserController {
     @PutMapping("/profile")
     public String updateProfile(@RequestBody AthleteProfile profile) {
         return new UserRepo().updateProfile(profile);
+    }
+
+    @PutMapping("/remove-image")
+    public String removeProfilePicture(@RequestBody String username) {
+        return new UserRepo().removeProfilePicture(username);
     }
     
     //update user sports

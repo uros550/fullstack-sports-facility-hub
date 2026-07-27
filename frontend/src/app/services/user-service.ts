@@ -21,6 +21,10 @@ export class UserService {
   updateProfile(profile: AthleteProfile) {
     return this.http.put(`${this.path}/profile`, profile, { responseType: 'text' });
   }
+
+  removeProfilePicture(username: string) {
+    return this.http.put(`${this.path}/remove-image`, username, { responseType: 'text' })
+  }
   
   updateUserSports(userId: number, sportIds: number[]) {
     return this.http.put(`${this.path}/sports/${userId}`, sportIds, { responseType: 'text' });

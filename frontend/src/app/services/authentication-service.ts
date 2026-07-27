@@ -48,7 +48,7 @@ export class AuthenticationService {
     const data = new FormData();
     data.append('username', username);
     data.append('image', file);
-    return this.http.post(`${this.path}/upload-image`, data, { responseType: 'text' });
+    return this.http.put(`${this.path}/upload-image`, data, { responseType: 'text' });
   }
 
 }

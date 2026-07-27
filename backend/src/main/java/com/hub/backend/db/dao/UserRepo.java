@@ -174,6 +174,13 @@ public class UserRepo implements UserRepoInterface {
         }
 
         try {
+            //check if user already has a photo
+            AthleteProfile currentProfile = getProfileByUsername(username);
+            if (currentProfile != null && currentProfile.getProfilePicture() != null) {
+                Path oldPath = Paths.get(currentProfile.getProfilePicture());
+                Files.deleteIfExists(oldPath); //delete if exists
+            }
+
             //prepare dir
             String uploadDir = "uploads/profilePictures/";
             File dir = new File(uploadDir);
@@ -257,6 +264,36 @@ public class UserRepo implements UserRepoInterface {
     }
 
     @Override
+    public AthleteProfile getProfileByUsername(String username) {
+        
+        String query = "select id, firstName, lastName, username, email, phone, profilePicture from user where username = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setString(1, username);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                AthleteProfile profile = new AthleteProfile(
+                    rs.getInt("id"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("phone"),
+                    rs.getString("profilePicture")
+                );
+                return profile;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }    
+
+    @Override
     public List<Integer> getUserSportIds(int userId) {
 
         List<Integer> sportIds = new ArrayList<>();
@@ -336,6 +373,38 @@ public class UserRepo implements UserRepoInterface {
             e.printStackTrace();    
         }
         return "";
-    }    
+    }
+
+    @Override
+    public String removeProfilePicture(String username) {
+        AthleteProfile profile = getProfileByUsername(username);
+
+        if (profile == null) {
+            return "User not found";
+        }
+
+        try {
+            
+            if (profile.getProfilePicture() != null) {
+                Path path = Paths.get(profile.getProfilePicture());
+                Files.deleteIfExists(path);
+            }
+
+            String query = "update user set profilePicture = null where username = ?";
+
+            try (
+                Connection conn = DB.source().getConnection();
+                PreparedStatement stm = conn.prepareStatement(query);
+            ){
+                stm.setString(1, username);
+                stm.executeUpdate();
+            }
+
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
     
 }

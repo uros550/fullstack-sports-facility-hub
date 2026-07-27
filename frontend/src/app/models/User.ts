@@ -6,7 +6,7 @@ export class User {
   email!: string;
   password!: string;
   phone!: string;
-  profilePicture!: string;
+  profilePicture!: string | null;
   role!: 'ATHLETE' | 'EMPLOYEE' | 'ADMIN';
   status!: 'APPROVED' | 'PENDING' | 'REJECTED';
 }

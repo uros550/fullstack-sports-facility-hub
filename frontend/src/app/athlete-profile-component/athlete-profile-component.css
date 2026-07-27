@@ -1,3 +1,4 @@
+/*pfp*/
 .profile-layout {
     display: flex;
     gap: 40px;
@@ -10,7 +11,7 @@
     flex-direction: column;
     align-items: center;
     gap: 16px;
-    width: 200px;
+    width: 220px;
     flex-shrink: 0;
 }
 
@@ -35,16 +36,90 @@
     color: rgb(15, 23, 42);
     padding: 8px 16px;
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: .85rem;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
+    transition: .2s;
 }
 
 .upload-btn:hover {
     background: rgb(241, 245, 249);
 }
 
+.photo-menu {
+    width: 100%;
+    margin-top: 10px;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid rgb(226, 232, 240);
+    background: rgb(248, 250, 252);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeIn .2s ease;
+}
+
+.photo-preview {
+    display: flex;
+    justify-content: center;
+}
+
+.preview-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgb(226, 232, 240);
+}
+
+.avatar-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(15, 23, 42);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.avatar-btn:hover {
+    background: rgb(30, 41, 59);
+}
+
+.save-avatar-btn {
+    background: rgb(22, 163, 74);
+}
+
+.save-avatar-btn:hover {
+    background: rgb(21, 128, 61);
+}
+
+.remove-btn {
+    background: rgb(220, 38, 38);
+}
+
+.remove-btn:hover {
+    background: rgb(185, 28, 28);
+}
+
+.close-btn {
+    background: transparent;
+    border: 1px solid rgb(203, 213, 225);
+    color: rgb(15, 23, 42);
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.close-btn:hover {
+    background: rgb(241, 245, 249);
+}
+
+/*profile*/
 .profile-fields-section {
     flex: 1;
     display: flex;
@@ -64,8 +139,12 @@
     gap: 8px;
 }
 
+.full-width {
+    width: 100%;
+}
+
 .field label {
-    font-size: 0.9rem;
+    font-size: .9rem;
     font-weight: 600;
     color: rgb(15, 23, 42);
 }
@@ -74,35 +153,24 @@
     padding: 12px 16px;
     border: 1.5px solid rgb(226, 232, 240);
     border-radius: 12px;
-    font-size: 0.95rem;
+    font-size: .95rem;
     outline: none;
-    transition: 0.2s;
+    transition: .2s;
     color: rgb(15, 23, 42);
 }
 
 .field input:focus {
     border-color: rgb(15, 23, 42);
-    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, .08);
 }
 
-.field input.disabled-input {
-    background-color: rgb(248, 250, 252);
+.disabled-input {
+    background: rgb(248, 250, 252);
     color: rgb(148, 163, 184);
     cursor: not-allowed;
 }
 
-.sports-section {
-    margin-top: 35px;
-    border-top: 1px solid rgb(226, 232, 240);
-    padding-top: 25px;
-}
-
-.sports-section h3 {
-    margin-bottom: 18px;
-    color: rgb(15, 23, 42);
-    font-size: 1.1rem;
-}
-
+/*sports*/
 .sports-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -117,8 +185,8 @@
     border: 1px solid rgb(226, 232, 240);
     border-radius: 10px;
     cursor: pointer;
-    transition: .2s;
     background: white;
+    transition: .2s;
 }
 
 .sport-checkbox:hover {
@@ -132,41 +200,26 @@
     cursor: pointer;
 }
 
+/*messages*/
 .success-message {
-    margin-bottom: 15px;
+    color: rgb(22, 163, 74);
     font-weight: 600;
-    font-size: 0.9rem;
-    color: #16a34a;
+    font-size: .9rem;
 }
+
+/* Buttons */
 
 .form-actions {
-    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
-}
-
-.save-btn {
-    background-color: rgb(15, 23, 42);
-    color: white;
-    padding: 12px 28px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
-}
-
-.save-btn:hover {
-    background-color: rgb(30, 41, 59);
-    transform: translateY(-1px);
+    gap: 12px;
+    margin-top: 10px;
 }
 
 .cancel-btn {
     background: white;
-    color: rgb(15,23,42);
-    border: 1px solid rgb(203,213,225);
+    color: rgb(15, 23, 42);
+    border: 1px solid rgb(203, 213, 225);
     padding: 12px 24px;
     border-radius: 12px;
     font-weight: 600;
@@ -175,29 +228,65 @@
 }
 
 .cancel-btn:hover {
-    background: rgb(241,245,249);
+    background: rgb(241, 245, 249);
+}
+
+.save-btn {
+    background: rgb(15, 23, 42);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .25);
+}
+
+.save-btn:hover {
+    background: rgb(30, 41, 59);
+    transform: translateY(-1px);
 }
 
 .negative-state {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 200px;
+    min-height: 220px;
     color: rgb(100, 116, 139);
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /*adaptation*/
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+
     .profile-layout {
         flex-direction: column;
         align-items: center;
+    }
+
+    .profile-fields-section {
+        width: 100%;
     }
 
     .form-row {
         flex-direction: column;
     }
 
-    .profile-fields-section {
+    .profile-avatar-section {
         width: 100%;
+        max-width: 280px;
     }
+
 }
