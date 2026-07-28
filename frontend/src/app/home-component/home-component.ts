@@ -7,10 +7,11 @@ import { Sport } from '../models/Sport';
 import { SportService } from '../services/sport-service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home-component',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './home-component.html',
   styleUrl: './home-component.css',
 })

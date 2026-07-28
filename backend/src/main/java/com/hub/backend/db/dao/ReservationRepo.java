@@ -64,5 +64,22 @@ public class ReservationRepo implements ReservationRepoInterface {
         }
         return allReservations;
     }
+
+    @Override
+    public boolean cancelReservation(int reservationId) {
+        //update only if more than 12hours
+        String query = "update reservation set status = 'CANCELLED' where id = ? and startTime >= NOW() + INTERVAL 12 HOUR";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ) {
+            stm.setInt(1, reservationId);
+            return stm.executeUpdate() > 0; //true if affected
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
 }

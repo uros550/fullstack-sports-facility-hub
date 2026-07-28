@@ -308,7 +308,7 @@ export class AthleteProfileComponent implements OnInit {
     });
   }
 
-  canCancel(reservation: any): boolean {
+  canCancel(reservation: Reservation): boolean {
     if (reservation.status === 'CANCELLED') {
       return false;
     }
@@ -322,8 +322,15 @@ export class AthleteProfileComponent implements OnInit {
   }
 
   cancelReservation(reservation: Reservation) {
-    //change later
-    console.log('Cancelled res:', reservation.id);
+    if (!confirm('Are you sure you want to cancel this reservation?')) {
+      return;
+    }
+    
+    this.userService.cancelReservation(reservation.id).subscribe(data => {
+      if (data === 'Success') {
+        reservation.status = 'CANCELLED';
+      }
+    });
   }
 
 } 

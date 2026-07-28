@@ -197,11 +197,11 @@
                 </td>
                 <td>
                     @if (canCancel(res)) {
-                    <button class="btn-cancel" (click)="cancelReservation(res)">
-                        Cancel reservation
-                    </button>
+                        <button class="btn-cancel" (click)="cancelReservation(res)">
+                            Cancel reservation
+                        </button>
                     } @else {
-                    <span class="no-action-text">—</span>
+                        <span class="no-action-text">-</span>
                     }
                 </td>
                 </tr>

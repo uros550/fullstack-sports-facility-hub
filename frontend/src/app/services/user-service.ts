@@ -35,4 +35,8 @@ export class UserService {
     return this.http.get<Reservation[]>(`${this.path}/reservations/${id}`);
   }
 
+  cancelReservation(id: number) {
+    return this.http.post(`${this.path}/reservations/cancel/${id}`, { responseType: 'text' });
+  }
+
 }
