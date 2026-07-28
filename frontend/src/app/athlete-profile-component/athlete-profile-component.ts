@@ -6,11 +6,13 @@ import { User } from '../models/User';
 import { SportService } from '../services/sport-service';
 import { Sport } from '../models/Sport';
 import { AuthenticationService } from '../services/authentication-service';
+import { Reservation } from '../models/Reservation';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-athlete-profile-component',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './athlete-profile-component.html',
   styleUrl: './athlete-profile-component.css',
 })
@@ -32,6 +34,11 @@ export class AthleteProfileComponent implements OnInit {
   isRemoveRequested: boolean = false;
   showPhotoDialog: boolean = false;
   currentSeed: string = '';
+  //reservations
+  reservations: Reservation[] = [];
+  filteredReservations: Reservation[] = [];
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   successMessage: string = '';
 
@@ -70,6 +77,11 @@ export class AthleteProfileComponent implements OnInit {
       this.userService.getUserSportIds(this.currentUser.id).subscribe(data => {
         this.selectedSports = data;
         this.originalSports = data;
+      });
+
+      this.userService.getReservationsByAthleteId(this.currentUser.id).subscribe(data => {
+          this.reservations = data;
+          this.filteredReservations = structuredClone(data);
       });
 
     }
@@ -267,6 +279,51 @@ export class AthleteProfileComponent implements OnInit {
     this.isRemoveRequested = false;
 
     this.successMessage = 'Profile successfully updated';
+  }
+
+  //same sort as in home component
+  sort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.filteredReservations.sort((a: any, b: any) => {
+      let valA = a[column];
+      let valB = b[column];
+
+      if (column === 'startTime') {
+        valA = new Date(valA).getTime();
+        valB = new Date(valB).getTime();
+      } else if (typeof valA === 'string') {
+        valA = valA.toLowerCase();
+        valB = valB.toLowerCase();
+      }
+
+      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  canCancel(reservation: any): boolean {
+    if (reservation.status === 'CANCELLED') {
+      return false;
+    }
+
+    const startTime = new Date(reservation.startTime).getTime();
+    const now = new Date().getTime();
+    
+    const diffInHours = (startTime - now) / (1000 * 60 * 60);
+
+    return diffInHours >= 12;
+  }
+
+  cancelReservation(reservation: Reservation) {
+    //change later
+    console.log('Cancelled res:', reservation.id);
   }
 
 } 

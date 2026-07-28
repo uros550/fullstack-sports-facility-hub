@@ -138,6 +138,82 @@
         </div>
 
     </div>
+
+    <div class="reservations-section">
+
+        <h3>Reservations</h3>
+
+        <table class="reservations-table">
+            <thead>
+            <tr>
+                <th (click)="sort('facilityName')">
+                Facility 
+                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                </th>
+
+                <th (click)="sort('city')">
+                City 
+                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                </th>
+
+                <th (click)="sort('courtName')">
+                Court 
+                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                </th>
+
+                <th (click)="sort('sportName')">
+                Sport 
+                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                </th>
+
+                <th (click)="sort('startTime')">
+                Time
+                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                </th>
+
+                <th (click)="sort('status')">
+                Status 
+                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                </th>
+
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @for (res of filteredReservations; track res.id) {
+                <tr>
+                <td>{{ res.facilityName }}</td>
+                <td>{{ res.city }}</td>
+                <td>{{ res.courtName }}</td>
+                <td>{{ res.sportName }}</td>
+                <td>
+                    {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
+                </td>
+                <td>
+                    <span class="status-badge" [class]="res.status.toLowerCase()">
+                    {{ res.status }}
+                    </span>
+                </td>
+                <td>
+                    @if (canCancel(res)) {
+                    <button class="btn-cancel" (click)="cancelReservation(res)">
+                        Cancel reservation
+                    </button>
+                    } @else {
+                    <span class="no-action-text">—</span>
+                    }
+                </td>
+                </tr>
+            } @empty {
+                <tr>
+                <td colspan="7" class="no-data">No reservation record.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
 }
 @else {
     <div class="negative-state">

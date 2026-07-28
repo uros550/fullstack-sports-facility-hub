@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AthleteProfile } from '../models/AthleteProfile';
+import { Reservation } from '../models/Reservation';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,10 @@ export class UserService {
   
   updateUserSports(userId: number, sportIds: number[]) {
     return this.http.put(`${this.path}/sports/${userId}`, sportIds, { responseType: 'text' });
+  }
+
+  getReservationsByAthleteId(id: number) {
+    return this.http.get<Reservation[]>(`${this.path}/reservations/${id}`);
   }
 
 }

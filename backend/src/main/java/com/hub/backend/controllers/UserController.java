@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hub.backend.db.dao.ReservationRepo;
 import com.hub.backend.db.dao.UserRepo;
 import com.hub.backend.models.AthleteProfile;
+import com.hub.backend.models.Reservation;
 import com.hub.backend.models.User;
 
 @RestController
@@ -62,6 +64,11 @@ public class UserController {
     @PutMapping("/sports/{id}")
     public String updateUserSportIds(@PathVariable int id, @RequestBody List<Integer> sportIds) {
         return new UserRepo().updateUserSportIds(id, sportIds);
+    }
+
+    @GetMapping("/reservations/{id}")
+    public List<Reservation> getReservations(@PathVariable int id) {
+        return new ReservationRepo().getReservationsByAthleteId(id);
     }
 
 }
