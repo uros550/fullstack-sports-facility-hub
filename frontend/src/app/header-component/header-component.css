@@ -133,7 +133,30 @@
     letter-spacing: .6px;
 }
 
-/*dropdown item style*/
+/*profile*/
+.dropdown-profile {
+     width: 100%;
+    padding: 8px 10px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    font-size: .8rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .15s ease;
+}
+
+.dropdown-profile:hover {
+    background-color: rgba(9, 67, 32, 0.15);
+    color: rgb(164, 196, 141);
+}
+
+/*logout*/
 .dropdown-item {
     width: 100%;
     padding: 8px 10px;

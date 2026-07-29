@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SportsFacilityService } from '../services/sports-facility-service';
 import { SportsFacility } from '../models/SportsFacility';
 import { Court } from '../models/Court';
+import { AuthenticationService } from '../services/authentication-service';
 
 @Component({
   selector: 'app-facility-details-component',
@@ -11,12 +12,15 @@ import { Court } from '../models/Court';
   styleUrl: './facility-details-component.css',
 })
 export class FacilityDetailsComponent {
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private facilityService = inject(SportsFacilityService);
+  private authService = inject(AuthenticationService);
 
   facility!: SportsFacility;
   courts: Court[] = [];
+  isAthlete: boolean = false;
 
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
@@ -35,9 +39,20 @@ export class FacilityDetailsComponent {
         this.images = data;
       })
     }
+
+    //if athlete logged in
+    const user = this.authService.currentUser();
+    if (user && user.role === 'ATHLETE') {
+      this.isAthlete = true;
+    }
   }
 
   return() {
-    this.router.navigate(['/home']);
+    if (this.isAthlete) {
+      this.router.navigate(['/athlete-dashboard'])
+    }
+    else {
+      this.router.navigate(['/home']);
+    }
   }
 }

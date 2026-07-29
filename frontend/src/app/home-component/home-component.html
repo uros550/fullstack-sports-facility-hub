@@ -2,9 +2,18 @@
 
     <div class="search-card">
 
-        <h2>Search Sports Facilities</h2>
+        @if (isAthlete) {
 
-        <div class="search-grid">
+            <h2>Search & Reserve Sports Facilities</h2>
+
+        }
+        @else {
+
+            <h2>Search Sports Facilities</h2>
+
+        }
+
+        <div class="search-grid" [class.athlete-grid]="isAthlete">
 
             <input type="text" placeholder="Facility name" [(ngModel)]="searchName">
 
@@ -46,6 +55,15 @@
                     Closed
                 </option>
             </select>
+
+            @if (isAthlete) {
+                <label class="today-checkbox">
+
+                    <input type="checkbox" [(ngModel)]="onlyFreeToday">
+                    <span>Only available today</span>
+
+                </label>
+            }
 
             <button (click)="searchFacilities()">Search</button>
 
@@ -130,78 +148,81 @@
 
         </div>
 
+        @if (!isAthlete) {
 
-        <div class="sidebar">
+            <div class="sidebar">
 
-            <div class="info-card">
+                <div class="info-card">
 
-                <h3>Active Sports Facilities</h3>
+                    <h3>Active Sports Facilities</h3>
 
-                <div class="big-number">
+                    <div class="big-number">
 
-                    {{activeFacilitiesCount}}
+                        {{activeFacilitiesCount}}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>Current Promotions</h3>
+
+                    @for (promotion of activePromotions; track promotion.id) {
+
+                        <div class="promotion">
+
+                            <strong>{{promotion.name}}</strong>
+
+                            <span>{{promotion.facilityName}}</span>
+
+                            <span>
+
+                                @if (promotion.discountType == 'PERCENTAGE') {
+
+                                    {{promotion.discountValue}} %
+
+                                } @else {
+
+                                    {{promotion.discountValue}} RSD
+
+                                }
+
+                            </span>
+
+                            <span>
+                                {{ promotion.startDate | date:'dd.MM.yyyy. HH:mm' }} – {{ promotion.endDate | date:'dd.MM.yyyy. HH:mm' }}
+                            </span>
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>Top Rated Facilities</h3>
+
+                    @for (facility of topFacilities; track facility.id) {
+
+                        <div class="top-facility">
+
+                            <strong>{{facility.name}}</strong>
+
+                            <span>{{facility.likesCount}} 👍</span>
+
+                        </div>
+
+                    }
 
                 </div>
 
             </div>
 
-
-            <div class="info-card">
-
-                <h3>Current Promotions</h3>
-
-                @for (promotion of activePromotions; track promotion.id) {
-
-                    <div class="promotion">
-
-                        <strong>{{promotion.name}}</strong>
-
-                        <span>{{promotion.facilityName}}</span>
-
-                        <span>
-
-                            @if (promotion.discountType == 'PERCENTAGE') {
-
-                                {{promotion.discountValue}} %
-
-                            } @else {
-
-                                {{promotion.discountValue}} RSD
-
-                            }
-
-                        </span>
-
-                        <span>
-                            {{ promotion.startDate | date:'dd.MM.yyyy. HH:mm' }} – {{ promotion.endDate | date:'dd.MM.yyyy. HH:mm' }}
-                        </span>
-
-                    </div>
-
-                }
-
-            </div>
-
-
-            <div class="info-card">
-
-                <h3>Top Rated Facilities</h3>
-
-                @for (facility of topFacilities; track facility.id) {
-
-                    <div class="top-facility">
-
-                        <strong>{{facility.name}}</strong>
-
-                        <span>{{facility.likesCount}} 👍</span>
-
-                    </div>
-
-                }
-
-            </div>
-
-        </div>
-
+        }
+    
     </div>
 

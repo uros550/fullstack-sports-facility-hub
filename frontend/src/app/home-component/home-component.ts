@@ -8,6 +8,8 @@ import { SportService } from '../services/sport-service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { User } from '../models/User';
+import { AuthenticationService } from '../services/authentication-service';
 
 @Component({
   selector: 'app-home-component',
@@ -34,12 +36,25 @@ export class HomeComponent implements OnInit {
   sortColumn: string = '';
   sortDir: 'asc' | 'desc' = 'asc';
 
+  //logged athlete
+  currentUser: User | null = null;
+  isAthlete = false;
+  onlyFreeToday = false;
+
   private sportsFacilityService = inject(SportsFacilityService);
   private promotionService = inject(PromotionService);
   private sportService = inject(SportService);
+  private authService = inject(AuthenticationService);
   private router = inject(Router);
 
   ngOnInit(): void {
+
+    //if athlete logged in
+    const user = this.authService.currentUser();
+    if (user && user.role === 'ATHLETE') {
+      this.currentUser = user;
+      this.isAthlete = true;
+    }
 
     this.sportsFacilityService.getAllActiveFacilities().subscribe(data => {
       this.displayedFacilities = data;

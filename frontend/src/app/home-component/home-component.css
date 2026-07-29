@@ -1,6 +1,7 @@
 /*for displayed facilities*/
 body{
     background-color: azure;
+    margin: 0;
 }
 
 /*titles*/
@@ -18,10 +19,11 @@ h2 {
 
 h3 {
     background-color: rgb(15, 23, 42);
-    border-radius: 18px;
+    border-radius: 18px; /*rounded*/
     text-align: center;
     margin-bottom: 35px;
     color: white;
+    padding: 10px;
 }
 
 /*page*/
@@ -39,6 +41,8 @@ h3 {
     max-width: 1500px;
     margin: auto; /*centers page if wider than max*/
     padding: 40px;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /*search box*/
@@ -50,38 +54,87 @@ h3 {
     margin-bottom: 35px;
 }
 
-/*forms box*/
+/*forms box - default for non-athlete (5 fields in 1 row)*/
 .search-grid{
     display: grid;
-    grid-template-columns: repeat(5,1fr); /*5 columns same size*/
+    grid-template-columns: repeat(5, 1fr); /*5 columns in 1 row on laptop*/
     gap: 15px;
     margin-top: 20px;
+    align-items: center; /*vertically aligns all elements*/
+}
+
+/*forms box - when athlete is logged in (6 fields split into 2 rows of 3)*/
+.search-grid.athlete-grid {
+    grid-template-columns: repeat(3, 1fr); /*3 columns per row -> 2 neat rows*/
 }
 
 /*for input and select fields*/
-.search-grid input,
+.search-grid input[type="text"],
 .search-grid select{
-    padding: 12px;
+    width: 100%;
+    height: 45px; /*same height for all search elements*/
+    padding: 0 12px;
     border-radius: 10px; /*rounded*/
     border: 1px solid #ddd;
     font-size: 15px;
+    box-sizing: border-box;
+    background-color: white;
+    outline: none;
+    transition: .2s;
+}
+
+.search-grid input[type="text"]:focus,
+.search-grid select:focus {
+    border-color: rgb(47, 181, 130);
+}
+
+/*for multiple select*/
+.search-grid select[multiple] {
+    height: 45px;
+    padding: 5px;
+}
+
+/*for checkbox only free today*/
+.today-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 45px; /*same height as input fields*/
+    padding: 0 12px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px; /*rounded*/
+    cursor: pointer; /*cursor change when hovered*/
+    user-select: none;
+    font-size: 15px;
+    color: rgb(15, 23, 42);
+    box-sizing: border-box;
+}
+
+.today-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: rgb(47, 181, 130);
 }
 
 /*search button*/
 .search-grid button{
+    height: 45px; /*same height as input fields*/
     border: none;
-    border-radius: 10px;
+    border-radius: 10px; /*rounded*/
     background-color: rgb(15, 23, 42);
     color: white;
     cursor: pointer; /*cursor change when hovered*/
     transition: .2s; /*smooth color change*/
     font-weight: bold;
+    font-size: 15px;
 }
 
 /*button when hovered*/
 .search-grid button:hover{
-    background-color: rgb(47, 181, 130);;
-    transform:scale(1.02);
+    background-color: rgb(47, 181, 130);
+    transform: scale(1.02);
 }
 
 /*content (table + sidebar)*/
@@ -89,6 +142,11 @@ h3 {
     display: grid;
     grid-template-columns: 3fr 1fr; /*table 3:1 sidebar size*/
     gap: 30px;
+}
+
+/*full width table if no sidebar*/
+.content-layout:not(:has(.sidebar)) {
+    grid-template-columns: 1fr;
 }
 
 /*table of facilities*/
@@ -136,7 +194,7 @@ tbody tr:hover{
 }
 
 .details-btn:hover{
-    background-color: rgb(47, 181, 130);;
+    background-color: rgb(47, 181, 130);
     transform: scale(1.05);
 }
 
@@ -181,14 +239,31 @@ tbody tr:hover{
 }
 
 /*adaptation for smaller screens*/
-@media (max-width:1000px){
+@media (max-width: 1200px) {
+    /*5 columns become too tight on medium screens, switch non-athlete to 3 cols*/
+    .search-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 
+@media (max-width: 1000px){
     .content-layout{
         grid-template-columns: 1fr;
     }
+}
 
-    .search-grid{
+@media (max-width: 768px) {
+    /*tablets get 2 columns for both modes*/
+    .search-grid,
+    .search-grid.athlete-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    /*phones get 1 column for all elements*/
+    .search-grid,
+    .search-grid.athlete-grid {
         grid-template-columns: 1fr;
     }
-
 }

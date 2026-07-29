@@ -37,6 +37,10 @@ export class HeaderComponent {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  profileReturn() {
+    this.router.navigate(['/athlete-dashboard']);
+  }
+
   logout() {
     localStorage.removeItem('loggedUser');
     this.authenticationService.currentUser.set(null);

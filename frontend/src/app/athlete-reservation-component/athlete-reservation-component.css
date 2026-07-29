@@ -1,0 +1,6 @@
+/* Uklanja pozadinu, senke i smanjuje padding kada je Home ugnježden u Reservation */
+:host ::ng-deep .page-container {
+    background-image: none !important;
+    background-color: rgb(15, 23, 42);
+    border-radius: 18px;
+}
