@@ -37,12 +37,15 @@ export class FacilityDetailsComponent {
   showAvailability: boolean = false;
   selectedCourtIndex: number = 0;
   selectedDate: string = '';
+  minDate: string = ''; //to not be able to select dates before today
   availabilitySlots: AvailabilitySlot[] = [];
 
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
 
   ngOnInit(): void {
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0]; //set todays date to yyyy-mm-dd
     //get params
     const request = history.state.searchRequest;
     if (request) {
@@ -109,7 +112,7 @@ export class FacilityDetailsComponent {
   loadAvailability() {
     const selectedCourt = this.filteredCourts[this.selectedCourtIndex];
     this.userService.getCourtAvailability(selectedCourt.id, this.selectedDate).subscribe(data => {
-      console.log('API RESPONSE SLOTS:', data); //TEST
+      console.log('API RESPONSE SLOTS:', data); //TEST, should change to not be able to see past slots if today is selected
       this.availabilitySlots = data;
     })
   }

@@ -93,7 +93,7 @@
                 <div class="date-selector">
 
                   <label for="availDate">Date:</label>
-                  <input type="date" id="availDate" [(ngModel)]="selectedDate" (change)="changeDate()"/>
+                  <input type="date" [min]="minDate" id="availDate" [(ngModel)]="selectedDate" (change)="changeDate()"/>
 
                 </div>
 

@@ -3,10 +3,13 @@ package com.hub.backend.db.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.AvailabilitySlot;
 import com.hub.backend.models.Court;
 import com.hub.backend.models.SearchFacilitiesRequest;
 import com.hub.backend.models.SportsFacility;
@@ -262,9 +265,6 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
         
         List<SportsFacility> facilities = new ArrayList<>();
         StringBuilder sql = new StringBuilder("select distinct sf.* from sportsFacility sf join court c on sf.id = c.facilityId where sf.status = 'APPROVED'");
-        if (request.isFreeToday()) {
-            //KASNIJE SREDITI DA IZABERE SAMO KOJE IMAJU FREE DO KRAJA RADNOG VREMENA 
-        }
 
         //name check
         if (request.getName() != null && !request.getName().isBlank()) {
@@ -339,6 +339,45 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
                     rs.getString("status")
                 );
                 facilities.add(sf);
+            }
+            
+            //filter for free today only
+            if (request.isFreeToday()) {
+                LocalDate today = LocalDate.now();
+                LocalTime now = LocalTime.now();
+                ReservationRepo reservationRepo = new ReservationRepo();
+
+                facilities.removeIf(sf -> {
+                    List<Court> courts = getCourtsByFacilityId(sf.getId());
+                    boolean hasAtLeastOneFreeSlot = false;
+
+                    for (Court court : courts) {
+                        if (request.getSportId() != null && request.getSportId() != 0 && court.getSportId() != request.getSportId()) {
+                            continue; //check sport selected
+                        }
+                        if (request.getCourtType() != null && !request.getCourtType().isBlank() && !court.getType().equalsIgnoreCase(request.getCourtType())) {
+                            continue; //check court type selected
+                        }
+
+                        //get slots
+                        List<AvailabilitySlot> slots = reservationRepo.getAvailabilityByCourtAndDate(court.getId(), today);
+                        
+                        for (AvailabilitySlot slot : slots) {
+                            //if any is available -> has at least one
+                            LocalTime slotStartTime = LocalTime.parse(slot.getStartTime());
+
+                            if (slot.isAvailable() && slotStartTime.isAfter(now)) { 
+                                hasAtLeastOneFreeSlot = true;
+                                break;
+                            }
+                        }
+                        if (hasAtLeastOneFreeSlot) {
+                            break; //found at least one break
+                        }
+                    }
+                    //return true if none are available
+                    return !hasAtLeastOneFreeSlot;
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
