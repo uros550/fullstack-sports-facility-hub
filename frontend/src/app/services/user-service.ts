@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AthleteProfile } from '../models/AthleteProfile';
 import { Reservation } from '../models/Reservation';
+import { AvailabilitySlot } from '../models/AvailabilitySlot';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,10 @@ export class UserService {
 
   cancelReservation(id: number) {
     return this.http.post(`${this.path}/reservations/cancel/${id}`, { responseType: 'text' });
+  }
+
+  getCourtAvailability(courtId: number, date: string) {
+    return this.http.get<AvailabilitySlot[]>(`${this.path}/reservations/availability/${courtId}`, { params: {date: date} });
   }
 
 }

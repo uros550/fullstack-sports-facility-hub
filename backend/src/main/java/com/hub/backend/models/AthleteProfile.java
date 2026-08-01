@@ -66,6 +66,4 @@ public class AthleteProfile {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
-
-    
 }

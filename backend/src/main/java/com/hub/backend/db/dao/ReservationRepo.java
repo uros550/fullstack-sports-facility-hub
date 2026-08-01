@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.AvailabilitySlot;
 import com.hub.backend.models.Reservation;
 
 public class ReservationRepo implements ReservationRepoInterface {
@@ -80,6 +83,89 @@ public class ReservationRepo implements ReservationRepoInterface {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date) {
+        
+        List<AvailabilitySlot> slots = new ArrayList<>();
+        List<LocalTime[]> reservedTimes = new ArrayList<>();
+        String workHoursQuery = "select sf.workingHours from court c join sportsfacility sf on sf.id = c.facilityId where c.id = ?";
+        String reservationsQuery = "select startTime, endTime from reservation where courtId = ? and DATE(startTime) = ? and status in ('PENDING', 'CONFIRMED')";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement workingHoursStm = conn.prepareStatement(workHoursQuery);
+            PreparedStatement reservationStm = conn.prepareStatement(reservationsQuery);
+        ){
+            //get facility working hours
+            workingHoursStm.setInt(1, courtId);
+
+            ResultSet workingHoursRs = workingHoursStm.executeQuery();
+            if (!workingHoursRs.next()) {
+                return slots;
+            }
+            //get start and end time 10:00 - 22:00 (working hours)
+            String workingHours = workingHoursRs.getString("workingHours");
+            if (workingHours == null || workingHours.isBlank()) {
+                return slots;
+            }
+            String[] hours = workingHours.split(" - ");
+            LocalTime startWorkingTime = LocalTime.parse(hours[0]); //10:00
+            LocalTime endWorkingTime = LocalTime.parse(hours[1]);   //22:00
+
+            //get reserved start and end times
+            reservationStm.setInt(1, courtId);
+            reservationStm.setDate(2, java.sql.Date.valueOf(date));
+
+            ResultSet reservationsRs = reservationStm.executeQuery();
+            while (reservationsRs.next()) {
+                Timestamp startTimestamp = reservationsRs.getTimestamp("startTime");
+                Timestamp endTimestamp = reservationsRs.getTimestamp("endTime");
+
+                if (startTimestamp != null && endTimestamp != null) {
+                    LocalTime reservationStart = startTimestamp.toLocalDateTime().toLocalTime();
+                    LocalTime reservationEnd = endTimestamp.toLocalDateTime().toLocalTime();
+                    //add into reserved times array
+                    reservedTimes.add(new LocalTime[] {
+                        reservationStart,
+                        reservationEnd
+                    });
+                }
+            }
+
+            //create hourly slots
+            LocalTime currentTime = startWorkingTime;
+            //go through working hours
+            while (currentTime.isBefore(endWorkingTime)) {
+                LocalTime slotEnd = currentTime.plusHours(1);
+                //check if this slot is reserved
+                boolean isAvailable = true;
+                for (LocalTime[] reservation : reservedTimes) {
+                    LocalTime reservationStart = reservation[0];
+                    LocalTime reservationEnd = reservation[1];
+                    //check if slot overlaps any reservation
+                    if (currentTime.isBefore(reservationEnd) && slotEnd.isAfter(reservationStart)) {
+                        isAvailable = false;
+                        break;
+                    }
+                }
+                //actual slot with availability info
+                slots.add(new AvailabilitySlot(
+                    currentTime.toString(),
+                    slotEnd.toString(),
+                    isAvailable
+                ));
+                //go next
+                currentTime = slotEnd;
+            }
+            
+            return slots;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return slots;
     }
     
 }

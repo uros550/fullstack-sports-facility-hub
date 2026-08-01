@@ -215,6 +215,176 @@
     font-size: .95rem;
 }
 
+/*courts header with button on the right*/
+.courts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.courts-header h2 {
+    margin-bottom: 10px; /*reset margin so it aligns nicely with button*/
+}
+
+/*availability button*/
+.availability-btn {
+    background-color: rgb(15, 23, 42);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px; /*rounded*/
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+/*availability button hover*/
+.availability-btn:hover {
+    background-color: rgb(47, 181, 130);
+    transform: scale(1.02);
+}
+
+/*availability subsection*/
+.availability-section {
+    background-color: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 14px; /*rounded*/
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.availability-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.availability-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: rgb(15, 23, 42);
+    background: none;
+    padding: 0;
+    text-align: left;
+}
+
+/*close button for availability*/
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(100, 116, 139);
+    transition: .2s;
+}
+
+.close-btn:hover {
+    color: rgb(15, 23, 42);
+    transform: scale(1.1);
+}
+
+/*controls (court navigator + date picker)*/
+.availability-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.court-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgb(255, 255, 255);
+    padding: 6px 12px;
+    border-radius: 10px; /*rounded*/
+    border: 1px solid rgb(203, 213, 225);
+}
+
+.nav-arrow {
+    background: rgb(15, 23, 42);
+    color: rgb(255, 255, 255);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: .2s;
+}
+
+.nav-arrow:hover {
+    background-color: rgb(47, 181, 130);
+}
+
+.current-court-name {
+    font-weight: bold;
+    color: rgb(15, 23, 42);
+    min-width: 130px;
+    text-align: center;
+}
+
+.date-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: rgb(15, 23, 42);
+}
+
+.date-selector input[type="date"] {
+    padding: 8px 12px;
+    border-radius: 8px; /*rounded*/
+    border: 1px solid rgb(203, 213, 225);
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+/*availability slots grid*/
+.slots-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+}
+
+.slot-item {
+    padding: 10px;
+    border-radius: 8px; /*rounded*/
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.slot-item.available {
+    background-color: rgb(230, 244, 234);
+    color: rgb(19, 115, 51);
+    border: 1px solid rgb(206, 234, 214);
+}
+
+.slot-item.taken {
+    background-color: rgb(252, 232, 230);
+    color: rgb(197, 34, 31);
+    border: 1px solid rgb(250, 210, 207);
+}
+
+.no-slots {
+    color: rgb(100, 116, 139);
+    font-style: italic;
+    margin: 10px 0;
+}
+
 /*courts list vertical box*/
 .courts-list {
     display: flex;

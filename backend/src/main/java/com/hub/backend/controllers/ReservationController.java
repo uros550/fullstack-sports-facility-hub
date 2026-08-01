@@ -1,12 +1,18 @@
 package com.hub.backend.controllers;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.ReservationRepo;
+import com.hub.backend.models.AvailabilitySlot;
 
 @RestController
 @RequestMapping("users/reservations")
@@ -17,6 +23,12 @@ public class ReservationController {
     public String cancelReservation(@PathVariable int id) {
         boolean success = new ReservationRepo().cancelReservation(id);
         return success ? "Success" : "Error";
+    }
+
+    @GetMapping("/availability/{courtId}")
+    public List<AvailabilitySlot> getAvailability(@PathVariable int courtId, @RequestParam String date) {
+        LocalDate selectedDate = LocalDate.parse(date);
+        return new ReservationRepo().getAvailabilityByCourtAndDate(courtId, selectedDate);
     }
 
 }

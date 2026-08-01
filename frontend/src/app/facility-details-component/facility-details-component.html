@@ -51,45 +51,111 @@
 
         <!--courts info-->
         <div class="card courts-card">
-          <h2>Available Courts & Pricing</h2>
-          <p class="section-subtitle">All prices are listed per hour of court rental (not per person).</p>
           
-          <div class="courts-list">
-            
-            @for (court of getFilteredCourts(); track court.id) {
-              <div class="court-row">
-                <div class="court-meta">
-                  <h3>{{ court.name }}</h3>
-                  
-                  <div class="tags-container" style="display: flex; gap: 8px; margin: 4px 0 8px 0; flex-wrap: wrap;">
-                    
-                    @if (court.sportName) {
-                      <span class="court-tag sport-tag">{{ court.sportName }}</span>
-                    }
-                    
-                    <span class="court-tag" [class.open]="court.type === 'OPEN'" [class.closed]="court.type === 'CLOSED'">
-                      {{ court.type === 'OPEN' ? 'Outdoor Court' : 'Indoor Court' }}
-                    </span>
+          <!--header with title and availability button-->
+          <div class="courts-header">
 
-                    <span class="court-tag capacity-tag">
-                      👥 Max capacity: {{ court.capacity }}
-                    </span>
-                  </div>
-                  
-                  <p class="court-desc">{{ court.equipmentDescription }}</p>
-                </div>
-
-                <div class="court-price">
-                  <span class="price">{{ court.pricePerHour }} RSD</span>
-                  <span class="unit">/ hour</span>
-                </div>
-              </div>
-            } @empty {
-              <p class="no-courts-msg">No courts available for this facility at the moment.</p>
+            <h2>Available Courts & Pricing</h2>
+            @if (isAthlete) {
+              <button class="availability-btn" (click)="openAvailability()">
+                Show availability
+              </button>
             }
 
           </div>
 
+          <p class="section-subtitle">All prices are listed per hour of court rental (not per person).</p>
+
+          <!--availability subsection (shown when button is clicked)-->
+          @if (showAvailability) {
+            <div class="availability-section">
+
+              <div class="availability-header">
+
+                <h3>Check Court Availability</h3>
+                <button class="close-btn" (click)="closeAvailability()">✕</button>
+
+              </div>
+
+              <div class="availability-controls">
+                <!--court navigation-->
+                <div class="court-selector">
+
+                  <button class="nav-arrow" (click)="previousCourt()">‹</button>
+                  <span class="current-court-name">
+                    {{ getSelectedCourt()?.name || 'Court' }}
+                  </span>
+                  <button class="nav-arrow" (click)="nextCourt()">›</button>
+
+                </div>
+
+                <!-- date picker -->
+                <div class="date-selector">
+
+                  <label for="availDate">Date:</label>
+                  <input type="date" id="availDate" [(ngModel)]="selectedDate" (change)="changeDate()"/>
+
+                </div>
+
+              </div>
+
+              <!--availability slots-->
+              <div class="slots-container">
+
+                @for (slot of availabilitySlots; track slot.startTime) {
+                  <div class="slot-item" [class.available]="slot.available" [class.taken]="!slot.available">
+
+                    <span class="time">{{ slot.startTime }} - {{ slot.endTime }}</span>
+                    <span class="status">{{ slot.available ? 'Free' : 'Reserved' }}</span>
+
+                  </div>
+                } @empty {
+                  <p class="no-slots">No availability slots found for this date.</p>
+                }
+
+              </div>
+
+            </div>
+          } 
+          @else {
+            <!--courts list-->
+            <div class="courts-list">
+              
+              @for (court of getFilteredCourts(); track court.id) {
+                <div class="court-row">
+                  <div class="court-meta">
+                    <h3>{{ court.name }}</h3>
+                    
+                    <div class="tags-container" style="display: flex; gap: 8px; margin: 4px 0 8px 0; flex-wrap: wrap;">
+                      
+                      @if (court.sportName) {
+                        <span class="court-tag sport-tag">{{ court.sportName }}</span>
+                      }
+                      
+                      <span class="court-tag" [class.open]="court.type === 'OPEN'" [class.closed]="court.type === 'CLOSED'">
+                        {{ court.type === 'OPEN' ? 'Outdoor Court' : 'Indoor Court' }}
+                      </span>
+
+                      <span class="court-tag capacity-tag">
+                        👥 Max capacity: {{ court.capacity }}
+                      </span>
+                    </div>
+                    
+                    <p class="court-desc">{{ court.equipmentDescription }}</p>
+                  </div>
+
+                  <div class="court-price">
+                    <span class="price">{{ court.pricePerHour }} RSD</span>
+                    <span class="unit">/ hour</span>
+                  </div>
+                </div>
+              } @empty {
+                <p class="no-courts-msg">No courts available for this facility at the moment.</p>
+              }
+
+            </div>
+          }
+          
         </div>
  
       </div>

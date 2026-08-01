@@ -4,10 +4,13 @@ import { SportsFacilityService } from '../services/sports-facility-service';
 import { SportsFacility } from '../models/SportsFacility';
 import { Court } from '../models/Court';
 import { AuthenticationService } from '../services/authentication-service';
+import { AvailabilitySlot } from '../models/AvailabilitySlot';
+import { UserService } from '../services/user-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-facility-details-component',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './facility-details-component.html',
   styleUrl: './facility-details-component.css',
 })
@@ -16,10 +19,12 @@ export class FacilityDetailsComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private facilityService = inject(SportsFacilityService);
+  private userService = inject(UserService);
   private authService = inject(AuthenticationService);
 
   facility!: SportsFacility;
   courts: Court[] = [];
+  filteredCourts: Court[] = [];
   //athlete logged in
   isAthlete: boolean = false;
   requestSportId: number = 0; //ids start from 1
@@ -28,6 +33,11 @@ export class FacilityDetailsComponent {
   //not important just for restoring search
   requestName: string = '';
   requestCities: any[] = [];
+  //availability
+  showAvailability: boolean = false;
+  selectedCourtIndex: number = 0;
+  selectedDate: string = '';
+  availabilitySlots: AvailabilitySlot[] = [];
 
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
@@ -65,8 +75,7 @@ export class FacilityDetailsComponent {
   }
 
   getFilteredCourts(): Court[] {
-    const filteredCourts: Court[] = [];
-
+    this.filteredCourts = [];
     for (const court of this.courts) {
       if (this.requestSportId !== 0 && court.sportId !== this.requestSportId) {
         continue; //is not in sport filter
@@ -74,10 +83,72 @@ export class FacilityDetailsComponent {
       if (this.requestCourtType !== '' && court.type !== this.requestCourtType) {
         continue; //is not in courtType filer
       }
-      filteredCourts.push(court);
+      this.filteredCourts.push(court);
     }
+    return this.filteredCourts;
+  }
 
-    return filteredCourts;
+  openAvailability() {
+    if (this.filteredCourts.length === 0) {
+      return;
+    }
+    this.showAvailability = true;
+    this.selectedCourtIndex = 0;
+    //default date is today
+    const today = new Date();
+    //today to string
+    this.selectedDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    this.loadAvailability();
+  }
+
+  closeAvailability() {
+    this.showAvailability = false;
+    this.availabilitySlots = [];
+  }
+
+  loadAvailability() {
+    const selectedCourt = this.filteredCourts[this.selectedCourtIndex];
+    this.userService.getCourtAvailability(selectedCourt.id, this.selectedDate).subscribe(data => {
+      console.log('API RESPONSE SLOTS:', data); //TEST
+      this.availabilitySlots = data;
+    })
+  }
+
+  previousCourt() {
+    if (this.filteredCourts.length === 0) {
+      return;
+    }
+    if (this.selectedCourtIndex > 0) {
+      this.selectedCourtIndex--;
+    }
+    else {
+      this.selectedCourtIndex = this.filteredCourts.length - 1; //circular selection
+    }
+    this.loadAvailability();
+  }
+
+  nextCourt() {
+    if (this.filteredCourts.length === 0) {
+      return;
+    }
+    if (this.selectedCourtIndex < this.filteredCourts.length - 1) {
+      this.selectedCourtIndex++;
+    }
+    else {
+      this.selectedCourtIndex = 0;
+    }
+    this.loadAvailability();
+  }
+
+  changeDate() {
+    this.loadAvailability();
+  }
+
+  getSelectedCourt(): Court | null {
+    if (this.filteredCourts.length === 0) {
+      return null;
+    }
+    return this.filteredCourts[this.selectedCourtIndex];
   }
 
   return() {
