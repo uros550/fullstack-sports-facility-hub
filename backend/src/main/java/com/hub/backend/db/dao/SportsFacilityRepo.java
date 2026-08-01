@@ -261,7 +261,10 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
     public List<SportsFacility> searchFacilities(SearchFacilitiesRequest request) {
         
         List<SportsFacility> facilities = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("select distinct sf.* from sportsFacility sf left join court c on sf.id = c.facilityId where sf.status = 'approved'");
+        StringBuilder sql = new StringBuilder("select distinct sf.* from sportsFacility sf join court c on sf.id = c.facilityId where sf.status = 'APPROVED'");
+        if (request.isFreeToday()) {
+            //KASNIJE SREDITI DA IZABERE SAMO KOJE IMAJU FREE DO KRAJA RADNOG VREMENA 
+        }
 
         //name check
         if (request.getName() != null && !request.getName().isBlank()) {

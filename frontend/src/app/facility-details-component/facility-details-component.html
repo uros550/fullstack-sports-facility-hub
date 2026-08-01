@@ -56,7 +56,7 @@
           
           <div class="courts-list">
             
-            @for (court of courts; track court.id) {
+            @for (court of getFilteredCourts(); track court.id) {
               <div class="court-row">
                 <div class="court-meta">
                   <h3>{{ court.name }}</h3>

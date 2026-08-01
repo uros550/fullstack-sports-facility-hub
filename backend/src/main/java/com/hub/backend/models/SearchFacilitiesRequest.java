@@ -8,6 +8,8 @@ public class SearchFacilitiesRequest {
     private List<String> cities;
     private Integer sportId;
     private String courtType;
+    //logged athlete
+    private boolean freeToday;
 
     //constructor
     public SearchFacilitiesRequest() {}
@@ -36,5 +38,11 @@ public class SearchFacilitiesRequest {
     }
     public void setCourtType(String courtType) {
         this.courtType = courtType;
+    }
+    public boolean isFreeToday() {
+        return freeToday;
+    }
+    public void setFreeToday(boolean freeToday) {
+        this.freeToday = freeToday;
     }
 }

@@ -20,12 +20,29 @@ export class FacilityDetailsComponent {
 
   facility!: SportsFacility;
   courts: Court[] = [];
+  //athlete logged in
   isAthlete: boolean = false;
+  requestSportId: number = 0; //ids start from 1
+  requestCourtType: string = '';
+  requestFreeToday: boolean = false;
+  //not important just for restoring search
+  requestName: string = '';
+  requestCities: any[] = [];
 
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
 
   ngOnInit(): void {
+    //get params
+    const request = history.state.searchRequest;
+    if (request) {
+      this.requestSportId = request.sportId;
+      this.requestCourtType = request.courtType;
+      this.requestFreeToday = request.freeToday;
+      //not important
+      this.requestName = request.name;
+      this.requestCities = request.cities;
+    }
     const id = Number(this.route.snapshot.paramMap.get('id'));
     
     if (id) {
@@ -47,12 +64,38 @@ export class FacilityDetailsComponent {
     }
   }
 
+  getFilteredCourts(): Court[] {
+    const filteredCourts: Court[] = [];
+
+    for (const court of this.courts) {
+      if (this.requestSportId !== 0 && court.sportId !== this.requestSportId) {
+        continue; //is not in sport filter
+      }
+      if (this.requestCourtType !== '' && court.type !== this.requestCourtType) {
+        continue; //is not in courtType filer
+      }
+      filteredCourts.push(court);
+    }
+
+    return filteredCourts;
+  }
+
   return() {
     if (this.isAthlete) {
-      this.router.navigate(['/athlete-dashboard'])
+      this.router.navigate(['/athlete-dashboard'], {
+        //return to exact search in reservation
+        state: {
+          section: 'reservations',
+          searchRequest: history.state.searchRequest
+        }
+      });
     }
     else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home'], {
+        state: {
+          searchRequest: history.state.searchRequest
+        }
+      });
     }
   }
 }

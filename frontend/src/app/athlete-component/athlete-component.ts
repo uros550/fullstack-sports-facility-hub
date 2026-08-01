@@ -25,6 +25,10 @@ export class AthleteComponent implements OnInit {
         console.error('Local storage getItem error:', error);
       }
     }
+    //restore search session
+    if (history.state.section === 'reservations') {
+      this.activeTab = 'reservations';
+    }
   }
 
   setActiveTab(tabName: string): void {

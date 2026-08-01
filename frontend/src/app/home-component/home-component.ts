@@ -51,13 +51,33 @@ export class HomeComponent implements OnInit {
 
     //if athlete logged in
     const user = this.authService.currentUser();
+    const search = history.state.searchRequest;
     if (user && user.role === 'ATHLETE') {
       this.currentUser = user;
       this.isAthlete = true;
+      const search = history.state.searchRequest;
+      if (search) {
+        this.searchName = search.name;
+        this.selectedCities = search.cities;
+        this.selectedSportId = search.sportId;
+        this.selectedCourtType = search.courtType;
+        this.onlyFreeToday = search.freeToday;
+      }
+    }
+    else {
+      if (search) {
+        this.searchName = search.name;
+        this.selectedCities = search.cities;
+        this.selectedSportId = search.sportId;
+        this.selectedCourtType = search.courtType;
+      }
     }
 
     this.sportsFacilityService.getAllActiveFacilities().subscribe(data => {
       this.displayedFacilities = data;
+      if (search) {
+        this.searchFacilities(); //restore previous search
+      }
     })
 
     this.sportsFacilityService.getActiveFacilitiesCount().subscribe(data => {
@@ -88,7 +108,8 @@ export class HomeComponent implements OnInit {
       name: this.searchName,
       sportId: this.selectedSportId,
       courtType: this.selectedCourtType,
-      cities: this.selectedCities
+      cities: this.selectedCities,
+      freeToday: this.onlyFreeToday
     };
 
     this.sportsFacilityService.searchFacilities(request).subscribe(data => {
@@ -131,7 +152,20 @@ export class HomeComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    this.router.navigate(['/facility', id]);
-  }
 
+    const request = {
+      name: this.searchName,
+      cities: this.selectedCities,
+      sportId: this.selectedSportId,
+      courtType: this.selectedCourtType,
+      freeToday: this.onlyFreeToday
+    };
+
+    this.router.navigate(['/facility', id], {
+      state: {
+        searchRequest: request //send request params through navigate
+      }
+    });
+
+  }
 }
