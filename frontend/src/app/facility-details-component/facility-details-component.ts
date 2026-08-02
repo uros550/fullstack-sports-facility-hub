@@ -112,8 +112,15 @@ export class FacilityDetailsComponent {
   loadAvailability() {
     const selectedCourt = this.filteredCourts[this.selectedCourtIndex];
     this.userService.getCourtAvailability(selectedCourt.id, this.selectedDate).subscribe(data => {
-      console.log('API RESPONSE SLOTS:', data); //TEST, should change to not be able to see past slots if today is selected
-      this.availabilitySlots = data;
+      //console.log('API RESPONSE SLOTS:', data); //TEST
+      const todayStr = new Date().toISOString().split('T')[0];
+      if (this.selectedDate === todayStr) {
+        const nowStr = new Date().toTimeString().substring(0, 5);
+        this.availabilitySlots = data.filter(slot => slot.startTime >= nowStr);
+      }
+      else {
+        this.availabilitySlots = data;
+      }
     })
   }
 
