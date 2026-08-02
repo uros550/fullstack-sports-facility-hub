@@ -10,6 +10,7 @@ public interface ReservationRepoInterface {
     
     List<Reservation> getReservationsByAthleteId(int athleteId);
     boolean cancelReservation(int reservationId);
+    String addReservation(Reservation newReservation);
     List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date);
 
 }

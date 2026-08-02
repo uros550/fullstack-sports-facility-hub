@@ -117,6 +117,74 @@
 
             </div>
           } 
+          @else if (showReservation) {
+            <div class="reservation-section">
+
+              <div class="reservation-header">
+
+                <h3>Reserve: {{ reservedCourt?.name }}</h3>
+                <button class="close-btn" (click)="closeReservation()">✕</button>
+
+              </div>
+
+              @if (errorMessage) {
+                <div class="message-banner" 
+                  [class.success]="errorMessage.includes('created') || errorMessage.includes('pending')"
+                  [class.error]="!errorMessage.includes('created') && !errorMessage.includes('pending')"
+                >
+                  {{ errorMessage }}
+                </div>
+              }
+
+              <div class="reservation-form">
+
+                <!--date select-->
+                <div class="form-group">
+
+                  <label for="resDate">Select Date:</label>
+                  <input type="date" id="resDate" [min]="minDate" [(ngModel)]="reservedDate" (change)="changeReservationDate()"/>
+
+                </div>
+
+                <!--start time select-->
+                <div class="form-group">
+
+                  <label for="resStartTime">Start Time:</label>
+                  <select id="resStartTime" [(ngModel)]="reservedStartTime" (change)="changeReservationStartTime()">
+                    @for (slot of reservationSlots; track slot.startTime) {
+                      <option [value]="slot.startTime">{{ slot.startTime }}</option>
+                    } @empty {
+                      <option value="">No free slots available</option>
+                    }
+                  </select>
+
+                </div>
+
+                <!--duration select-->
+                <div class="form-group">
+
+                  <label for="resDuration">Number of Hours:</label>
+                  <select id="resDuration" [(ngModel)]="selectedDuration">
+                    @for (dur of availableDurations; track dur) {
+                      <option [value]="dur">{{ dur }} {{ dur === 1 ? 'hour' : 'hours' }}</option>
+                    }
+                  </select>
+
+                </div>
+
+                <div class="form-actions">
+
+                  <button class="cancel-btn" (click)="closeReservation()">Cancel</button>
+                  <button class="submit-btn" [disabled]="!reservedStartTime || reservationSlots.length === 0" (click)="submitReservation()">
+                    Confirm Reservation
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+          }
           @else {
             <!--courts list-->
             <div class="courts-list">
@@ -148,6 +216,13 @@
                     <span class="price">{{ court.pricePerHour }} RSD</span>
                     <span class="unit">/ hour</span>
                   </div>
+
+                  @if (isAthlete) {
+                    <button class="reserve-btn" (click)="openReservation(court)">
+                      Reserve
+                    </button>
+                  }
+                  
                 </div>
               } @empty {
                 <p class="no-courts-msg">No courts available for this facility at the moment.</p>

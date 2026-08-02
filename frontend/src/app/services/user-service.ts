@@ -44,4 +44,8 @@ export class UserService {
     return this.http.get<AvailabilitySlot[]>(`${this.path}/reservations/availability/${courtId}`, { params: {date: date} });
   }
 
+  addReservation(reservation: Reservation) {
+    return this.http.post(`${this.path}/reservations/create`, reservation, { responseType: 'text' });
+  }
+  
 }

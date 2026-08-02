@@ -8,24 +8,19 @@
     --text-main: rgb(30, 41, 59);
     --text-muted: rgb(100, 116, 139);
     --border-color: rgb(226, 232, 240);
-    --shadow: 0 4px 20px -2px rgba(148, 163, 184, .12), 0 2px 8px -1px rgba(148, 163, 184, .08);
+    --shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.12), 0 2px 8px -1px rgba(148, 163, 184, 0.08);
     --radius: 16px; /*rounded*/
 }
 
 /*page*/
 .details-container {
-    /*image url*/
     background-image: url("/background-default.jpg");
-    /*cover whole screen*/
     background-size: cover;
-    /*center image*/
     background-position: center;
-    /*dont place 2 pictures if larger*/
     background-repeat: no-repeat;
-    /*doesnt scroll with the page*/
     background-attachment: fixed;
     max-width: 1500px;
-    margin: auto; /*centers page if wider than max*/
+    margin: auto;
     padding: 40px;
 }
 
@@ -41,45 +36,41 @@
     color: var(--text-muted);
     font-size: 1rem;
     font-weight: 600;
-    cursor: pointer; /*cursor change when hovered*/
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: .2s; /*smooth color transition*/
+    transition: .2s;
     padding: 8px 16px;
-    border-radius: 8px; /*rounded*/
+    border-radius: 8px;
 }
 
-/*back button when hovered*/
 .back-btn:hover {
     color: var(--primary);
     background-color: rgb(241, 245, 249);
 }
 
-/*back button arrow icon*/
 .back-btn .arrow {
     font-size: 1.2rem;
-    transition: .2s; /*smooth movement*/
+    transition: .2s;
 }
 
-/*arrow icon when button hovered*/
 .back-btn:hover .arrow {
-    transform: translateX(-4px); /*moves left*/
+    transform: translateX(-4px);
 }
 
 /*hero section box*/
 .facility-hero {
     position: relative;
     background: linear-gradient(135deg, var(--bg-dark), rgb(30, 41, 59));
-    border-radius: var(--radius); /*rounded*/
+    border-radius: var(--radius);
     padding: 60px 40px;
     color: rgb(255, 255, 255);
-    overflow: hidden; /*clips decorative light effect*/
+    overflow: hidden;
     margin-bottom: 32px;
     box-shadow: 0 10px 30px -10px rgba(15, 23, 42, .3);
 }
 
-/*decorative glowing light in hero*/
 .facility-hero::after {
     content: '';
     position: absolute;
@@ -88,21 +79,19 @@
     width: 300px;
     height: 300px;
     background: radial-gradient(circle, rgba(16, 185, 129, .15) 0%, rgba(255, 255, 255, 0) 70%);
-    border-radius: 50%; /*circle*/
+    border-radius: 50%;
     pointer-events: none;
 }
 
-/*content inside hero banner*/
 .hero-content {
     position: relative;
     z-index: 2;
 }
 
-/*status badge inside hero*/
 .status-badge {
     display: inline-block;
     padding: 6px 12px;
-    border-radius: 100px; /*capsule rounded*/
+    border-radius: 100px;
     font-size: .75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -112,12 +101,10 @@
     margin-bottom: 16px;
 }
 
-/*active status badge*/
 .status-badge.active {
     background-color: var(--primary);
 }
 
-/*hero title*/
 .facility-hero h1 {
     font-size: 2.5rem;
     font-weight: 800;
@@ -125,7 +112,6 @@
     letter-spacing: -.02em;
 }
 
-/*hero location*/
 .facility-hero .location {
     font-size: 1.1rem;
     color: rgb(203, 213, 225);
@@ -135,26 +121,23 @@
     gap: 8px;
 }
 
-/*rating bar layout*/
 .rating-bar {
     display: flex;
     gap: 12px;
 }
 
-/*rating capsule pill*/
 .rating-pill {
     display: flex;
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    border-radius: 100px; /*capsule rounded*/
+    border-radius: 100px;
     font-size: .95rem;
     font-weight: 600;
     background-color: rgba(255, 255, 255, .1);
     backdrop-filter: blur(8px);
 }
 
-/*liked rating pill*/
 .rating-pill.like {
     color: rgb(167, 243, 208);
     border: 1px solid rgba(16, 185, 129, .25);
@@ -163,21 +146,20 @@
 /*main content layout grid*/
 .main-grid {
     display: grid;
-    grid-template-columns: 1.6fr 1.2fr; /*columns ratio*/
+    grid-template-columns: 1.6fr 1.2fr;
     gap: 32px;
 }
 
 /*content card box*/
 .card {
     background-color: var(--card-bg);
-    border-radius: var(--radius); /*rounded*/
+    border-radius: var(--radius);
     padding: 32px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
     margin-bottom: 32px;
 }
 
-/*card titles*/
 .card h2 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -187,7 +169,6 @@
     padding-bottom: 12px;
 }
 
-/*decorative line under card titles*/
 .card h2::after {
     content: '';
     position: absolute;
@@ -196,10 +177,9 @@
     width: 40px;
     height: 4px;
     background-color: var(--primary);
-    border-radius: 2px; /*rounded*/
+    border-radius: 2px;
 }
 
-/*about facility text*/
 .description {
     line-height: 1.7;
     color: var(--text-muted);
@@ -207,7 +187,6 @@
     margin: 0;
 }
 
-/*court section details text*/
 .section-subtitle {
     color: var(--text-muted);
     margin-top: -10px;
@@ -224,33 +203,31 @@
 }
 
 .courts-header h2 {
-    margin-bottom: 10px; /*reset margin so it aligns nicely with button*/
+    margin-bottom: 10px;
 }
 
-/*availability button*/
 .availability-btn {
-    background-color: rgb(15, 23, 42);
+    background-color: var(--bg-dark);
     color: rgb(255, 255, 255);
     border: none;
     padding: 10px 20px;
-    border-radius: 10px; /*rounded*/
+    border-radius: 10px;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: .2s;
 }
 
-/*availability button hover*/
 .availability-btn:hover {
-    background-color: rgb(47, 181, 130);
-    transform: scale(1.02);
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
 }
 
 /*availability subsection*/
 .availability-section {
     background-color: rgb(248, 250, 252);
     border: 1px solid rgb(226, 232, 240);
-    border-radius: 14px; /*rounded*/
+    border-radius: 14px;
     padding: 20px;
     margin: 20px 0;
 }
@@ -271,7 +248,6 @@
     text-align: left;
 }
 
-/*close button for availability*/
 .close-btn {
     background: none;
     border: none;
@@ -286,7 +262,6 @@
     transform: scale(1.1);
 }
 
-/*controls (court navigator + date picker)*/
 .availability-controls {
     display: flex;
     justify-content: space-between;
@@ -302,7 +277,7 @@
     gap: 12px;
     background: rgb(255, 255, 255);
     padding: 6px 12px;
-    border-radius: 10px; /*rounded*/
+    border-radius: 10px;
     border: 1px solid rgb(203, 213, 225);
 }
 
@@ -322,7 +297,7 @@
 }
 
 .nav-arrow:hover {
-    background-color: rgb(47, 181, 130);
+    background-color: var(--primary);
 }
 
 .current-court-name {
@@ -342,14 +317,13 @@
 
 .date-selector input[type="date"] {
     padding: 8px 12px;
-    border-radius: 8px; /*rounded*/
+    border-radius: 8px;
     border: 1px solid rgb(203, 213, 225);
     outline: none;
     font-family: inherit;
     font-size: 14px;
 }
 
-/*availability slots grid*/
 .slots-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -358,7 +332,7 @@
 
 .slot-item {
     padding: 10px;
-    border-radius: 8px; /*rounded*/
+    border-radius: 8px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -385,6 +359,158 @@
     margin: 10px 0;
 }
 
+/*reservation subsection*/
+.reservation-section {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .03);
+    animation: fadeIn .3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.reservation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 12px;
+}
+
+.reservation-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--bg-dark);
+}
+
+.reservation-header h3 span {
+    color: var(--primary-hover);
+}
+
+/*message banner*/
+.message-banner {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: all .2s ease;
+}
+
+.message-banner.success {
+    background-color: rgb(236, 253, 245);
+    color: rgb(6, 95, 70);
+    border: 1px solid rgb(167, 243, 208);
+}
+
+.message-banner.error {
+    background-color: rgb(254, 242, 242);
+    color: rgb(153, 27, 27);
+    border: 1px solid rgb(254, 202, 202);
+}
+
+/*reservation form*/
+.reservation-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.form-group input[type="date"],
+.form-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgb(203, 213, 225);
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 500;
+    outline: none;
+    transition: .2s;
+    box-sizing: border-box;
+}
+
+.form-group input[type="date"]:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.cancel-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid rgb(203, 213, 225);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(241, 245, 249);
+    color: var(--text-main);
+}
+
+.submit-btn {
+    background-color: var(--primary);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, .25);
+}
+
+.submit-btn:disabled {
+    background-color: rgb(203, 213, 225);
+    cursor: not-allowed;
+    opacity: .7;
+}
+
 /*courts list vertical box*/
 .courts-list {
     display: flex;
@@ -392,96 +518,101 @@
     gap: 16px;
 }
 
-/*individual court row*/
 .court-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     background-color: rgb(248, 250, 252);
-    border-radius: 12px; /*rounded*/
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    transition: .2s; /*smooth lift transitions*/
+    transition: .2s;
 }
 
-/*court row when hovered*/
 .court-row:hover {
-    transform: translateY(-2px); /*lifts slightly up*/
+    transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, .03);
     border-color: rgb(203, 213, 225);
 }
 
-/*court title*/
 .court-meta h3 {
     font-size: 1.1rem;
     font-weight: 700;
     margin: 0 0 8px 0;
 }
 
-/*court labels*/
+.court-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .court-tag {
     display: inline-block;
     padding: 4px 10px;
-    border-radius: 6px; /*rounded*/
+    border-radius: 6px;
     font-size: .75rem;
     font-weight: 600;
 }
 
-/*outdoor court tag*/
 .court-tag.open {
     background-color: rgb(236, 253, 245);
     color: rgb(5, 150, 105);
 }
 
-/*indoor court tag*/
 .court-tag.closed {
     background-color: rgb(239, 246, 255);
     color: rgb(37, 99, 235);
 }
 
-/*sport name tag*/
 .court-tag.sport-tag {
     background-color: rgba(15, 23, 42, .05);
     color: rgb(15, 23, 42);
     border: 1px solid rgba(15, 23, 42, .1);
 }
 
-/*capacity tag*/
-.court-tag.capacity-tag {
-    background-color: rgba(100, 116, 139, .1);
-    color: rgb(71, 85, 105);
+.court-actions-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-/*equipment description*/
-.court-desc {
-    font-size: .85rem;
-    color: rgb(100, 116, 139);
-    margin: 8px 0 0 0;
-    line-height: 1.4;
-}
-
-/*price and unit box*/
 .court-price {
     text-align: right;
     display: flex;
     flex-direction: column;
 }
 
-/*price number*/
 .price {
     font-size: 1.4rem;
     font-weight: 800;
     color: var(--primary);
 }
 
-/*price unit*/
 .unit {
     font-size: .8rem;
     color: var(--text-muted);
     font-weight: 500;
 }
 
-/*fallback when no courts in DB*/
+.reserve-btn {
+    background-color: var(--primary);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.reserve-btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, .2);
+}
+
 .no-courts-msg {
     color: rgb(148, 163, 184);
     font-style: italic;
@@ -492,22 +623,20 @@
 /*gallery grid layout*/
 .image-gallery {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /*2 equal columns*/
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
-/*gallery card item*/
 .gallery-item {
     position: relative;
-    border-radius: 12px; /*rounded*/
-    overflow: hidden; /*keeps image in box on hover zoom*/
-    aspect-ratio: 4/3; /*standard proportions*/
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
 }
 
-/*no images message*/
 .no-images {
-    grid-column: 1 / -1; /*takes both columns*/
+    grid-column: 1 / -1;
     color: var(--text-muted);
     font-style: italic;
     text-align: center;
@@ -518,15 +647,13 @@
     margin: 0;
 }
 
-/*gallery pictures*/
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: .3s; /*smooth zoom animation*/
+    transition: .3s;
 }
 
-/*overlay over gallery images*/
 .gallery-item::after {
     content: '';
     position: absolute;
@@ -536,20 +663,17 @@
     height: 100%;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, .4));
     opacity: 0;
-    transition: .3s; /*smooth shadow display*/
+    transition: .3s;
 }
 
-/*image zoom when hovered*/
 .gallery-item:hover img {
-    transform: scale(1.08); /*slight zoom*/
+    transform: scale(1.08);
 }
 
-/*overlay visible when hovered*/
 .gallery-item:hover::after {
     opacity: 1;
 }
 
-/*loading wrapper*/
 .loader-container {
     display: flex;
     flex-direction: column;
@@ -559,35 +683,29 @@
     color: var(--text-muted);
 }
 
-/*spinner wheel*/
 .spinner {
     width: 50px;
     height: 50px;
     border: 5px solid var(--border-color);
     border-top-color: var(--primary);
-    border-radius: 50%; /*circle*/
-    animation: spin 1s linear infinite; /*infinite rotation*/
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
     margin-bottom: 20px;
 }
 
-/*rotation animation*/
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
-/*adaptation for smaller screens (992px)*/
+/*responsive*/
 @media (max-width: 992px) {
-
     .main-grid {
-        grid-template-columns: 1fr; /*one single column*/
+        grid-template-columns: 1fr;
         gap: 0;
     }
-
 }
 
-/*adaptation for mobile screens (768px)*/
 @media (max-width: 768px) {
-
     .facility-hero {
         padding: 40px 20px;
     }
@@ -597,7 +715,17 @@
     }
     
     .image-gallery {
-        grid-template-columns: 1fr; /*single gallery column*/
+        grid-template-columns: 1fr;
     }
 
+    .court-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .court-actions-wrap {
+        width: 100%;
+        justify-content: space-between;
+    }
 }

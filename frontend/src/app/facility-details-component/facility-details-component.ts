@@ -7,6 +7,7 @@ import { AuthenticationService } from '../services/authentication-service';
 import { AvailabilitySlot } from '../models/AvailabilitySlot';
 import { UserService } from '../services/user-service';
 import { FormsModule } from '@angular/forms';
+import { Reservation } from '../models/Reservation';
 
 @Component({
   selector: 'app-facility-details-component',
@@ -27,6 +28,7 @@ export class FacilityDetailsComponent {
   filteredCourts: Court[] = [];
   //athlete logged in
   isAthlete: boolean = false;
+  athleteId: number = 0;
   requestSportId: number = 0; //ids start from 1
   requestCourtType: string = '';
   requestFreeToday: boolean = false;
@@ -39,9 +41,21 @@ export class FacilityDetailsComponent {
   selectedDate: string = '';
   minDate: string = ''; //to not be able to select dates before today
   availabilitySlots: AvailabilitySlot[] = [];
-
+  //reservation
+  showReservation: boolean = false;
+  reservedCourt: Court | null = null;
+  reservedDate: string = '';
+  reservedStartTime: string = '';
+  reservedEndTime: string = '';
+  missingPlayers: number = 0;
+  reservationSlots: AvailabilitySlot[] = [];
+  selectedDuration: number = 1;
+  availableDurations: number[] = [1];
+  //images
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
+
+  errorMessage: string = '';
 
   ngOnInit(): void {
     const today = new Date();
@@ -73,6 +87,7 @@ export class FacilityDetailsComponent {
     //if athlete logged in
     const user = this.authService.currentUser();
     if (user && user.role === 'ATHLETE') {
+      this.athleteId = user.id;
       this.isAthlete = true;
     }
   }
@@ -159,6 +174,116 @@ export class FacilityDetailsComponent {
       return null;
     }
     return this.filteredCourts[this.selectedCourtIndex];
+  }
+
+  openReservation(court: Court) {
+    this.reservedCourt = court;
+    if (this.filteredCourts.length === 0) return;
+    this.showAvailability = false;
+    this.showReservation = true;
+    this.reservedDate = this.minDate;
+    this.errorMessage = '';
+    this.loadReservationAvailability();
+  }
+
+  closeReservation() {
+    this.showReservation = false;
+    this.reservedCourt = null;
+    this.reservationSlots = [];
+    this.reservedStartTime = '';
+    this.reservedEndTime = '';
+    this.missingPlayers = 0; 
+    this.errorMessage = '';
+  }
+
+  loadReservationAvailability() {
+    if (!this.reservedDate || !this.reservedCourt) return;
+    this.userService.getCourtAvailability(this.reservedCourt.id, this.reservedDate).subscribe(data => {
+      let slots = data;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      if (this.reservedDate === todayStr) {
+        const nowStr = new Date().toTimeString().substring(0, 5);
+        slots = data.filter(slot => slot.startTime >= nowStr); //show only future slots
+      } 
+
+      this.reservationSlots = slots.filter(slot => slot.available); //show only available
+      if (this.reservationSlots.length > 0) {
+        this.reservedStartTime = this.reservationSlots[0].startTime;
+        this.changeReservationStartTime();
+      } else {
+        this.reservedStartTime = '';
+        this.availableDurations = [];
+      }
+    })
+  }
+
+  changeReservationDate() {
+    this.errorMessage = '';
+    this.loadReservationAvailability();
+  }
+
+  changeReservationStartTime() {
+    if (!this.reservedStartTime || this.reservationSlots.length === 0) {
+      this.availableDurations = [];
+      return;
+    }
+
+    //available continuous hours
+    const startIndex = this.reservationSlots.findIndex(s => s.startTime === this.reservedStartTime);
+    if (startIndex === -1) {
+      this.availableDurations = [1];
+      this.selectedDuration = 1;
+      return;
+    }
+    let maxHours = 1;
+    for (let i = startIndex; i < this.reservationSlots.length - 1; i++) {
+      const currentStart = parseInt(this.reservationSlots[i].startTime.split(':')[0], 10);
+      const nextStart = parseInt(this.reservationSlots[i + 1].startTime.split(':')[0], 10);
+
+      if (nextStart === currentStart + 1) {
+        maxHours++;
+      } else {
+        break;
+      }
+    }
+    this.availableDurations = Array.from({ length: maxHours }, (_, index) => index + 1); // [1,2,3,...,maxHours]
+    this.selectedDuration = 1;
+  }
+
+  submitReservation() {
+    if (!this.reservedCourt || !this.reservedDate || !this.reservedStartTime) {
+      this.errorMessage = 'Please select a valid date and start time.';
+      return;
+    }
+    const startHour = parseInt(this.reservedStartTime.split(':')[0], 10);
+    const endHour = startHour + Number(this.selectedDuration); 
+    //start and end times in correct syntax for backend
+    const startSyntax = `${this.reservedDate}T${String(startHour).padStart(2, '0')}:00:00`; 
+    const endSyntax = `${this.reservedDate}T${String(endHour).padStart(2, '0')}:00:00`;
+
+    const reservation: Reservation = new Reservation();
+    reservation.facilityId = this.facility.id;
+    reservation.facilityName = this.facility.name;
+    reservation.city = this.facility.city;
+    reservation.courtId = this.reservedCourt.id;
+    reservation.courtName = this.reservedCourt.name;
+    reservation.athleteId = this.athleteId;
+    reservation.sportId = this.reservedCourt.sportId;
+    reservation.sportName = this.reservedCourt.sportName;
+    reservation.startTime = startSyntax;
+    reservation.endTime = endSyntax;
+    reservation.status = 'PENDING';
+    reservation.missingPlayers = 0;
+
+    this.userService.addReservation(reservation).subscribe(data => {
+      if (data === 'Success') {
+        this.errorMessage = 'Reservation created, pending approval.';
+      }
+      else {
+        this.errorMessage = 'Reservation error.';
+      }
+    })
   }
 
   return() {

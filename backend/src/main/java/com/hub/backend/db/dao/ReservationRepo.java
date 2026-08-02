@@ -86,6 +86,36 @@ public class ReservationRepo implements ReservationRepoInterface {
     }
 
     @Override
+    public String addReservation(Reservation newReservation) {
+        
+        String query = "insert into reservation (facilityId, courtId, athleteId, sportId, startTime, endTime, status, missingPlayers) values (?, ?, ?, ?, ?, ?, 'PENDING', ?)";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, newReservation.getFacilityId());
+            stm.setInt(2, newReservation.getCourtId());
+            stm.setInt(3, newReservation.getAthleteId());
+            stm.setInt(4, newReservation.getSportId());
+            stm.setTimestamp(5, Timestamp.valueOf(newReservation.getStartTime()));
+            stm.setTimestamp(6, Timestamp.valueOf(newReservation.getEndTime()));
+            stm.setInt(7, newReservation.getMissingPlayers());
+
+            int rowsAffected = stm.executeUpdate();
+            if (rowsAffected > 0) {
+                return "Success";
+            }
+            else {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @Override
     public List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date) {
         
         List<AvailabilitySlot> slots = new ArrayList<>();
