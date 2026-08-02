@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SportsFacilityService } from '../services/sports-facility-service';
 import { SportsFacility } from '../models/SportsFacility';
@@ -8,6 +8,8 @@ import { AvailabilitySlot } from '../models/AvailabilitySlot';
 import { UserService } from '../services/user-service';
 import { FormsModule } from '@angular/forms';
 import { Reservation } from '../models/Reservation';
+import * as L from 'leaflet';
+
 
 @Component({
   selector: 'app-facility-details-component',
@@ -15,7 +17,7 @@ import { Reservation } from '../models/Reservation';
   templateUrl: './facility-details-component.html',
   styleUrl: './facility-details-component.css',
 })
-export class FacilityDetailsComponent {
+export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -54,10 +56,12 @@ export class FacilityDetailsComponent {
   //images
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
+  //map
+  map: L.Map | null = null;
 
   errorMessage: string = '';
 
-  ngOnInit(): void {
+  ngOnInit() {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0]; //set todays date to yyyy-mm-dd
     //get params
@@ -75,6 +79,10 @@ export class FacilityDetailsComponent {
     if (id) {
       this.facilityService.getFacilityById(id).subscribe(data => {
         this.facility = data;
+        //map did not work without it
+        setTimeout(() => {
+          this.initMap();
+        }, 10);
       });
       this.facilityService.getAllCourtsById(id).subscribe(data => {
         this.courts = data;
@@ -91,6 +99,59 @@ export class FacilityDetailsComponent {
       this.isAthlete = true;
     }
   }
+
+  //MAP
+  ngAfterViewInit() {
+    if (this.facility?.latitude && this.facility?.longitude) {
+      this.initMap();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.map) {
+      this.map.remove();
+    }
+  }
+
+  initMap() {
+    if (!this.facility || !this.facility.latitude || !this.facility.longitude) return;
+    if (this.map) {
+      this.map.remove(); //do not double initialize
+    }
+    //so they do not end up being strings while compiled
+    const lat = Number(this.facility.latitude);
+    const lng = Number(this.facility.longitude);
+    //create a map centered around the object
+    this.map = L.map('facility-map', {
+      center: [lat, lng],
+      zoom: 15,
+      zoomControl: true
+    });
+    //open street map layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+    //custom icon fix
+    const customIcon = L.icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+      iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    //marker and popup
+    const marker = L.marker([lat, lng], { icon: customIcon }).addTo(this.map);
+    marker.bindPopup(`
+      <div class="map-popup-content">
+        <strong class="map-popup-title">${this.facility.name}</strong>
+        <span class="map-popup-subtitle">${this.facility.address}, ${this.facility.city}</span>
+      </div>
+    `);
+  }
+  //MAP
 
   getFilteredCourts(): Court[] {
     this.filteredCourts = [];

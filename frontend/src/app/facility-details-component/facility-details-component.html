@@ -237,10 +237,13 @@
 
       <!--gallery-->
       <div class="gallery-column">
+
         <div class="card gallery-card">
+
           <h2>Facility gallery</h2>
           
           <div class="image-gallery">
+
             @for (img of images; track img) {
               <div class="gallery-item">
                 <img [src]="baseUrl + img"/>
@@ -248,8 +251,52 @@
             } @empty {
               <p class="no-images">No images available.</p>
             }
+
           </div>
+
         </div>
+
+        <!--location (could be only if (isAthlete) if needed)-->
+        <div class="card location-card">
+
+          <h2>Location & Hours</h2>
+
+          <div class="location-details">
+              
+            <div class="info-item">
+
+              <span class="info-icon">📍</span>
+              <div class="info-content">
+
+              <span class="label">Address</span>
+              <p>{{ facility.address }}, {{ facility.city }}</p>
+
+            </div>
+
+            </div>
+
+              <!--working hours-->
+              @if (facility.workingHours) {
+                <div class="info-item">
+
+                  <span class="info-icon">⏰</span>
+                  <div class="info-content">
+
+                    <span class="label">Working Hours</span>
+                    <p>{{ facility.workingHours }}</p>
+
+                  </div>
+
+                </div>
+              }
+
+            </div>
+
+            <!--map container-->
+            <div id="facility-map" class="map-container"></div>
+
+        </div>
+
       </div>
 
     </div>
