@@ -5,10 +5,11 @@ import { UserService } from '../services/user-service';
 import { DatePipe } from '@angular/common';
 import { SportService } from '../services/sport-service';
 import { FormsModule } from '@angular/forms';
+import { AthleteAdsComponent } from '../athlete-ads-component/athlete-ads-component';
 
 @Component({
   selector: 'app-athlete-teammates-component',
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, FormsModule, AthleteAdsComponent],
   templateUrl: './athlete-teammates-component.html',
   styleUrl: './athlete-teammates-component.css',
 })
@@ -19,6 +20,9 @@ export class AthleteTeammatesComponent implements OnInit {
   activeReservationId: number = 0;
   requiredPlayersOptions: number[] = [];
   selectedMissingPlayers: number = 1;
+  
+  showAds: boolean = false;
+  adsMode: 'my' | 'explore' = 'my';
 
   successMessage = '';
 
@@ -72,6 +76,20 @@ export class AthleteTeammatesComponent implements OnInit {
     })
     console.log("ResId: " + this.activeReservationId + " count: " + this.selectedMissingPlayers);
     this.closePostAnAd();
+  }
+
+  openMyAds() {
+    this.adsMode = 'my';
+    this.showAds = true;
+  }
+
+  openExploreAds() {
+    this.adsMode = 'explore';
+    this.showAds = true;
+  }
+
+  closeAds() {
+    this.showAds = false;
   }
 
 }

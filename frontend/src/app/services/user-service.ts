@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { AthleteProfile } from '../models/AthleteProfile';
 import { Reservation } from '../models/Reservation';
 import { AvailabilitySlot } from '../models/AvailabilitySlot';
+import { Application } from '../models/Application';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,7 @@ export class UserService {
     return this.http.put(`${this.path}/sports/${userId}`, sportIds, { responseType: 'text' });
   }
 
+  //RESERVATIONS
   getReservationsByAthleteId(id: number) {
     return this.http.get<Reservation[]>(`${this.path}/reservations/${id}`);
   }
@@ -55,5 +57,18 @@ export class UserService {
   updateMissingPlayers(missingPlayers: number, resId: number) {
     return this.http.post<number>(`${this.path}/reservations/updateMP/${resId}/${missingPlayers}`, {});
   } 
+
+  getReservationAds(athleteId: number) {
+    return this.http.get<Reservation[]>(`${this.path}/reservations/exploreAds/${athleteId}`);
+  }
+
+  getAllApplicationsForAthlete(athleteId: number) {
+    return this.http.get<Application[]>(`${this.path}/reservations/checkStatus/${athleteId}`);
+  }
+
+  applyToAd(reservationId: number, athleteId: number) {
+    console.log("servis: " + reservationId + " " + athleteId);
+    return this.http.post<boolean>(`${this.path}/reservations/apply/${reservationId}/${athleteId}`, {});
+  }
   
 }

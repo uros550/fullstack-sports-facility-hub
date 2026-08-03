@@ -1,11 +1,8 @@
-@if (showAds) {
-    <app-athlete-ads-component [mode]="adsMode" (backToReservations)="closeAds()"></app-athlete-ads-component>
-}
-@else {
+<button class="back-btn" (click)="goBack()">Back</button>
+
+@if (mode === "explore") {
     <div class="table-title">
-        <span class="title">My active reservations</span>
-        <button class="redirect-btn" (click)="openMyAds()">My ads</button>
-        <button class="redirect-btn" (click)="openExploreAds()">Explore ads</button>
+        <span class="title">Explore reservations</span>
     </div>
 
     <div class="table-card">
@@ -18,12 +15,12 @@
                         <th>Court Name</th>
                         <th>Sport</th>
                         <th>Date & Time</th>
-                        <th class="text-center">Missing players?</th>
+                        <th class="text-center">Apply?</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @for (res of reservations; track res.id) {
+                    @for (res of exploreReservations; track res.id) {
                         <tr>
                             <td class="facility-name">{{ res.facilityName }}</td>
 
@@ -40,28 +37,16 @@
                             <td class="date-cell">
                                 {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
                             </td>
-                            
                             <td class="text-center">
-                                @if (activeReservationId === res.id) {
-                                    <div class="post-ad-inline">
-                                        <select [(ngModel)]="selectedMissingPlayers" class="inline-select">
-                                            @for (num of requiredPlayersOptions; track num) {
-                                            <option [value]="num">{{ num }}</option>
-                                            }
-                                        </select>
-
-                                        <button class="btn-post-confirm" (click)="confirmPostAnAd()">
-                                            Post
-                                        </button>
-
-                                        <button class="btn-post-cancel" (click)="closePostAnAd()">
-                                            Cancel
-                                        </button>
-                                    </div>
+                                @let status = getStatus(res.id);
+                                @if (status === 'ACCEPTED') {
+                                    <span class="status-badge accepted">Accepted</span>
+                                } @else if (status === 'PENDING') {
+                                    <span class="status-badge pending">Pending</span>
+                                } @else if (status === 'REJECTED') {
+                                    <span class="status-badge rejected">Rejected</span>
                                 } @else {
-                                    <button class="action-btn" (click)="postAnAd(res)">
-                                        <span>Post an ad</span>
-                                    </button>
+                                    <button class="apply-btn" (click)="apply(res.id)">Ask</button>
                                 }
                             </td>
                         </tr>

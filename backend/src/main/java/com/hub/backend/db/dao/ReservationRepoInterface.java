@@ -3,6 +3,7 @@ package com.hub.backend.db.dao;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.hub.backend.models.Application;
 import com.hub.backend.models.AvailabilitySlot;
 import com.hub.backend.models.Reservation;
 
@@ -14,5 +15,10 @@ public interface ReservationRepoInterface {
     String addReservation(Reservation newReservation);
     List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date);
     int updateMissingPlayers(int missingPlayer, int reservationId);
+    List<Reservation> getReservationAds(int athleteId);
+    List<Application> getAllApplicationsForAthlete(int athleteId);
+    boolean applyToAd(int reservationId, int athleteId);
+    List<Application> getAllApplications(int reservationId);
+    List<Application> getPendingApplications(int reservationId);
 
 }

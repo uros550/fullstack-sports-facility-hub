@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.ReservationRepo;
+import com.hub.backend.models.Application;
 import com.hub.backend.models.AvailabilitySlot;
 import com.hub.backend.models.Reservation;
 
@@ -41,6 +42,22 @@ public class ReservationController {
     @PostMapping("/updateMP/{id}/{missingPlayers}")
     public int updateMissingPlayers(@PathVariable int missingPlayers, @PathVariable int id) {
         return new ReservationRepo().updateMissingPlayers(missingPlayers, id);
+    }
+
+    @GetMapping("/exploreAds/{athleteId}")
+    public List<Reservation> getReservationAds(@PathVariable int athleteId) {
+        return new ReservationRepo().getReservationAds(athleteId);
+    }
+
+    @GetMapping("/checkStatus/{athleteId}")
+    public List<Application> getAllApplicationsForAthlete(@PathVariable int athleteId) {
+        return new ReservationRepo().getAllApplicationsForAthlete(athleteId);
+    }
+
+    @PostMapping("/apply/{id}/{athleteId}")
+    public boolean applyToAd(@PathVariable int id, @PathVariable int athleteId) {
+        System.out.println("kontroler: " + id + " " + athleteId);
+        return new ReservationRepo().applyToAd(id, athleteId);
     }
 
 }

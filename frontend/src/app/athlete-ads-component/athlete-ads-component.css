@@ -1,7 +1,26 @@
+.back-btn {
+  display: block;
+  margin-left: auto;
+  margin-bottom: 16px;
+  background-color: rgb(15, 23, 42);
+  color: white;
+  border: 1px solid rgb(203, 213, 225);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: rgb(30, 41, 59);
+  transform: translateY(-1px);
+}
+
 .table-title {
   display: flex;
   align-items: center;
-  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -12,7 +31,6 @@
   letter-spacing: -0.02em;
   position: relative;
   padding-bottom: 4px;
-  margin-right: auto;
 }
 
 .table-title .title::after {
@@ -24,24 +42,6 @@
   height: 4px;
   background-color: var(--primary, rgb(16, 185, 129));
   border-radius: 2px;
-}
-
-.redirect-btn {
-  background-color: var(--bg-dark, rgb(15, 23, 42));
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.redirect-btn:hover {
-  background-color: rgb(30, 41, 59);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
 }
 
 .table-card {
@@ -135,19 +135,42 @@
   text-align: center;
 }
 
-.action-btn {
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status-badge.accepted {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: rgb(6, 95, 70);
+}
+
+.status-badge.pending {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: rgb(146, 64, 14);
+}
+
+.status-badge.rejected {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: rgb(153, 27, 27);
+}
+
+.apply-btn {
   background-color: var(--primary, rgb(16, 185, 129));
   color: rgb(255, 255, 255);
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.action-btn:hover {
+.apply-btn:hover {
   background-color: var(--primary-hover, rgb(5, 150, 105));
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
@@ -158,61 +181,6 @@
   padding: 32px;
   color: var(--text-muted, rgb(100, 116, 139));
   font-style: italic;
-}
-
-.post-ad-inline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.inline-select {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color, rgb(203, 213, 225));
-  background-color: rgb(255, 255, 255);
-  font-weight: 600;
-  color: var(--text-main, rgb(30, 41, 59));
-  outline: none;
-  cursor: pointer;
-}
-
-.inline-select:focus {
-  border-color: var(--primary, rgb(16, 185, 129));
-}
-
-.btn-post-confirm {
-  background-color: var(--primary, rgb(16, 185, 129));
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-post-confirm:hover {
-  background-color: var(--primary-hover, rgb(5, 150, 105));
-}
-
-.btn-post-cancel {
-  background-color: transparent;
-  color: rgb(100, 116, 139);
-  border: 1px solid rgb(203, 213, 225);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-post-cancel:hover {
-  background-color: rgb(241, 245, 249);
-  color: rgb(15, 23, 42);
 }
 
 .success-msg {
