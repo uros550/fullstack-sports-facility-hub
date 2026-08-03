@@ -9,8 +9,10 @@ import com.hub.backend.models.Reservation;
 public interface ReservationRepoInterface {
     
     List<Reservation> getReservationsByAthleteId(int athleteId);
+    List<Reservation> getActiveReservationsByAthleteId(int athleteId);
     boolean cancelReservation(int reservationId);
     String addReservation(Reservation newReservation);
     List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date);
+    int updateMissingPlayers(int missingPlayer, int reservationId);
 
 }

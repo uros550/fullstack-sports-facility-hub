@@ -38,4 +38,9 @@ public class ReservationController {
         return new ReservationRepo().addReservation(newReservation);
     }
 
+    @PostMapping("/updateMP/{id}/{missingPlayers}")
+    public int updateMissingPlayers(@PathVariable int missingPlayers, @PathVariable int id) {
+        return new ReservationRepo().updateMissingPlayers(missingPlayers, id);
+    }
+
 }

@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../models/User';
 import { AthleteProfileComponent } from '../athlete-profile-component/athlete-profile-component';
 import { AthleteReservationComponent } from '../athlete-reservation-component/athlete-reservation-component';
+import { AthleteTeammatesComponent } from '../athlete-teammates-component/athlete-teammates-component';
 
 @Component({
   selector: 'app-athlete-component',
-  imports: [AthleteProfileComponent, AthleteReservationComponent],
+  imports: [AthleteProfileComponent, AthleteReservationComponent, AthleteTeammatesComponent],
   templateUrl: './athlete-component.html',
   styleUrl: './athlete-component.css',
 })

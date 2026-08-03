@@ -36,6 +36,10 @@ export class UserService {
     return this.http.get<Reservation[]>(`${this.path}/reservations/${id}`);
   }
 
+  getActiveReservationsByAthleteId(id: number) {
+    return this.http.get<Reservation[]>(`${this.path}/reservations/active/${id}`);
+  }
+
   cancelReservation(id: number) {
     return this.http.post(`${this.path}/reservations/cancel/${id}`, { responseType: 'text' });
   }
@@ -47,5 +51,9 @@ export class UserService {
   addReservation(reservation: Reservation) {
     return this.http.post(`${this.path}/reservations/create`, reservation, { responseType: 'text' });
   }
+
+  updateMissingPlayers(missingPlayers: number, resId: number) {
+    return this.http.post<number>(`${this.path}/reservations/updateMP/${resId}/${missingPlayers}`, {});
+  } 
   
 }

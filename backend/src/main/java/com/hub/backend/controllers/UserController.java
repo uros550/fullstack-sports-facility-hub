@@ -71,4 +71,9 @@ public class UserController {
         return new ReservationRepo().getReservationsByAthleteId(id);
     }
 
+    @GetMapping("/reservations/active/{id}")
+    public List<Reservation> getActiveReservations(@PathVariable int id) {
+        return new ReservationRepo().getActiveReservationsByAthleteId(id);
+    }
+
 }

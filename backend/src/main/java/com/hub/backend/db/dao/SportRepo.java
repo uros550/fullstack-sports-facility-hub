@@ -36,5 +36,25 @@ public class SportRepo implements SportRepoInterface {
         
         return allSports;
     }
+
+    @Override
+    public int getMaxMissingPlayers(int sportId) {
+        
+        String query = "select requiredPlayers from sport where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, sportId);
+            
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) return rs.getInt("requiredPlayers");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return 0;
+    }
     
 }

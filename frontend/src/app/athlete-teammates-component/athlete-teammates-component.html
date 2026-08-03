@@ -1,0 +1,70 @@
+<span class="table-title">My active reservations</span>
+<div class="table-card">
+    <div class="table-wrapper">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Facility Name</th>
+                    <th>City</th>
+                    <th>Court Name</th>
+                    <th>Sport</th>
+                    <th>Date & Time</th>
+                    <th class="text-center">Missing players?</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (res of reservations; track res.id) {
+                    <tr>
+                        <td class="facility-name">{{ res.facilityName }}</td>
+
+                        <td>
+                            <span class="city-text">{{ res.city }}</span>
+                        </td>
+
+                        <td class="court-name">{{ res.courtName }}</td>
+
+                        <td>
+                            <span class="sport-badge">{{ res.sportName }}</span>
+                        </td>
+
+                        <td class="date-cell">
+                            {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
+                        </td>
+                        
+                        <td class="text-center">
+                            @if (activeReservationId === res.id) {
+                                <div class="post-ad-inline">
+                                    <select [(ngModel)]="selectedMissingPlayers" class="inline-select">
+                                        @for (num of requiredPlayersOptions; track num) {
+                                        <option [value]="num">{{ num }}</option>
+                                        }
+                                    </select>
+
+                                    <button class="btn-post-confirm" (click)="confirmPostAnAd()">
+                                        Post
+                                    </button>
+
+                                    <button class="btn-post-cancel" (click)="closePostAnAd()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            } @else {
+                                <button class="action-btn" (click)="postAnAd(res)">
+                                    <span>Post an ad</span>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                } @empty {
+                    <tr>
+                        <td colspan="6" class="no-data">No reservations found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (successMessage) {
+        <span class="success-msg">{{successMessage}}</span>
+    }
+</div>

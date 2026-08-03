@@ -15,4 +15,8 @@ export class SportService {
     return this.http.get<Sport[]>(this.path);
   }
 
+  getMaxMissingPlayers(sportId: number) {
+    return this.http.get<number>(`${this.path}/requiredPlayers/${sportId}`)
+  }
+
 }

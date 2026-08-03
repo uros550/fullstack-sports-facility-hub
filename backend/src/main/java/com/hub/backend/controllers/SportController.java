@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,11 @@ public class SportController {
     @GetMapping
     public List<Sport> getAllSports() {
         return new SportRepo().getAllSports();
+    }
+
+    @GetMapping("/requiredPlayers/{sportId}")
+    public int getMaxMissingPlayers(@PathVariable int sportId) {
+        return new SportRepo().getMaxMissingPlayers(sportId);
     }
 
 }
