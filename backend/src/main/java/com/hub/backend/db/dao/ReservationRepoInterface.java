@@ -18,7 +18,6 @@ public interface ReservationRepoInterface {
     List<Reservation> getReservationAds(int athleteId);
     List<Application> getAllApplicationsForAthlete(int athleteId);
     boolean applyToAd(int reservationId, int athleteId);
-    List<Application> getAllApplications(int reservationId);
-    List<Application> getPendingApplications(int reservationId);
+    List<Application> getAllApplicationsByAthlete(int athleteId);
 
 }

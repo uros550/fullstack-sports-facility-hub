@@ -176,6 +176,37 @@
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
 
+.action-btn {
+  position: relative;
+  background-color: var(--primary, rgb(16, 185, 129));
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--primary-hover, rgb(5, 150, 105));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.badge-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background-color: rgb(239, 68, 68);
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
 .no-data {
   text-align: center;
   padding: 32px;
@@ -194,4 +225,97 @@
   font-weight: 600;
   margin: 12px 16px;
   text-align: center;
+}
+
+.pfp-wrapper {
+  width: 50px;
+  text-align: center;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color, rgb(226, 232, 240));
+  display: block;
+  margin: 0 auto;
+}
+
+.accepted-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background-color: rgb(220, 252, 231);
+  color: rgb(22, 101, 52);
+  border: 1px solid rgb(187, 247, 208);
+}
+
+.rejected-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background-color: rgb(254, 226, 226);
+  color: rgb(153, 27, 27);
+  border: 1px solid rgb(254, 202, 202);
+}
+
+.no-status {
+  color: rgb(148, 163, 184);
+  font-weight: 600;
+}
+
+.inline-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, rgb(203, 213, 225));
+  background-color: rgb(255, 255, 255);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main, rgb(30, 41, 59));
+  outline: none;
+  cursor: pointer;
+}
+
+.inline-select:focus {
+  border-color: var(--primary, rgb(16, 185, 129));
+}
+
+.btn-respond-confirm {
+  background-color: var(--primary, rgb(16, 185, 129));
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 6px;
+}
+
+.btn-respond-confirm:hover {
+  background-color: var(--primary-hover, rgb(5, 150, 105));
+}
+
+.btn-respond-cancel {
+  background-color: transparent;
+  color: rgb(100, 116, 139);
+  border: 1px solid rgb(203, 213, 225);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 4px;
+}
+
+.btn-respond-cancel:hover {
+  background-color: rgb(241, 245, 249);
+  color: rgb(15, 23, 42);
 }

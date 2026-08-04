@@ -393,15 +393,33 @@ public class ReservationRepo implements ReservationRepoInterface {
     }
 
     @Override
-    public List<Application> getAllApplications(int reservationId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllApplications'");
-    }
+    public List<Application> getAllApplicationsByAthlete(int athleteId) {
+        
+        List<Application> allApplications = new ArrayList<>();
+        String query = "select jr.* from joinrequest jr join reservation r on jr.reservationId = r.id where r.athleteId = ?";
 
-    @Override
-    public List<Application> getPendingApplications(int reservationId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPendingApplications'");
-    } 
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, athleteId);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Application app = new Application(
+                    rs.getInt("id"),
+                    rs.getInt("reservationId"),
+                    rs.getInt("athleteId"),
+                    rs.getString("status")
+                );
+                allApplications.add(app);
+            }
+            return allApplications;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allApplications;
+    }
     
 }

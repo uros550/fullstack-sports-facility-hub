@@ -67,8 +67,11 @@ export class UserService {
   }
 
   applyToAd(reservationId: number, athleteId: number) {
-    console.log("servis: " + reservationId + " " + athleteId);
     return this.http.post<boolean>(`${this.path}/reservations/apply/${reservationId}/${athleteId}`, {});
+  }
+
+  getAllApplicationsByAthlete(athleteId: number) {
+    return this.http.get<Application[]>(`${this.path}/reservations/applications/${athleteId}`);
   }
   
 }

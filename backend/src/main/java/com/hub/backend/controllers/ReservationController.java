@@ -60,4 +60,9 @@ public class ReservationController {
         return new ReservationRepo().applyToAd(id, athleteId);
     }
 
+    @GetMapping("/applications/{athleteId}")
+    public List<Application> getAllApplicationsByAthlete(@PathVariable int athleteId) {
+        return new ReservationRepo().getAllApplicationsByAthlete(athleteId);
+    }
+
 }
