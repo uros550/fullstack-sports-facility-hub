@@ -19,7 +19,7 @@ export class AthleteTeammatesComponent implements OnInit {
   reservations: Reservation[] = [];
   activeReservationId: number = 0;
   requiredPlayersOptions: number[] = [];
-  selectedMissingPlayers: number = 1;
+  selectedMissingPlayers: number = 0;
   
   showAds: boolean = false;
   adsMode: 'my' | 'explore' = 'my';
@@ -54,15 +54,15 @@ export class AthleteTeammatesComponent implements OnInit {
 
     this.sportService.getMaxMissingPlayers(reservation.sportId).subscribe(data => {
       const max = data - 1;
-      this.requiredPlayersOptions = Array.from({ length: max > 0 ? max : 0 }, (_, i) => i + 1);
-      this.selectedMissingPlayers = 1;
+      this.requiredPlayersOptions = Array.from({ length: Math.max(0, max + 1) }, (_, i) => i);
+      this.selectedMissingPlayers = 0;
     });
   }
 
   closePostAnAd() {
     this.activeReservationId = 0;
     this.requiredPlayersOptions = [];
-    this.selectedMissingPlayers = 1;
+    this.selectedMissingPlayers = 0;
   }
 
   confirmPostAnAd() {
@@ -74,7 +74,6 @@ export class AthleteTeammatesComponent implements OnInit {
         this.successMessage = 'Error';
       }
     })
-    console.log("ResId: " + this.activeReservationId + " count: " + this.selectedMissingPlayers);
     this.closePostAnAd();
   }
 
