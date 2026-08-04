@@ -17,6 +17,7 @@ export class AthleteAdsComponent implements OnInit {
   //get mode from parent component and return to it
   @Input() mode: 'my' | 'explore' = 'my'; 
   @Output() backToReservations = new EventEmitter<void>();
+
   currentUser: User | null = null;
   exploreReservations: Reservation[] = [];
   applications: Application[] = [];
@@ -26,7 +27,7 @@ export class AthleteAdsComponent implements OnInit {
   showOptions: boolean = false;
   options: string[] = ['Accept', 'Reject'];
   selectedOption: string = 'Accept';
-  selectedAthlete: AthleteProfile = new AthleteProfile();
+  athletes: AthleteProfile[] = [];
 
   successMessage: string = '';
 
@@ -50,6 +51,11 @@ export class AthleteAdsComponent implements OnInit {
         })
         this.userService.getAllApplicationsByAthlete(this.currentUser.id).subscribe(data => {
           this.myApplications = data;
+          this.myApplications.forEach(app => {
+            this.userService.getProfileById(app.athleteId).subscribe(data => {
+              this.athletes.push(data); //athletes is all athletes that requested to join
+            });
+          })
         })
       } else {
         this.userService.getReservationAds(this.currentUser.id).subscribe(data => {
@@ -79,10 +85,7 @@ export class AthleteAdsComponent implements OnInit {
   }
 
   getAthlete(athleteId: number): AthleteProfile {
-    this.userService.getProfileById(athleteId).subscribe(data => {
-      this.selectedAthlete = data;
-    })
-    return this.selectedAthlete;
+    return this.athletes.find(a => a.id === athleteId) || new AthleteProfile();
   }
 
   getProfilePicture(athlete: AthleteProfile) {
@@ -98,28 +101,40 @@ export class AthleteAdsComponent implements OnInit {
   }
 
   closeCheck() {
-    //ako treba jos nesto
     this.activeReservationId = 0;
   }
 
   openOptions() {
     this.showOptions = true;
+    this.selectedOption = 'Accept';
   }
 
   closeOptions() {
-    //ako treba jos nesto
     this.showOptions = false;
   }
 
-  confirmRespond() {
-    //ako treba jos nesto
+  confirmRespond(athleteId: number) {
     this.closeOptions();
-    this.changeStatus();
+    this.changeStatus(athleteId);
   }
 
-  changeStatus() {
-    //res id se nalazi u active reservation id
-    //poziv za back kasnije
+  changeStatus(athleteId: number) {
+    this.userService.changeStatus(this.activeReservationId, athleteId, this.selectedOption === 'Accept').subscribe(data => {
+      if (data) {
+        this.successMessage = 'Successfully responded';
+        //if success update status
+        for (const app of this.myApplications) {
+          if (app.athleteId === athleteId && app.reservationId === this.activeReservationId) {
+            app.status = this.selectedOption === 'Accept' ? 'ACCEPTED' : 'REJECTED';
+            break;
+          }
+        }
+        this.closeOptions();
+      }
+      else {
+        this.successMessage = 'Failed response';
+      }
+    });
   }
 
   apply(reservationId: number) {

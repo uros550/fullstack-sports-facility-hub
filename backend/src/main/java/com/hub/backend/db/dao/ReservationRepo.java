@@ -356,35 +356,60 @@ public class ReservationRepo implements ReservationRepoInterface {
     @Override
     public boolean applyToAd(int reservationId, int athleteId) {
         
+        String query = "insert into joinrequest (reservationId, athleteId, status) values (?, ?, 'PENDING')";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, reservationId);
+            stm.setInt(2, athleteId);
+
+            return stm.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean acceptRejectApp(int reservationId, int athleteId, boolean accept) {
+        
         String subtractPlayersQuery = "update reservation set missingPlayers = missingPlayers - 1 where id = ?"; 
-        String insertApplication = "insert into joinrequest (reservationId, athleteId, status) values (?, ?, 'PENDING')";
+        String changeStatusQuery = "update joinrequest set status = ? where reservationId = ? and athleteId = ?";
 
         try (
             Connection conn = DB.source().getConnection();
             PreparedStatement subtractStm = conn.prepareStatement(subtractPlayersQuery);
-            PreparedStatement insertStm = conn.prepareStatement(insertApplication);
+            PreparedStatement changeStm = conn.prepareStatement(changeStatusQuery);
         ){
             conn.setAutoCommit(false);
 
-            subtractStm.setInt(1, reservationId);
-            insertStm.setInt(1, reservationId);
-            insertStm.setInt(2, athleteId);
+            changeStm.setString(1, accept ? "ACCEPTED" : "REJECTED");
+            changeStm.setInt(2, reservationId);
+            changeStm.setInt(3, athleteId);
 
-            int rowsUpdated = subtractStm.executeUpdate();
-            int rowsInserted = insertStm.executeUpdate();
-
-            //TEST
-            System.out.println("rows inserted: " + rowsInserted);
-            System.out.println("rows updated: " + rowsUpdated);
-
-            if (rowsInserted > 0 && rowsUpdated > 0) {
-                conn.commit();
-                return true;
-            } else {
+            //this executes anyways
+            int changeRows = changeStm.executeUpdate();
+            if (changeRows == 0) {
                 conn.rollback();
                 return false;
             }
-            
+
+            //if accepted subtract 1 missing player
+            if (accept) {
+                subtractStm.setInt(1, reservationId);
+                int subtractRows = subtractStm.executeUpdate();
+                if (subtractRows == 0) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            conn.commit();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }

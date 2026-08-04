@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,10 +55,14 @@ public class ReservationController {
         return new ReservationRepo().getAllApplicationsForAthlete(athleteId);
     }
 
-    @PostMapping("/apply/{id}/{athleteId}")
+    @PutMapping("/apply/{id}/{athleteId}")
     public boolean applyToAd(@PathVariable int id, @PathVariable int athleteId) {
-        System.out.println("kontroler: " + id + " " + athleteId);
         return new ReservationRepo().applyToAd(id, athleteId);
+    }
+
+    @PostMapping("/changeStatus")
+    public boolean acceptRejectApp(@RequestParam int reservationId, @RequestParam int athleteId, @RequestParam boolean accept) {
+        return new ReservationRepo().acceptRejectApp(reservationId, athleteId, accept);
     }
 
     @GetMapping("/applications/{athleteId}")

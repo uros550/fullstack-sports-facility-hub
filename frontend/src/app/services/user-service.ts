@@ -67,7 +67,17 @@ export class UserService {
   }
 
   applyToAd(reservationId: number, athleteId: number) {
-    return this.http.post<boolean>(`${this.path}/reservations/apply/${reservationId}/${athleteId}`, {});
+    return this.http.put<boolean>(`${this.path}/reservations/apply/${reservationId}/${athleteId}`, {});
+  }
+
+  changeStatus(reservationId: number, athleteId: number, accept: boolean) {
+    return this.http.post<boolean>(`${this.path}/reservations/changeStatus`, null, {
+      params: {
+        reservationId: reservationId, 
+        athleteId: athleteId, 
+        accept: accept
+      }
+    });
   }
 
   getAllApplicationsByAthlete(athleteId: number) {
