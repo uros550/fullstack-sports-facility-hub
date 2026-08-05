@@ -1,0 +1,65 @@
+<!--search box-->
+<div class="search-card">
+    <h2>Search Active Trainers</h2>
+
+    <div class="search-grid">
+        <select [(ngModel)]="selectedSportId">
+            <option [ngValue]="0">All Sports</option>
+            @for (sport of allSports; track sport.id) {
+                <option [ngValue]="sport.id">
+                    {{ sport.name }}
+                </option>
+            }
+        </select>
+
+        <select [(ngModel)]="selectedFacilityId">
+            <option [ngValue]="0">All Facilities</option>
+            @for (facility of allFacilities; track facility.id) {
+                <option [ngValue]="facility.id">
+                    {{ facility.name }}
+                </option>
+            }
+        </select>
+
+        <button (click)="searchTrainers()">Search</button>
+    </div>
+</div>
+
+<!--content layout-->
+<div class="content-layout">
+    <div class="table-card">
+        <h1>Active Trainers</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Specialization</th>
+                    <th>Sport</th>
+                    <th>Facility</th>
+                    <th>Rating</th>
+                    <th>Price / Hour</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (trainer of displayedTrainers; track trainer.id) {
+                    <tr>
+                        <td>{{ trainer.firstName }}</td>
+                        <td>{{ trainer.lastName }}</td>
+                        <td>{{ trainer.specialization }}</td>
+                        <td>{{ trainer.sportName }}</td>
+                        <td>{{ trainer.facilityName }}</td>
+                        <td>{{ trainer.rating }} ★</td>
+                        <td>{{ trainer.pricePerHour }} RSD</td>
+                    </tr>
+                } @empty {
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #888;">No active trainers found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+/*for active trainers page*/
+body {
+    background-color: azure;
+    margin: 0;
+}
+
+/*titles*/
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: rgb(15, 23, 42);
+}
+
+h2 {
+    text-align: left;
+    margin-bottom: 35px;
+    color: rgb(15, 23, 42);
+}
+
+/*search box*/
+.search-card {
+    background-color: white;
+    border-radius: 18px; /*rounded*/
+    padding: 25px;
+    border: 5px solid rgb(15, 23, 42);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    margin-bottom: 35px;
+}
+
+/*forms box (3 fields in 1 row)*/
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /*3 columns in 1 row on laptop*/
+    gap: 15px;
+    margin-top: 20px;
+    align-items: center; /*vertically aligns all elements*/
+}
+
+/*for select fields*/
+.search-grid select {
+    width: 100%;
+    height: 45px; /*same height for all search elements*/
+    padding: 0 12px;
+    border-radius: 10px; /*rounded*/
+    border: 1px solid #ddd;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: white;
+    outline: none;
+    transition: .2s;
+}
+
+.search-grid select:focus {
+    border-color: rgb(47, 181, 130);
+}
+
+/*search button*/
+.search-grid button {
+    height: 45px; /*same height as input fields*/
+    border: none;
+    border-radius: 10px; /*rounded*/
+    background-color: rgb(15, 23, 42);
+    color: white;
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s; /*smooth color change*/
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/*button when hovered*/
+.search-grid button:hover {
+    background-color: rgb(47, 181, 130);
+    transform: scale(1.02);
+}
+
+/*content layout*/
+.content-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+/*table card*/
+.table-card {
+    background: white;
+    border-radius: 18px; /*rounded*/
+    padding: 25px;
+    border: 5px solid rgb(15, 23, 42);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /*no double lines*/
+    margin-top: 15px;
+}
+
+th {
+    background-color: rgb(15, 23, 42);
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+td {
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+tbody tr {
+    transition: .2s;
+}
+
+tbody tr:hover {
+    background-color: rgb(243, 240, 236);
+}
+
+/*adaptation for smaller screens*/
+@media (max-width: 768px) {
+    /*tablets get 2 columns for search elements*/
+    .search-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    /*phones get 1 column for all search elements*/
+    .search-grid {
+        grid-template-columns: 1fr;
+    }
+}

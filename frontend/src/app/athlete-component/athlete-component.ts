@@ -3,10 +3,11 @@ import { User } from '../models/User';
 import { AthleteProfileComponent } from '../athlete-profile-component/athlete-profile-component';
 import { AthleteReservationComponent } from '../athlete-reservation-component/athlete-reservation-component';
 import { AthleteTeammatesComponent } from '../athlete-teammates-component/athlete-teammates-component';
+import { AthleteTrainingComponent } from '../athlete-training-component/athlete-training-component';
 
 @Component({
   selector: 'app-athlete-component',
-  imports: [AthleteProfileComponent, AthleteReservationComponent, AthleteTeammatesComponent],
+  imports: [AthleteProfileComponent, AthleteReservationComponent, AthleteTeammatesComponent, AthleteTrainingComponent],
   templateUrl: './athlete-component.html',
   styleUrl: './athlete-component.css',
 })
