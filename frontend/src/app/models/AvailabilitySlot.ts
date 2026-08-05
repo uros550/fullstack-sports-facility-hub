@@ -1,5 +1,5 @@
 export class AvailabilitySlot {
-    startTime!: string;
-    endTime!: string;
-    available!: boolean;
+  startTime!: string;
+  endTime!: string;
+  available!: boolean;
 }

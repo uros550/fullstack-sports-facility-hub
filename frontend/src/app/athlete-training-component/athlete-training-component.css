@@ -1,3 +1,28 @@
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.redirect-btn {
+  background-color: var(--bg-dark, rgb(15, 23, 42));
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.redirect-btn:hover {
+  background-color: rgb(30, 41, 59);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+}
+
 /*for active trainers page*/
 body {
     background-color: azure;
@@ -102,6 +127,11 @@ th {
     text-align: left;
 }
 
+.text-center {
+  text-align: center;
+}
+
+
 td {
     padding: 15px;
     border-top: 1px solid #eee;
@@ -113,6 +143,50 @@ tbody tr {
 
 tbody tr:hover {
     background-color: rgb(243, 240, 236);
+}
+
+.btn-schedule {
+  background-color: var(--primary, rgb(16, 185, 129));
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-schedule:hover {
+  background-color: var(--primary-hover, rgb(5, 150, 105));
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.status-success {
+  background-color: rgb(209, 250, 229);
+  color: rgb(6, 95, 70);
+  border: 1px solid rgb(167, 243, 208);
+}
+
+.status-pending {
+  background-color: rgb(254, 243, 199);
+  color: rgb(146, 64, 14);
+  border: 1px solid rgb(253, 230, 138);
+}
+
+.status-fail {
+  background-color: rgb(254, 226, 226);
+  color: rgb(153, 27, 27);
+  border: 1px solid rgb(252, 165, 165);
 }
 
 /*adaptation for smaller screens*/

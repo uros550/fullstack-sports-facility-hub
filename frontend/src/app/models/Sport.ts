@@ -1,5 +1,5 @@
 export class Sport {
-    id!: number;
-    name!: string;
-    requiredPlayers!: number;
+  id!: number;
+  name!: string;
+  requiredPlayers!: number;
 }
