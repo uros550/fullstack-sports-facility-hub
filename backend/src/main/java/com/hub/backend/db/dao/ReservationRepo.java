@@ -154,9 +154,10 @@ public class ReservationRepo implements ReservationRepoInterface {
             stm.setTimestamp(5, Timestamp.valueOf(newReservation.getStartTime()));
             stm.setTimestamp(6, Timestamp.valueOf(newReservation.getEndTime()));
             stm.setInt(7, newReservation.getMissingPlayers());
+            
+            //ovde ce biti samo check da li je facility block koji vraca Blocked
 
-            int rowsAffected = stm.executeUpdate();
-            if (rowsAffected > 0) {
+            if (stm.executeUpdate() > 0) {
                 return "Success";
             }
             else {
@@ -165,6 +166,7 @@ public class ReservationRepo implements ReservationRepoInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
         return "";
     }
 
@@ -175,11 +177,13 @@ public class ReservationRepo implements ReservationRepoInterface {
         List<LocalTime[]> reservedTimes = new ArrayList<>();
         String workHoursQuery = "select sf.workingHours from court c join sportsfacility sf on sf.id = c.facilityId where c.id = ?";
         String reservationsQuery = "select startTime, endTime from reservation where courtId = ? and DATE(startTime) = ? and status in ('PENDING', 'CONFIRMED')";
+        String trainingsQuery = "select startTime, endTime from training where courtId = ? and DATE(startTime) = ? and status in ('PENDING', 'CONFIRMED')";
 
         try (
             Connection conn = DB.source().getConnection();
             PreparedStatement workingHoursStm = conn.prepareStatement(workHoursQuery);
             PreparedStatement reservationStm = conn.prepareStatement(reservationsQuery);
+            PreparedStatement trainingStm = conn.prepareStatement(trainingsQuery);
         ){
             //get facility working hours
             workingHoursStm.setInt(1, courtId);
@@ -197,7 +201,7 @@ public class ReservationRepo implements ReservationRepoInterface {
             LocalTime startWorkingTime = LocalTime.parse(hours[0]); //10:00
             LocalTime endWorkingTime = LocalTime.parse(hours[1]);   //22:00
 
-            //get reserved start and end times
+            //get reserved start and end times from reservations
             reservationStm.setInt(1, courtId);
             reservationStm.setDate(2, java.sql.Date.valueOf(date));
 
@@ -213,6 +217,26 @@ public class ReservationRepo implements ReservationRepoInterface {
                     reservedTimes.add(new LocalTime[] {
                         reservationStart,
                         reservationEnd
+                    });
+                }
+            }
+
+            //get reserved start and end times from trainings
+            trainingStm.setInt(1, courtId);
+            trainingStm.setDate(2, java.sql.Date.valueOf(date));
+
+            ResultSet trainingsRs = trainingStm.executeQuery();
+            while (trainingsRs.next()) {
+                Timestamp startTimestamp = trainingsRs.getTimestamp("startTime");
+                Timestamp endTimestamp = trainingsRs.getTimestamp("endTime");
+
+                if (startTimestamp != null && endTimestamp != null) {
+                    LocalTime trainingStart = startTimestamp.toLocalDateTime().toLocalTime();
+                    LocalTime trainingEnd = endTimestamp.toLocalDateTime().toLocalTime();
+                    //add into reserved times array
+                    reservedTimes.add(new LocalTime[] {
+                        trainingStart,
+                        trainingEnd
                     });
                 }
             }

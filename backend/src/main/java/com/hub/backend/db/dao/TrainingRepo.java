@@ -70,5 +70,38 @@ public class TrainingRepo implements TrainingRepoInterface {
 
         return trainings;
     }
+
+    @Override
+    public String reserveTraining(Training newTraining) {
+        
+        String query = "insert into training (trainerId, athleteId, facilityId, courtId, startTime, endTime, price, status) " +
+                        "values(?, ?, ?, ?, ?, ?, ?, 'PENDING')";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, newTraining.getTrainerId());
+            stm.setInt(2, newTraining.getAthleteId());
+            stm.setInt(3, newTraining.getFacilityId());
+            stm.setInt(4, newTraining.getCourtId());
+            stm.setTimestamp(5, Timestamp.valueOf(newTraining.getStartTime()));
+            stm.setTimestamp(6, Timestamp.valueOf(newTraining.getEndTime()));
+            stm.setDouble(7, newTraining.getPrice());
+            
+            //ovde ce biti samo check da li je facility block koji vraca Blocked
+
+            if (stm.executeUpdate() > 0) {
+                return "Success";
+            }
+            else {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
     
 }

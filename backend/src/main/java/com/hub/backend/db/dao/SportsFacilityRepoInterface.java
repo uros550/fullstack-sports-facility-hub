@@ -14,6 +14,7 @@ public interface SportsFacilityRepoInterface {
     SportsFacility getFacilityById(int id);
     int getActiveFacilitiesCount();
     List<Court> getCourtsByFacilityId(int facilityId);
+    List<Court> getCourtsByFacilitySport(int facilityId, int sportId);
     List<String> getImagesByFacilityId(int facilityId);
     List<String> getAllCities();
     List<SportsFacility> searchFacilities(SearchFacilitiesRequest request);

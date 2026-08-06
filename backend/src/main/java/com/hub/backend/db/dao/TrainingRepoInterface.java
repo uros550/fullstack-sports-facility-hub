@@ -7,5 +7,6 @@ import com.hub.backend.models.Training;
 public interface TrainingRepoInterface {
     
     List<Training> getAllTrainingsById(int athleteId);
+    String reserveTraining(Training newTraining);
 
 }

@@ -189,6 +189,236 @@ tbody tr:hover {
   border: 1px solid rgb(252, 165, 165);
 }
 
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.trainer-info {
+  display: flex;
+}
+
+.trainer-info h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 18px;
+  padding: 10px;
+  background-color: rgb(15, 23, 42);
+  color: white;
+}
+
+.trainer-badge {
+  display: inline-block;
+  background-color: rgb(238, 242, 255);
+  color: rgb(79, 70, 229);
+  padding: 10px;
+  border-radius: 18px;
+  font-size: 1rem;
+  font-weight: 750;
+  margin: 0 0 8px 0;
+}
+
+.facility-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: rgb(30, 41, 59);
+}
+
+.courts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.court-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: rgb(248, 250, 252);
+  border-radius: 12px;
+  border: 1px solid rgb(226, 232, 240);
+  transition: 0.2s;
+}
+
+.court-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
+  border-color: rgb(203, 213, 225);
+}
+
+.court-meta h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.court-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: rgb(100, 116, 139);
+}
+
+.court-type {
+  background-color: rgb(241, 245, 249);
+  color: rgb(51, 65, 85);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.reserve-btn {
+  background-color: rgb(16, 185, 129);
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reserve-btn:hover {
+  background-color: rgb(5, 150, 105);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.no-courts-msg {
+  color: rgb(148, 163, 184);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Reservation Section & Form */
+.reserve-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgb(15, 23, 42);
+}
+
+/* Status & Error Messages */
+.message-banner {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.message-banner.success {
+  background-color: rgb(209, 250, 229);
+  color: rgb(6, 95, 70);
+  border: 1px solid rgb(167, 243, 208);
+}
+
+.message-banner.error {
+  background-color: rgb(254, 226, 226);
+  color: rgb(153, 27, 27);
+  border: 1px solid rgb(252, 165, 165);
+}
+
+/* Form Inputs & Selects */
+.reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgb(30, 41, 59);
+}
+
+.form-group input[type="date"],
+.form-group select {
+  width: 100%;
+  height: 45px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgb(226, 232, 240);
+  background-color: rgb(248, 250, 252);
+  font-size: 0.95rem;
+  color: rgb(15, 23, 42);
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group input[type="date"]:focus,
+.form-group select:focus {
+  border-color: rgb(16, 185, 129);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Form Action Buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  background-color: rgb(241, 245, 249);
+  color: rgb(71, 85, 105);
+  border: 1px solid rgb(203, 213, 225);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: rgb(226, 232, 240);
+  color: rgb(30, 41, 59);
+}
+
+.submit-btn {
+  background-color: rgb(16, 185, 129);
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: rgb(5, 150, 105);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.submit-btn:disabled {
+  background-color: rgb(203, 213, 225);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 /*adaptation for smaller screens*/
 @media (max-width: 768px) {
     /*tablets get 2 columns for search elements*/

@@ -13,5 +13,9 @@ export class TrainingService {
   getAllTrainingsById(athleteId: number) {
     return this.http.get<Training[]>(`${this.path}/athlete/${athleteId}`);
   }
+
+  reserveTraining(newTraining: Training) {
+    return this.http.post(`${this.path}/create`, newTraining, { responseType: 'text' });
+  }
   
 }

@@ -219,6 +219,42 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
     }
 
     @Override
+    public List<Court> getCourtsByFacilitySport(int facilityId, int sportId) {
+        List<Court> courts = new ArrayList<>();
+        String query =  "SELECT c.*, s.name AS sportName FROM court c JOIN sport s ON c.sportId = s.id " +
+                        "WHERE c.facilityId = ? and c.sportId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            
+            stm.setInt(1, facilityId);
+            stm.setInt(2, sportId);
+            
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Court court = new Court(
+                    rs.getInt("id"),
+                    rs.getInt("facilityId"),
+                    rs.getInt("sportId"),
+                    rs.getString("name"),
+                    rs.getString("type"),
+                    rs.getInt("capacity"),
+                    rs.getString("equipmentDescription"),
+                    rs.getDouble("pricePerHour"),
+                    rs.getString("sportName") //sport name for details
+                );
+                courts.add(court);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return courts;
+    }
+
+    @Override
     public List<String> getImagesByFacilityId(int facilityId) {
         
         List<String> images = new ArrayList<>();

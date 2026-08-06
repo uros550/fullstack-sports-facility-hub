@@ -1,14 +1,14 @@
-@if (!showArchive) {
+@if (!showArchive && !showSchedule) {
     <div class="button-row">
         <button class="redirect-btn" (click)="openArchive()">Training archive</button>
     </div>
 }
-@else if (showArchive) {
+@else if (showArchive || showSchedule) {
     <div class="button-row">
-        <button class="redirect-btn" (click)="closeArchive()">Back</button>
+        <button class="redirect-btn" (click)="close()">Back</button>
     </div>
 }
-@if (!showArchive) {
+@if (!showArchive && !showSchedule) {
     <!--search box-->
     <div class="search-card">
         <h2>Search Active Trainers</h2>
@@ -66,7 +66,7 @@
                             <td>{{ trainer.rating }} ★</td>
                             <td>{{ trainer.pricePerHour }} RSD</td>
                             <td>
-                                <button class="btn-schedule">Apply</button>
+                                <button class="btn-schedule" (click)="openSchedule(trainer)">Apply</button>
                             </td>
                         </tr>
                     } @empty {
@@ -124,4 +124,82 @@
             </table>
         </div>
     </div>
+}
+@else if (showSchedule) {
+    <div class="schedule-header">
+        <div class="trainer-info">
+            <h2>{{ selectedTrainer?.firstName }} {{ selectedTrainer?.lastName }}</h2>
+            <span class="trainer-badge">{{ selectedTrainer?.pricePerHour }} RSD/h</span>
+        </div>
+    </div>
+    
+    @if (showReserve) {
+        <div class="search-card">
+            <div class="reserve-container">
+                {{reservedCourt?.name}}
+                <div class="reservation-form">
+                    <div class="form-group">
+                        <label for="resDate">Select Date:</label>
+                        <input type="date" id="resDate" [min]="minDate" [(ngModel)]="reservedDate" (change)="changeReservationDate()"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resStartTime">Start Time:</label>
+                        <select id="resStartTime" [(ngModel)]="reservedStartTime" (change)="changeReservationStartTime()">
+                            @for (slot of reservationSlots; track slot.startTime) {
+                                <option [value]="slot.startTime">{{ slot.startTime }}</option>
+                            } @empty {
+                                <option value="">No free slots available</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resDuration">Number of Hours:</label>
+                        <select id="resDuration" [(ngModel)]="selectedDuration">
+                            @for (dur of availableDurations; track dur) {
+                                <option [value]="dur">{{ dur }} {{ dur === 1 ? 'hour' : 'hours' }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="cancel-btn" (click)="closeReserve()">Cancel</button>
+                        <button class="submit-btn" [disabled]="!reservedStartTime || reservationSlots.length === 0" (click)="confirmReservation()">
+                            Confirm Reservation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @else {
+        <div class="search-card">
+            <div class="facility-title">
+                <h2>{{ selectedTrainer?.facilityName }}</h2>
+            </div>
+            <div class="courts-list">
+                @for (court of courts; track court.id) {
+                    <div class="court-row">
+                        <div class="court-meta">
+                            <h3>{{ court.name }}</h3>
+                            <div class="court-details">
+                                <span class="court-type">{{ court.type }} COURT</span>
+                            </div>
+                        </div>
+                        <button class="reserve-btn" (click)="openReserve(court)">Reserve</button>
+                    </div>
+                } @empty {
+                    <p class="no-courts-msg">No courts available for this facility at the moment.</p>
+                }
+            </div>
+        </div>
+        @if (errorMessage) {
+            <div class="message-banner"
+                [class.success]="errorMessage.includes('created') || errorMessage.includes('pending')"
+                [class.error]="!errorMessage.includes('created') && !errorMessage.includes('pending')">
+                {{ errorMessage }}
+            </div>
+        }
+    }
 }

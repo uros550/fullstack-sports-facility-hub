@@ -50,6 +50,11 @@ public class SportsFacilityController {
         return new SportsFacilityRepo().getCourtsByFacilityId(facilityId);
     }
 
+    @GetMapping("/courts/{facilityId}/{sportId}")
+    public List<Court> getCourtsByFacilitySport(@PathVariable int facilityId, @PathVariable int sportId) {
+        return new SportsFacilityRepo().getCourtsByFacilitySport(facilityId, sportId);
+    }
+
     @GetMapping("/images/{facilityId}")
     public List<String> getImagesByFacilityId(@PathVariable int facilityId) {
         return new SportsFacilityRepo().getImagesByFacilityId(facilityId);
