@@ -43,6 +43,7 @@ export class HeaderComponent {
 
   logout() {
     localStorage.removeItem('loggedUser');
+    localStorage.removeItem('cart');
     this.authenticationService.currentUser.set(null);
     this.isDropdownOpen = false;
     this.router.navigate(['/home']);

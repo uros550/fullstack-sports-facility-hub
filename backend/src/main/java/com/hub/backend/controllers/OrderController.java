@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +33,11 @@ public class OrderController {
     @GetMapping("/{orderId}/items")
     public List<OrderItem> getOrderItems(@PathVariable int orderId) {
         return new OrderRepo().getOrderItems(orderId);
+    }
+
+    @PostMapping("/add/{athleteId}")
+    public boolean addOrder(@PathVariable int athleteId, @RequestBody List<OrderItem> items) {
+        return new OrderRepo().addOrder(athleteId, items);
     }
 
     @PutMapping("/cancel/{orderId}")

@@ -10,6 +10,7 @@ public interface OrderRepoInterface {
     List<Order> getHistory(int athleteId);
     List<Order> getActiveOrders(int athleteId);
     List<OrderItem> getOrderItems(int orderId);
+    boolean addOrder(int athleteId, List<OrderItem> items);
     boolean cancelOrder(int orderId);
 
 }

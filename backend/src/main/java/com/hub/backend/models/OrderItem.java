@@ -13,8 +13,7 @@ public class OrderItem {
     //constructors
     public OrderItem() {}
 
-    public OrderItem(int id, int orderId, int equipmentId, String equipmentName, String equipmentImage, int quantity,
-            float priceAtPurchase) {
+    public OrderItem(int id, int orderId, int equipmentId, String equipmentName, String equipmentImage, int quantity, float priceAtPurchase) {
         this.id = id;
         this.orderId = orderId;
         this.equipmentId = equipmentId;

@@ -25,12 +25,15 @@ export class AthleteStoreComponent implements OnInit {
   orderItems: OrderItem[] = [];
   equipment: Equipment[] = [];
   selectedSportId: number = 0;
-  cart: Equipment[] = [];
+  cart: OrderItem[] = [];
+  selectedQuantity: number = 1;
+  selectedItemId: number = 0;
 
   showHistory: boolean = false;
   showActive: boolean = false;
   showItems: boolean = false;
   showCart: boolean = false;
+  showQuantitySelection: boolean = false;
 
   successMessage: string = '';
 
@@ -46,6 +49,16 @@ export class AthleteStoreComponent implements OnInit {
         this.currentUser = JSON.parse(userJson);
       } catch (error) {
         console.error('Local storage getItem error:', error);
+      }
+    }
+
+    const savedCart = localStorage.getItem('cart');
+    
+    if (savedCart) {
+      try {
+        this.cart = JSON.parse(savedCart);
+      } catch (error) {
+        console.error('Error parsing cart from localStorage:', error);
       }
     }
     
@@ -82,6 +95,78 @@ export class AthleteStoreComponent implements OnInit {
     this.loadEquipment();
   }
 
+  getQuantityRange(stock: number): number[] {
+    return Array.from({ length: stock }, (_, i) => i + 1);
+  }
+
+  openAddition(itemId: number) {
+    this.selectedQuantity = 1;
+    this.selectedItemId = itemId;
+    this.showQuantitySelection = true;
+  }
+
+  closeAddition() {
+    this.selectedItemId = 0;
+    this.showQuantitySelection = false;
+  }
+
+  addToCart(item: Equipment) {
+    if (!item || this.selectedQuantity <= 0) return;
+
+    //if item already exists in cart
+    const existingItem = this.cart.find(cartItem => cartItem.equipmentId === item.id);
+    const currentInCart = existingItem ? existingItem.quantity : 0;
+
+    //if exceeds stock
+    if (currentInCart + this.selectedQuantity > item.stock) {
+      alert(`Exceeds stock limit. Available: ${item.stock}, already in cart: ${currentInCart}.`);
+      return;
+    }
+
+    //if exists just update quantity
+    if (existingItem) {
+      existingItem.quantity += this.selectedQuantity;
+    }
+    //create new orderItem add to cart
+    else {
+      const newOrderItem: OrderItem = {
+        id: 0,
+        orderId: 0,
+        equipmentId: item.id,
+        equipmentName: item.name,
+        equipmentImage: item.imageUrl,
+        quantity: this.selectedQuantity,
+        priceAtPurchase: item.price
+      };
+
+      this.cart.push(newOrderItem);
+    }
+
+    //save cart so it does not disappear when refreshed
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    this.closeAddition();
+  }
+
+  removeFromCart(item: OrderItem) {
+    if (!item || this.selectedQuantity <= 0) return;
+
+    if (item.quantity > this.selectedQuantity) {
+      //subtract quantity
+      item.quantity -= this.selectedQuantity;
+    }
+    else if (item.quantity === this.selectedQuantity) {
+      //remove from cart
+      this.cart = this.cart.filter(c => c.equipmentId !== item.equipmentId);
+    }
+    else {
+      alert(`Can not remove ${this.selectedQuantity} item(s). In cart only: ${item.quantity}.`);
+      return;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    this.closeAddition();
+  }
+
   cancelOrder(orderId: number) {
     const isConfirmed = window.confirm('Are you sure you want to cancel this order?');
 
@@ -100,6 +185,31 @@ export class AthleteStoreComponent implements OnInit {
         }
       })
     }
+  }
+
+  getCartTotal(): number {
+    return this.cart.reduce((sum, item) => sum + (item.priceAtPurchase * item.quantity), 0);
+  }
+
+  pay() {
+    if (!this.currentUser || this.cart.length === 0) return;
+
+    this.orderService.addOrder(this.currentUser.id, this.cart).subscribe(success => {
+      if (success) {
+        this.successMessage = 'Order placed successfully!';
+        this.cart = [];
+        localStorage.removeItem('cart');
+        this.loadEquipment();
+        this.loadOrders();
+        this.showCart = false;
+
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 3000);
+      } else {
+        alert('Failed to place order. Some items might be out of stock.');
+      }
+    });
   }
 
   openCart() {

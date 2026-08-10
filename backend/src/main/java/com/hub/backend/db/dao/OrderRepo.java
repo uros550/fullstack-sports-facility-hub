@@ -3,6 +3,7 @@ package com.hub.backend.db.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -119,6 +120,88 @@ public class OrderRepo implements OrderRepoInterface {
     }
 
     @Override
+    public boolean addOrder(int athleteId, List<OrderItem> items) {
+        if (items == null || items.isEmpty()) {
+            return false;
+        }
+
+        String insertOrderQuery = "INSERT INTO `Order` (athleteId, orderDate, status) VALUES (?, NOW(), 'ACCEPTED')";
+        String selectEquipmentQuery = "SELECT price, stock FROM Equipment WHERE id = ?";
+        String insertOrderItemQuery = "INSERT INTO OrderItem (orderId, equipmentId, quantity, priceAtPurchase) VALUES (?, ?, ?, ?)";
+        String updateStockQuery = "UPDATE Equipment SET stock = stock - ? WHERE id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement insertOrderStm = conn.prepareStatement(insertOrderQuery, Statement.RETURN_GENERATED_KEYS); //get new orderId
+            PreparedStatement selectEquipmentStm = conn.prepareStatement(selectEquipmentQuery);
+            PreparedStatement insertOrderItemStm = conn.prepareStatement(insertOrderItemQuery);
+            PreparedStatement updateStockStm = conn.prepareStatement(updateStockQuery)
+        ){
+            conn.setAutoCommit(false);
+            
+            //insert into order
+            insertOrderStm.setInt(1, athleteId);
+            int rowsUpdated = insertOrderStm.executeUpdate();
+            if (rowsUpdated == 0) {
+                conn.rollback();
+                return false;
+            }
+
+            //get autoincrement orderId
+            int orderId = -1;
+            try (ResultSet generatedKeys = insertOrderStm.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    orderId = generatedKeys.getInt(1);
+                } else {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            //add every item from cart
+            for (OrderItem item : items) {
+
+                selectEquipmentStm.setInt(1, item.getEquipmentId());
+                ResultSet rs = selectEquipmentStm.executeQuery();
+                if (rs.next()) {
+                    int currentStock = rs.getInt("stock");
+                    float price = rs.getFloat("price");
+
+                    //error not enough in stock
+                    if (currentStock < item.getQuantity()) {
+                        conn.rollback();
+                        return false;
+                    }
+
+                    //insert into orderItem
+                    insertOrderItemStm.setInt(1, orderId);
+                    insertOrderItemStm.setInt(2, item.getEquipmentId());
+                    insertOrderItemStm.setInt(3, item.getQuantity());
+                    insertOrderItemStm.setFloat(4, price);
+                    insertOrderItemStm.executeUpdate();
+
+                    //subtract quantity from stock
+                    updateStockStm.setInt(1, item.getQuantity());
+                    updateStockStm.setInt(2, item.getEquipmentId());
+                    updateStockStm.executeUpdate();
+                }
+                else {
+                    //error equipment is not in database
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean cancelOrder(int orderId) {
         
         String updateOrderQuery = "UPDATE `Order` SET status = 'CANCELLED' WHERE id = ? AND status = 'ACCEPTED'";
@@ -145,6 +228,7 @@ public class OrderRepo implements OrderRepoInterface {
             selectItemsStm.setInt(1, orderId);
             ResultSet rs = selectItemsStm.executeQuery();
             while (rs.next()) {
+                //update every equipments stock
                 updateStockStm.setInt(1, rs.getInt("quantity"));
                 updateStockStm.setInt(2, rs.getInt("equipmentId"));
                 updateStockStm.executeUpdate();

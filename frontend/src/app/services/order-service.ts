@@ -23,6 +23,10 @@ export class OrderService {
     return this.http.get<OrderItem[]>(`${this.path}/${orderId}/items`);
   }
 
+  addOrder(athleteId: number, items: OrderItem[]) {
+    return this.http.post<boolean>(`${this.path}/add/${athleteId}`, items);
+  }
+
   cancelOrder(orderId: number) {
     return this.http.put<boolean>(`${this.path}/cancel/${orderId}`, {});
   }
