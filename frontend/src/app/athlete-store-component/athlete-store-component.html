@@ -6,45 +6,48 @@
         {{ successMessage }}
       </div>
     }
+    @if (showCart) {
+        <div class="card-header">
+            <h3>My Cart</h3>
+            <button class="redirect-btn" (click)="close()">Back</button>
+        </div>
+    }
+    @else if (showItems) {
+        <div class="card-header">
+            <h3>Order Items</h3>
+            <button class="redirect-btn" (click)="closeItems()">Back</button>
+        </div>
 
-    @if (showItems) {
-        @if (showItems) {
-            <div class="card-header">
-                <h3>Order Items</h3>
-                <button class="redirect-btn" (click)="closeItems()">Back</button>
-            </div>
-
-            <table class="orders-table">
-                <thead>
+        <table class="orders-table">
+            <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (item of orderItems; track item.id) {
                 <tr>
-                    <th>Image</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                <td>
+                    <img 
+                    [src]="'http://localhost:8080/' + item.equipmentImage" 
+                    [alt]="item.equipmentName" 
+                    class="item-img"
+                    />
+                </td>
+                <td class="item-name">{{ item.equipmentName }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.priceAtPurchase }} RSD</td>
                 </tr>
-                </thead>
-                <tbody>
-                @for (item of orderItems; track item.id) {
-                    <tr>
-                    <td>
-                        <img 
-                        [src]="'http://localhost:8080/' + item.equipmentImage" 
-                        [alt]="item.equipmentName" 
-                        class="item-img"
-                        />
-                    </td>
-                    <td class="item-name">{{ item.equipmentName }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.priceAtPurchase }} RSD</td>
-                    </tr>
-                } @empty {
-                    <tr>
-                    <td colspan="4" class="empty-message">No items found for this order.</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        }
+            } @empty {
+                <tr>
+                <td colspan="4" class="empty-message">No items found for this order.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     }
     @else if (showHistory) {
       <div class="card-header">
@@ -122,13 +125,62 @@
     }
     @else {
       <div class="card-header">
-        <h3>Explore Shop</h3>
+        <h2>Explore Shop</h2>
         <div class="btn-group">
           <button class="redirect-btn" (click)="openHistory()">Order history</button>
           <button class="redirect-btn" (click)="openActive()">Active orders</button>
+          <button class="redirect-btn" (click)="openCart()">🛒</button>
         </div>
       </div>
+      <div class="shop-section">
+        <div class="shop-filter-header">
+            <div class="filter-group">
+                <select class="sport-select" [(ngModel)]="selectedSportId">
+                    <option [value]="0">All Sports</option>
+                    @for (sport of sports; track sport.id) {
+                        <option [value]="sport.id">{{ sport.name }}</option>
+                    }
+                </select>
+                <button class="action-btn" (click)="changeSport()">Confirm</button>
+            </div>
+        </div>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Sport</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of equipment; track item.id) {
+                    <tr>
+                        <td>
+                        <img 
+                            [src]="'http://localhost:8080/' + item.imageUrl" 
+                            [alt]="item.name" 
+                            class="item-img"
+                        />
+                        </td>
+                        <td class="item-name">{{ item.name }}</td>
+                        <td>{{ item.sportName }}</td>
+                        <td>{{ item.price }} RSD</td>
+                        <td>
+                        <span class="stock-badge" [class.out-of-stock]="item.stock === 0">
+                            {{ item.stock > 0 ? item.stock + ' in stock' : 'Out of stock' }}
+                        </span>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="5" class="empty-message">No equipment available for the selected sport.</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
-
   </div>
 </div>

@@ -42,6 +42,12 @@
   color: rgb(26, 37, 54);
 }
 
+.card-header h2 {
+  margin: 0;
+  color: rgb(26, 37, 54);
+  font-size: 1.75rem;
+}
+
 .btn-group {
   display: flex;
   gap: 12px;
@@ -159,4 +165,45 @@
 .item-name {
   font-weight: 500;
   color: rgb(26, 37, 54);
+}
+
+.shop-section {
+  margin-top: 1rem;
+}
+
+.shop-filter-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sport-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgb(226, 232, 240);
+  background-color: rgb(248, 250, 252);
+  color: rgb(26, 37, 54);
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.stock-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: rgb(220, 252, 231);
+  color: rgb(21, 128, 61);
+}
+
+.stock-badge.out-of-stock {
+  background-color: rgb(254, 226, 226);
+  color: rgb(185, 28, 28);
 }

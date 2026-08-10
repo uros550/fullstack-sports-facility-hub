@@ -4,10 +4,15 @@ import { OrderService } from '../services/order-service';
 import { Order } from '../models/Order';
 import { DatePipe } from '@angular/common';
 import { OrderItem } from '../models/OrderItem';
+import { SportService } from '../services/sport-service';
+import { Sport } from '../models/Sport';
+import { EquipmentService } from '../services/equipment-service';
+import { Equipment } from '../models/Equipment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-athlete-store-component',
-  imports: [DatePipe],
+  imports: [FormsModule, DatePipe],
   templateUrl: './athlete-store-component.html',
   styleUrl: './athlete-store-component.css',
 })
@@ -16,15 +21,21 @@ export class AthleteStoreComponent implements OnInit {
   currentUser: User | null = null;
   activeOrders: Order[] = [];
   historyOrders: Order[] = [];
+  sports: Sport[] = [];
   orderItems: OrderItem[] = [];
+  equipment: Equipment[] = [];
+  selectedSportId: number = 0;
 
   showHistory: boolean = false;
   showActive: boolean = false;
   showItems: boolean = false;
+  showCart: boolean = false;
 
   successMessage: string = '';
 
   private orderService = inject(OrderService);
+  private sportService = inject(SportService);
+  private equipmentService = inject(EquipmentService);
 
   ngOnInit() {
     const userJson = localStorage.getItem('loggedUser');
@@ -38,6 +49,8 @@ export class AthleteStoreComponent implements OnInit {
     }
     
     this.loadOrders();
+    this.loadEquipment();
+    this.loadSports();
   }
 
   loadOrders() {
@@ -50,6 +63,22 @@ export class AthleteStoreComponent implements OnInit {
     this.orderService.getHistory(this.currentUser.id).subscribe(data => {
       this.historyOrders = data;
     });
+  }
+
+  loadEquipment() {
+   this.equipmentService.getEquipmentBySport(this.selectedSportId).subscribe(data => {
+      this.equipment = data;
+    })
+  }
+
+  loadSports() {
+    this.sportService.getAllSports().subscribe(data => {
+      this.sports = data;
+    })
+  }
+
+  changeSport() {
+    this.loadEquipment();
   }
 
   cancelOrder(orderId: number) {
@@ -72,6 +101,10 @@ export class AthleteStoreComponent implements OnInit {
     }
   }
 
+  openCart() {
+    this.showCart = true;
+  }
+
   openHistory() {
     this.showHistory = true;
   }
@@ -83,6 +116,7 @@ export class AthleteStoreComponent implements OnInit {
   close() {
     this.showHistory = false;
     this.showActive = false;
+    this.showCart = false;
     this.successMessage = '';
   }
 
