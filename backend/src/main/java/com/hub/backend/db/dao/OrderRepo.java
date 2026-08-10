@@ -114,21 +114,44 @@ public class OrderRepo implements OrderRepoInterface {
             e.printStackTrace();
         }
 
+
         return items;
     }
 
     @Override
     public boolean cancelOrder(int orderId) {
         
-        String query = "update `Order` set status = 'CANCELLED' where id = ? and status = 'ACCEPTED'";
+        String updateOrderQuery = "UPDATE `Order` SET status = 'CANCELLED' WHERE id = ? AND status = 'ACCEPTED'";
+        String selectItemsQuery = "SELECT equipmentId, quantity FROM OrderItem WHERE orderId = ?";
+        String updateStockQuery = "UPDATE Equipment SET stock = stock + ? WHERE id = ?";
 
         try (
             Connection conn = DB.source().getConnection();
-            PreparedStatement stm = conn.prepareStatement(query);
+            PreparedStatement updateOrderStm = conn.prepareStatement(updateOrderQuery);
+            PreparedStatement selectItemsStm = conn.prepareStatement(selectItemsQuery);
+            PreparedStatement updateStockStm = conn.prepareStatement(updateStockQuery);
         ){
-            stm.setInt(1, orderId);
+            conn.setAutoCommit(false);
 
-            return stm.executeUpdate() > 0;    
+            //update order to cancelled
+            updateOrderStm.setInt(1, orderId);
+            int rowsUpdated = updateOrderStm.executeUpdate();
+            if (rowsUpdated == 0) {
+                conn.rollback();
+                return false;
+            }
+
+            //get all equipment ids that were cancelled and its quantities
+            selectItemsStm.setInt(1, orderId);
+            ResultSet rs = selectItemsStm.executeQuery();
+            while (rs.next()) {
+                updateStockStm.setInt(1, rs.getInt("quantity"));
+                updateStockStm.setInt(2, rs.getInt("equipmentId"));
+                updateStockStm.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }

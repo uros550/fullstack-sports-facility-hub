@@ -25,6 +25,7 @@ export class AthleteStoreComponent implements OnInit {
   orderItems: OrderItem[] = [];
   equipment: Equipment[] = [];
   selectedSportId: number = 0;
+  cart: Equipment[] = [];
 
   showHistory: boolean = false;
   showActive: boolean = false;
