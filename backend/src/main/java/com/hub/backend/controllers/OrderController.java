@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.OrderRepo;
 import com.hub.backend.models.Order;
+import com.hub.backend.models.OrderItem;
 
 @RestController
 @RequestMapping("/orders")
@@ -25,6 +26,11 @@ public class OrderController {
     @GetMapping("/active/{athleteId}")
     public List<Order> getActiveOrders(@PathVariable int athleteId) {
         return new OrderRepo().getActiveOrders(athleteId);
+    }
+
+    @GetMapping("/{orderId}/items")
+    public List<OrderItem> getOrderItems(@PathVariable int orderId) {
+        return new OrderRepo().getOrderItems(orderId);
     }
 
     @PutMapping("/cancel/{orderId}")

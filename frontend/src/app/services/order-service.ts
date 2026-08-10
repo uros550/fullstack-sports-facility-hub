@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Order } from '../models/Order';
+import { OrderItem } from '../models/OrderItem';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,10 @@ export class OrderService {
 
   getActiveOrders(athleteId: number) {
     return this.http.get<Order[]>(`${this.path}/active/${athleteId}`);
+  }
+
+  getOrderItems(orderId: number) {
+    return this.http.get<OrderItem[]>(`${this.path}/${orderId}/items`);
   }
 
   cancelOrder(orderId: number) {

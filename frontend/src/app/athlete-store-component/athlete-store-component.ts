@@ -2,10 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../models/User';
 import { OrderService } from '../services/order-service';
 import { Order } from '../models/Order';
+import { DatePipe } from '@angular/common';
+import { OrderItem } from '../models/OrderItem';
 
 @Component({
   selector: 'app-athlete-store-component',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './athlete-store-component.html',
   styleUrl: './athlete-store-component.css',
 })
@@ -14,9 +16,11 @@ export class AthleteStoreComponent implements OnInit {
   currentUser: User | null = null;
   activeOrders: Order[] = [];
   historyOrders: Order[] = [];
+  orderItems: OrderItem[] = [];
 
   showHistory: boolean = false;
   showActive: boolean = false;
+  showItems: boolean = false;
 
   successMessage: string = '';
 
@@ -81,4 +85,17 @@ export class AthleteStoreComponent implements OnInit {
     this.showActive = false;
     this.successMessage = '';
   }
+
+  openItems(orderId: number) {
+    this.showItems = true;
+    this.orderItems = [];
+    this.orderService.getOrderItems(orderId).subscribe(data => {
+      this.orderItems = data;
+    })
+  }
+
+  closeItems() {
+    this.showItems = false;
+  }
+
 }

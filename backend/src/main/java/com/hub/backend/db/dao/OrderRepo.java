@@ -84,8 +84,37 @@ public class OrderRepo implements OrderRepoInterface {
 
     @Override
     public List<OrderItem> getOrderItems(int orderId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getOrderItems'");
+        
+        List<OrderItem> items = new ArrayList<>();
+        String query =  "select oi.id, oi.orderId, e.id as eId, e.name as eName, e.imageUrl as eImage, oi.quantity, oi.priceAtPurchase " +
+                        "from orderItem oi join equipment e on e.id = oi.equipmentId where oi.orderId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, orderId);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                OrderItem oi = new OrderItem(
+                    rs.getInt("id"),
+                    rs.getInt("orderId"),
+                    rs.getInt("eId"),
+                    rs.getString("eName"),
+                    rs.getString("eImage"),
+                    rs.getInt("quantity"),
+                    rs.getFloat("priceAtPurchase")
+                );
+                items.add(oi);
+            }
+
+            return items;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return items;
     }
 
     @Override
