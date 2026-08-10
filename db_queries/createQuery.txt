@@ -239,7 +239,7 @@ CREATE TABLE `Order` (
     orderDate DATETIME NOT NULL,
     status VARCHAR(20) NOT NULL,
     CONSTRAINT fk_order_athlete FOREIGN KEY (athleteId) REFERENCES User(id),
-    CONSTRAINT chk_order_status CHECK (status IN ('PENDING', 'ACCEPTED', 'PICKED_UP', 'CANCELLED'))
+    CONSTRAINT chk_order_status CHECK (status IN ('ACCEPTED', 'PICKED_UP', 'CANCELLED'))
 );
 
 -- =====================================================

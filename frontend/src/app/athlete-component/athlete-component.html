@@ -34,6 +34,11 @@
                 <span>Equipment Store</span>
             </button>
 
+            <button class="menu-item" [class.active]="activeTab === 'reviews'" (click)="setActiveTab('reviews')">
+                ⭐
+                <span>Reviews</span>
+            </button>
+
             <button class="menu-item" [class.active]="activeTab === 'statistics'" (click)="setActiveTab('statistics')">
                 📊
                 <span>Statistics</span>
@@ -63,8 +68,11 @@
                     <app-athlete-training-component></app-athlete-training-component>
                 }
                 @case ('store') {
+                    <app-athlete-store-component></app-athlete-store-component>
+                }
+                @case ('reviews') {
                     <div class="content-placeholder">
-                        Equipment Store Component goes here.
+                        Reviews Component goes here.
                     </div>
                 }
                 @case ('statistics') {
