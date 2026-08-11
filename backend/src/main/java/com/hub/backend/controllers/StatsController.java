@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.StatsRepo;
+import com.hub.backend.models.MonthlyActivity;
 import com.hub.backend.models.SportReservationStats;
 
 @RestController
@@ -18,6 +19,11 @@ public class StatsController {
     @GetMapping("/played/reserved/perSport")
     public List<SportReservationStats> getPlayedReservedPerSport() {
         return new StatsRepo().getPlayedReservedPerSport();
+    }
+
+    @GetMapping("/monthly/activity")
+    public List<MonthlyActivity> getMonthlyActivity() {
+        return new StatsRepo().getMonthlyActivity();
     }
 
 }

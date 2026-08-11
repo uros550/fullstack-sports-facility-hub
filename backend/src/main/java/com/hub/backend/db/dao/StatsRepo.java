@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.MonthlyActivity;
 import com.hub.backend.models.SportReservationStats;
 
 public class StatsRepo implements StatsRepoInterface {
@@ -33,6 +34,38 @@ public class StatsRepo implements StatsRepoInterface {
                     rs.getInt("reservedCount"),
                     rs.getInt("playedCount")
                 ));
+            }
+
+            return stats;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
+
+    @Override
+    public List<MonthlyActivity> getMonthlyActivity() {
+
+        List<MonthlyActivity> stats = new ArrayList<>();
+        String query = "SELECT DATE_FORMAT(r.startTime, '%Y-%m') AS month, " + //as 2026-08 for example
+                       "COUNT(r.id) AS activityCount " +
+                       "FROM reservation r " +
+                       "WHERE YEAR(r.startTime) = YEAR(CURRENT_DATE) AND r.status = 'CONFIRMED' " +
+                       "GROUP BY DATE_FORMAT(r.startTime, '%Y-%m') " +
+                       "ORDER BY month ASC";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                MonthlyActivity ma = new MonthlyActivity(
+                    rs.getString("month"),
+                    rs.getInt("activityCount")
+                );
+                stats.add(ma);
             }
 
             return stats;
