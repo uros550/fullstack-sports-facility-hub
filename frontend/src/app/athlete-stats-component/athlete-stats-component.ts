@@ -3,6 +3,7 @@ import { Chart, registerables } from 'chart.js';
 import { StatsService } from '../services/stats-service';
 import { SportReservedStats } from '../models/SportReservationStats';
 import { MonthlyActivity } from '../models/MonthlyActivity';
+import { EquipmentSpending } from '../models/EquipmentSpending';
 
 Chart.register(...registerables);
 
@@ -39,7 +40,7 @@ export class AthleteStatsComponent implements OnInit {
     } else if (tab === 'monthly') {
       this.loadMonthlyActivity();
     } else if (tab === 'spending') {
-      //later spending ring
+      this.loadEquipmentSpending();
     }
   }
 
@@ -58,6 +59,16 @@ export class AthleteStatsComponent implements OnInit {
       setTimeout(() => {
         if (this.playedReservedChartCanvas) {
           this.renderLineChart(data);
+        }
+      }, 0);
+    });
+  }
+
+  loadEquipmentSpending() {
+    this.statsService.getEquipmentSpending().subscribe((data) => {
+      setTimeout(() => {
+        if (this.playedReservedChartCanvas) {
+          this.renderDoughnutChart(data);
         }
       }, 0);
     });
@@ -140,6 +151,73 @@ export class AthleteStatsComponent implements OnInit {
           },
         },
       },
+    });
+  }
+
+  renderDoughnutChart(spendingData: EquipmentSpending[]) {
+    const labels = spendingData.map((item) => item.month);
+    const data = spendingData.map((item) => item.totalSpent);
+
+    //get total spent sum
+    const totalSpent = spendingData.reduce((sum, item) => sum + item.totalSpent, 0);
+
+    //center text inside the doughnut
+    const centerTextPlugin = {
+      id: 'centerText',
+      beforeDraw(chart: any) {
+        const { ctx, chartArea } = chart;
+        if (!chartArea) return;
+
+        const centerX = (chartArea.left + chartArea.right) / 2;
+        const centerY = (chartArea.top + chartArea.bottom) / 2;
+
+        ctx.save();
+
+        ctx.font = '600 14px sans-serif';
+        ctx.fillStyle = 'rgb(100, 116, 139)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Total', centerX, centerY - 12);
+
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillStyle = 'rgb(15, 23, 42)';
+        ctx.fillText(`${totalSpent.toFixed(2)} RSD`, centerX, centerY + 12);
+
+        ctx.restore();
+      }
+    };
+
+    this.chart = new Chart(this.playedReservedChartCanvas.nativeElement, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Spending (RSD)',
+            data: data,
+            backgroundColor: [
+              'rgb(15, 23, 42)',
+              'rgb(16, 185, 129)',
+              'rgb(59, 130, 246)',
+              'rgb(245, 158, 11)',
+              'rgb(239, 68, 68)',
+              'rgb(168, 85, 247)'
+            ],
+            borderWidth: 2,
+            borderColor: 'rgb(255, 255, 255)',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+        },
+      },
+      plugins: [centerTextPlugin]
     });
   }
 }
