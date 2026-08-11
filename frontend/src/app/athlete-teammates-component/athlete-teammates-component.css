@@ -100,6 +100,13 @@
   white-space: nowrap;
 }
 
+.custom-table th:last-child,
+.custom-table td:last-child {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+}
+
 .facility-name {
   font-weight: 700;
   color: var(--text-main, rgb(30, 41, 59));
