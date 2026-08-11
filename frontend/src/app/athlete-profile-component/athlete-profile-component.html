@@ -148,32 +148,32 @@
             <tr>
                 <th (click)="sort('facilityName')">
                 Facility 
-                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <span class="sort-icon">{{ sortColumn === 'facilityName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
                 <th (click)="sort('city')">
                 City 
-                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <span class="sort-icon">{{ sortColumn === 'city' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
                 <th (click)="sort('courtName')">
                 Court 
-                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <span class="sort-icon">{{ sortColumn === 'courtName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
                 <th (click)="sort('sportName')">
                 Sport 
-                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <span class="sort-icon">{{ sortColumn === 'sportName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
                 <th (click)="sort('startTime')">
                 Time
-                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <span class="sort-icon">{{ sortColumn === 'startTime' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
                 <th (click)="sort('status')">
                 Status 
-                <span class="sort-icon">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <span class="sort-icon">{{ sortColumn === 'status' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
                 <th></th>
