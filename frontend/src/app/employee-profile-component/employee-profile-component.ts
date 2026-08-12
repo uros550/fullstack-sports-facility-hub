@@ -6,6 +6,7 @@ import { SportsFacilityService } from '../services/sports-facility-service';
 import { AuthenticationService } from '../services/authentication-service';
 import { AthleteProfile } from '../models/AthleteProfile';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-profile-component',
@@ -35,6 +36,7 @@ export class EmployeeProfileComponent implements OnInit {
   private userService = inject(UserService);
   private facilityService = inject(SportsFacilityService);
   private authService = inject(AuthenticationService);
+  private router = inject(Router);
 
   ngOnInit() {
     const userJson = localStorage.getItem('loggedUser');
@@ -59,10 +61,13 @@ export class EmployeeProfileComponent implements OnInit {
           }
         }
       });
+      
+      //get facilities by employee id
+      this.facilityService.getFacilitiesForEmployee(this.currentUser.id).subscribe(data => {
+        this.myFacilities = data;
+      })
 
     }
-
-    //get facilities by employee id (kasnije)
   }
 
   //main methods
@@ -231,6 +236,10 @@ export class EmployeeProfileComponent implements OnInit {
     this.isRemoveRequested = false;
 
     this.successMessage = 'Profile successfully updated';
+  }
+
+  goToDetails(facilityId: number) {
+    this.router.navigate(['/facility', facilityId]);
   }
 
 }

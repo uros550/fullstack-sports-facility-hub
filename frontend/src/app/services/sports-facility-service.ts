@@ -27,6 +27,10 @@ export class SportsFacilityService {
     return this.http.get<SportsFacility>(`${this.path}/${id}`);
   }
 
+  getFacilitiesForEmployee(employeeId: number) {
+    return this.http.get<SportsFacility[]>(`${this.path}/employee/${employeeId}`);
+  }
+
   getActiveFacilitiesCount() {
     return this.http.get<number>(`${this.path}/count`);
   }

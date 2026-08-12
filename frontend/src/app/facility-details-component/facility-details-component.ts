@@ -58,6 +58,9 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
   baseUrl: string = 'http://localhost:8080/';
   //map
   map: L.Map | null = null;
+  //is employee logged in
+  isEmployee: boolean = false;
+  employeeId: number = 0;
 
   errorMessage: string = '';
 
@@ -97,6 +100,10 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
     if (user && user.role === 'ATHLETE') {
       this.athleteId = user.id;
       this.isAthlete = true;
+    }
+    else if (user && user.role === 'EMPLOYEE') {
+      this.employeeId = user.id;
+      this.isEmployee = true;
     }
   }
 
@@ -356,6 +363,9 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
           searchRequest: history.state.searchRequest
         }
       });
+    }
+    if (this.isEmployee) {
+      this.router.navigate(['/employee-dashboard'])
     }
     else {
       this.router.navigate(['/home'], {

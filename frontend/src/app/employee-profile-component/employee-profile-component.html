@@ -117,6 +117,45 @@
         </div>
 
     </div>
+
+    <div class="facilities-section">
+
+        <h3>My Facilities</h3>
+
+        <table class="facilities-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+
+                <th>Address</th>
+
+                <th>Description</th>
+
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @for (fac of myFacilities; track fac.id) {
+                <tr>
+                    <td>{{ fac.name }}</td>
+                    <td>{{ fac.address }}, {{ fac.city }}</td>
+                    <td>{{ fac.description }}</td>
+                    <td>
+                        <button class="details-btn" (click)="goToDetails(fac.id)">
+                            Details
+                        </button>
+                    </td>
+                </tr>
+            } @empty {
+                <tr>
+                    <td colspan="7" class="no-data">No reservation record.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
 }
 @else {
     <div class="negative-state">

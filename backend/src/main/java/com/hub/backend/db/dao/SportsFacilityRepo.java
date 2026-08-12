@@ -163,6 +163,44 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
     }
 
     @Override
+    public List<SportsFacility> getFacilitiesForEmployee(int employeeId) {
+        
+        List<SportsFacility> facilities = new ArrayList<>();
+        String query = "select sf.* from sportsFacility sf join facilityEmployee fe on sf.id = fe.facilityId where fe.employeeId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, employeeId);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                SportsFacility sf = new SportsFacility(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("mb"),
+                    rs.getString("pib"),
+                    rs.getString("description"),
+                    rs.getDouble("latitude"),
+                    rs.getDouble("longitude"),
+                    rs.getString("workingHours"),
+                    rs.getInt("maxPenalties"),
+                    rs.getInt("likesCount"),
+                    rs.getString("status")
+                );
+                facilities.add(sf);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return facilities;
+    }
+
+    @Override
     public int getActiveFacilitiesCount() {
 
         int count = 0;

@@ -40,6 +40,11 @@ public class SportsFacilityController {
         return new SportsFacilityRepo().getFacilityById(id);
     }
 
+    @GetMapping("/employee/{employeeId}")
+    public List<SportsFacility> getFacilitiesFromEmployee(@PathVariable int employeeId) {
+        return new SportsFacilityRepo().getFacilitiesForEmployee(employeeId);
+    }
+
     @GetMapping("/count")
     public int getActiveFacilitiesCount() {
         return new SportsFacilityRepo().getActiveFacilitiesCount();

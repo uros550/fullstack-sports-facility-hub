@@ -12,6 +12,7 @@ public interface SportsFacilityRepoInterface {
     List<SportsFacility> getAllActiveFacilities();
     List<SportsFacility> getTop3Facilities();
     SportsFacility getFacilityById(int id);
+    List<SportsFacility> getFacilitiesForEmployee(int employeeId);
     int getActiveFacilitiesCount();
     List<Court> getCourtsByFacilityId(int facilityId);
     List<Court> getCourtsByFacilitySport(int facilityId, int sportId);
