@@ -1,31 +1,26 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AthleteProfile } from '../models/AthleteProfile';
-import { UserService } from '../services/user-service';
-import { FormsModule } from '@angular/forms';
 import { User } from '../models/User';
-import { SportService } from '../services/sport-service';
-import { Sport } from '../models/Sport';
+import { SportsFacility } from '../models/SportsFacility';
+import { UserService } from '../services/user-service';
+import { SportsFacilityService } from '../services/sports-facility-service';
 import { AuthenticationService } from '../services/authentication-service';
-import { Reservation } from '../models/Reservation';
-import { DatePipe } from '@angular/common';
+import { AthleteProfile } from '../models/AthleteProfile';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-athlete-profile-component',
-  standalone: true,
-  imports: [FormsModule, DatePipe],
-  templateUrl: './athlete-profile-component.html',
-  styleUrl: './athlete-profile-component.css',
+  selector: 'app-employee-profile-component',
+  imports: [FormsModule],
+  templateUrl: './employee-profile-component.html',
+  styleUrl: './employee-profile-component.css',
 })
-export class AthleteProfileComponent implements OnInit {
+export class EmployeeProfileComponent implements OnInit {
 
   //profile and user
   currentUser: User | null = null;
   originalProfile: AthleteProfile | null = null;
   profile: AthleteProfile | null = null;
-  //sport
-  allSports: Sport[] = [];
-  originalSports: number[] = [];
-  selectedSports: number[] = [];
+  //facilities
+  myFacilities: SportsFacility[] = [];
   //pfp and preview
   selectedImage: File | null = null;
   imagePreview: string | null = null;
@@ -34,16 +29,11 @@ export class AthleteProfileComponent implements OnInit {
   isRemoveRequested: boolean = false;
   showPhotoDialog: boolean = false;
   currentSeed: string = '';
-  //reservations
-  reservations: Reservation[] = [];
-  filteredReservations: Reservation[] = [];
-  sortColumn: string = '';
-  sortDirection: 'asc' | 'desc' = 'asc';
-
-  successMessage: string = '';
+  
+  successMessage: string = '';  
 
   private userService = inject(UserService);
-  private sportService = inject(SportService);
+  private facilityService = inject(SportsFacilityService);
   private authService = inject(AuthenticationService);
 
   ngOnInit() {
@@ -70,21 +60,9 @@ export class AthleteProfileComponent implements OnInit {
         }
       });
 
-      this.sportService.getAllSports().subscribe(data => {
-        this.allSports = data;
-      });
-
-      this.userService.getUserSportIds(this.currentUser.id).subscribe(data => {
-        this.selectedSports = data;
-        this.originalSports = data;
-      });
-
-      this.userService.getReservationsByAthleteId(this.currentUser.id).subscribe(data => {
-          this.reservations = data;
-          this.filteredReservations = structuredClone(data);
-      });
-
     }
+
+    //get facilities by employee id (kasnije)
   }
 
   //main methods
@@ -94,16 +72,8 @@ export class AthleteProfileComponent implements OnInit {
       //update profile
       this.userService.updateProfile(this.profile).subscribe(data => {
         if (data === 'Success') {
-          //update sports
-          this.userService.updateUserSports(this.profile!.id, this.selectedSports).subscribe(data => {
-                if (data === 'Success') {
-                  //change pfp
-                  this.finishPhotoUpdate();
-                }
-                else {
-                  this.successMessage = 'Error changing sports';
-                }
-          })
+          //change pfp
+          this.finishPhotoUpdate();
         }
         else {
           this.successMessage = 'Error changing profile';
@@ -114,24 +84,7 @@ export class AthleteProfileComponent implements OnInit {
 
   cancelChanges() {
     this.profile = structuredClone(this.originalProfile);
-    this.selectedSports = [...this.originalSports];
     this.resetImageState();
-  }
-
-  //sport
-  toggleSport(sportId: number) {
-
-    const index = this.selectedSports.indexOf(sportId);
-
-    if (index !== -1) {
-      //already selected -> remove
-      this.selectedSports.splice(index, 1);
-    } 
-    else {
-      //not selected -> add (already checked if >5 in html)
-      this.selectedSports.push(sportId);
-    }
-
   }
 
   //photo pretty much pasted from auth.ts
@@ -252,7 +205,6 @@ export class AthleteProfileComponent implements OnInit {
 
   private finishSaving() {
     this.originalProfile = structuredClone(this.profile);
-    this.originalSports = [...this.selectedSports];
 
     this.showPhotoDialog = false;
 
@@ -281,56 +233,4 @@ export class AthleteProfileComponent implements OnInit {
     this.successMessage = 'Profile successfully updated';
   }
 
-  //same sort as in home component
-  sort(column: string) {
-    if (this.sortColumn === column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortColumn = column;
-      this.sortDirection = 'asc';
-    }
-
-    this.filteredReservations.sort((a: any, b: any) => {
-      let valA = a[column];
-      let valB = b[column];
-
-      if (column === 'startTime') {
-        valA = new Date(valA).getTime();
-        valB = new Date(valB).getTime();
-      } else if (typeof valA === 'string') {
-        valA = valA.toLowerCase();
-        valB = valB.toLowerCase();
-      }
-
-      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-  }
-
-  canCancel(reservation: Reservation): boolean {
-    if (reservation.status === 'CANCELLED') {
-      return false;
-    }
-
-    const startTime = new Date(reservation.startTime).getTime();
-    const now = new Date().getTime();
-    
-    const diffInHours = (startTime - now) / (1000 * 60 * 60);
-
-    return diffInHours >= 12;
-  }
-
-  cancelReservation(reservation: Reservation) {
-    if (!confirm('Are you sure you want to cancel this reservation?')) {
-      return;
-    }
-    
-    this.userService.cancelReservation(reservation.id).subscribe(data => {
-      if (data === 'Success') {
-        reservation.status = 'CANCELLED';
-      }
-    });
-  }
-
-} 
+}

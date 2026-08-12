@@ -18,7 +18,7 @@ export class AthleteComponent implements OnInit {
   currentUser: User | null = null;
   activeTab: string = 'profile'; //default on open
 
-  ngOnInit(): void {
+  ngOnInit() {
     const userJson = localStorage.getItem('loggedUser');
 
     if (userJson) {

@@ -9,32 +9,32 @@
         Employee Menu
       </h2>
 
-      <button class="menu-item active">
+      <button class="menu-item active" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">
         👤
         <span>Profile & Facilities</span>
       </button>
 
-      <button class="menu-item">
-        ✚
-        <span>Add Facility / Courts</span>
+      <button class="menu-item" [class.active]="activeTab === 'facilities'" (click)="setActiveTab('facilities')">
+        🏢
+        <span>Manage Facilities</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'reservations'" (click)="setActiveTab('reservations')">
         📅
         <span>Reservations & Check-in</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'promotions'" (click)="setActiveTab('promotions')">
         🏷️
         <span>Promotions & Equipment</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'calendar'" (click)="setActiveTab('calendar')">
         📆
         <span>Interactive Calendar</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
         📊
         <span>PDF Reports</span>
       </button>
@@ -45,20 +45,39 @@
     <section class="content-card">
 
       <div class="content-header">
-
         <h1>Welcome back, {{currentUser?.firstName}} {{currentUser?.lastName}}</h1>
-
-        <p>
-          Manage your sports facilities, courts, reservations, calendar and equipment inventory.
-        </p>
-
       </div>
 
-      <div class="content-placeholder">
-
-        Facility Management & Overview Component goes here.
-
-      </div>
+      @switch (activeTab) {
+                @case ('profile') {
+                    <app-employee-profile-component></app-employee-profile-component>
+                }
+                @case('facilities') {
+                  <div class="content-placeholder">
+                        Facilities Component goes here.
+                  </div>
+                }
+                @case('reservations') {
+                  <div class="content-placeholder">
+                        Reservations Component goes here.
+                  </div>
+                }
+                @case ('promotions') {
+                  <div class="content-placeholder">
+                        Promotions Component goes here.
+                  </div>
+                }
+                @case ('calendar') {
+                  <div class="content-placeholder">
+                        Calendar Component goes here.
+                  </div>
+                }
+                @case ('reports') {
+                  <div class="content-placeholder">
+                        Reports Component goes here.
+                  </div>
+                }
+      }
 
     </section>
 
