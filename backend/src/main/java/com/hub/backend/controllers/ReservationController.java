@@ -22,6 +22,11 @@ import com.hub.backend.models.Reservation;
 @RequestMapping("users/reservations")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class ReservationController {
+
+    @GetMapping("/employee/{employeeId}")
+    public List<Reservation> getActiveReservationsByEmployeeId(@PathVariable int employeeId) {
+        return new ReservationRepo().getActiveReservationsByEmployeeId(employeeId);
+    }
     
     @PostMapping("/cancel/{id}")
     public String cancelReservation(@PathVariable int id) {

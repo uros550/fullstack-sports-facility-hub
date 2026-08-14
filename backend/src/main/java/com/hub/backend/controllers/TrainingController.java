@@ -23,6 +23,11 @@ public class TrainingController {
         return new TrainingRepo().getAllTrainingsById(athleteId);
     }
 
+    @GetMapping("/employee/{employeeId}")
+    public List<Training> getActiveTrainingsByEmployeeId(@PathVariable int employeeId) {
+        return new TrainingRepo().getActiveTrainingsByEmployeeId(employeeId);
+    }
+
     @PostMapping("/create")
     public String reserveTraining(@RequestBody Training newTraining) {
         return new TrainingRepo().reserveTraining(newTraining);

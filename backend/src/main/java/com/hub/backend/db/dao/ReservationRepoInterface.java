@@ -11,6 +11,7 @@ public interface ReservationRepoInterface {
     
     List<Reservation> getReservationsByAthleteId(int athleteId);
     List<Reservation> getActiveReservationsByAthleteId(int athleteId);
+    List<Reservation> getActiveReservationsByEmployeeId(int employeeId); 
     boolean cancelReservation(int reservationId);
     String addReservation(Reservation newReservation);
     List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date);

@@ -14,6 +14,10 @@ export class TrainingService {
     return this.http.get<Training[]>(`${this.path}/athlete/${athleteId}`);
   }
 
+  getActiveTrainingsByEmployeeId(employeeId: number) {
+    return this.http.get<Training[]>(`${this.path}/employee/${employeeId}`);
+  }
+
   reserveTraining(newTraining: Training) {
     return this.http.post(`${this.path}/create`, newTraining, { responseType: 'text' });
   }

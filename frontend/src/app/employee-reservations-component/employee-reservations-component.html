@@ -1,0 +1,119 @@
+<div class="container">
+
+  <div class="toggle-container">
+    <button type="button" class="toggle-btn" [class.active]="showRes" (click)="toggleView(true)">
+      Reservations
+    </button>
+    <button type="button" class="toggle-btn" [class.active]="!showRes" (click)="toggleView(false)">
+      Trainings
+    </button>
+  </div>
+
+  @if (showRes) {
+    <div class="table-wrapper">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Facility & Court</th>
+            <th>Sport</th>
+            <th class="time-cell">Time</th>
+            <th>
+                <div>Missing</div>
+                <div>Players</div>
+            </th>
+            <th>Status</th>
+            <th class="actions-txt">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (res of reservations; track res.id) {
+            <tr>
+              <td>
+                <div class="primary-text">{{ res.facilityName }}</div>
+                <div class="sub-text">{{ res.courtName }}</div>
+              </td>
+              <td>{{ res.sportName }}</td>
+              <td class="time-cell">
+                <div class="date-text">{{ res.startTime | date:'dd.MM.yyyy.' }}</div>
+                <div class="time-text">{{ res.startTime | date:'HH:mm' }} - {{ res.endTime | date:'HH:mm' }}</div>
+              </td>
+              <td class="time-cell">{{ res.missingPlayers > 0 ? res.missingPlayers : '-' }}</td>
+              <td>
+                <span class="status-badge" [class]="res.status.toLowerCase()">
+                  {{ res.status }}
+                </span>
+              </td>
+              <td>
+                <div class="actions-cell">
+                  @if (res.status === 'PENDING') {
+                    <button type="button" class="btn-green">🗸</button>
+                    <button type="button" class="btn-red">x</button>
+                  } @else {
+                    <button type="button" class="btn-yellow">No Show</button>
+                  }
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="no-data">No active reservations found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Facility & Court</th>
+            <th>Trainer</th>
+            <th>Athlete</th>
+            <th class="time-cell">Time</th>
+            <th class="fixed-cell">Price</th>
+            <th>Status</th>
+            <th class="actions-txt">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tr of trainings; track tr.id) {
+            <tr>
+              <td>
+                <div class="primary-text">{{ tr.facilityName }}</div>
+                <div class="sub-text">{{ tr.courtName }}</div>
+              </td>
+              <td>{{ tr.trainerName }}</td>
+              <td>&#64;{{ tr.athleteUsername }}</td>
+              <td class="time-cell">
+                <div class="date-text">{{ tr.startTime | date:'dd.MM.yyyy.' }}</div>
+                <div class="time-text">{{ tr.startTime | date:'HH:mm' }} - {{ tr.endTime | date:'HH:mm' }}</div>
+              </td>
+              <td>{{ tr.price }} RSD</td>
+              <td>
+                <span class="status-badge" [class]="tr.status.toLowerCase()">
+                  {{ tr.status }}
+                </span>
+              </td>
+              <td>
+                <div class="actions-cell">
+                  @if (tr.status === 'PENDING') {
+                    <button type="button" class="btn-green">🗸</button>
+                    <button type="button" class="btn-red">x</button>
+                  } @else {
+                    <button type="button" class="btn-yellow">No Show</button>
+                  }
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="no-data">No active trainings found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

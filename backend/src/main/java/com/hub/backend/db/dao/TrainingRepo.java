@@ -72,6 +72,61 @@ public class TrainingRepo implements TrainingRepoInterface {
     }
 
     @Override
+    public List<Training> getActiveTrainingsByEmployeeId(int employeeId) {
+        
+        List<Training> trainings = new ArrayList<>();
+        String query = "SELECT tr.*, CONCAT(t.firstName, ' ', t.lastName) AS trainerName, " +
+                       "u.username AS athleteUsername, sf.name AS facilityName, c.name AS courtName " +
+                       "FROM training tr " +
+                       "JOIN trainer t ON t.id = tr.trainerId " +
+                       "JOIN user u ON u.id = tr.athleteId " +
+                       "JOIN sportsfacility sf ON sf.id = tr.facilityId " +
+                       "JOIN court c ON c.id = tr.courtId " +
+                       "JOIN facilityemployee fe ON sf.id = fe.facilityId " +
+                       "WHERE tr.status IN ('CONFIRMED', 'PENDING') AND tr.startTime > NOW() - INTERVAL 10 MINUTE AND fe.employeeId = ? " +
+                       "ORDER BY tr.startTime ASC";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, employeeId);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Timestamp startTs = rs.getTimestamp("startTime");
+                LocalDateTime startDate = (startTs != null) ? startTs.toLocalDateTime() : null;
+                
+                Timestamp endTs = rs.getTimestamp("endTime");
+                LocalDateTime endDate = (endTs != null) ? endTs.toLocalDateTime() : null;
+
+                Training tr = new Training(
+                    rs.getInt("id"),
+                    rs.getInt("trainerId"),
+                    rs.getString("trainerName"),
+                    rs.getInt("athleteId"),
+                    rs.getString("athleteUsername"),
+                    rs.getInt("facilityId"),
+                    rs.getString("facilityName"),
+                    rs.getInt("courtId"),
+                    rs.getString("courtName"),
+                    startDate,
+                    endDate,
+                    rs.getDouble("price"),
+                    rs.getString("status")
+                );
+                trainings.add(tr);
+            }
+
+            return trainings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+                       
+        return trainings;
+    }
+
+    @Override
     public String reserveTraining(Training newTraining) {
         
         String query = "insert into training (trainerId, athleteId, facilityId, courtId, startTime, endTime, price, status) " +

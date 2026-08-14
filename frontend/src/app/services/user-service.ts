@@ -42,6 +42,10 @@ export class UserService {
     return this.http.get<Reservation[]>(`${this.path}/reservations/active/${id}`);
   }
 
+  getActiveReservationsByEmployeeId(id: number) {
+    return this.http.get<Reservation[]>(`${this.path}/reservations/employee/${id}`);
+  }
+ 
   cancelReservation(id: number) {
     return this.http.post(`${this.path}/reservations/cancel/${id}`, { responseType: 'text' });
   }
