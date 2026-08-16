@@ -187,6 +187,10 @@
   background-color: rgb(200, 61, 2);
 }
 
+.center {
+  text-align: center;
+}
+
 .no-data {
   text-align: center;
   color: rgb(100, 116, 139);

@@ -48,8 +48,12 @@
                   @if (res.status === 'PENDING') {
                     <button type="button" class="btn-green" (click)="acceptReservation(res.id)">🗸</button>
                     <button type="button" class="btn-red" (click)="rejectReservation(res.id)">x</button>
-                  } @else {
+                  } 
+                  @else if (canShowNoShow(res.startTime)) {
                     <button type="button" class="btn-yellow" (click)="noShowReservation(res.id, res.athleteId, res.facilityId)">No Show</button>
+                  }
+                  @else {
+                    <p class="center">-</p>
                   }
                 </div>
               </td>
@@ -100,8 +104,12 @@
                   @if (tr.status === 'PENDING') {
                     <button type="button" class="btn-green" (click)="acceptTraining(tr.id)">🗸</button>
                     <button type="button" class="btn-red" (click)="rejectTraining(tr.id)">x</button>
-                  } @else {
+                  } 
+                  @else if (canShowNoShow(tr.startTime)) {
                     <button type="button" class="btn-yellow" (click)="noShowTraining(tr.id, tr.athleteId, tr.facilityId)">No Show</button>
+                  }
+                  @else {
+                    <p class="center">-</p>
                   }
                 </div>
               </td>

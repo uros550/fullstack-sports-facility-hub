@@ -98,4 +98,15 @@ export class EmployeeReservationsComponent implements OnInit {
     })
   }
 
+  canShowNoShow(startTime: string | Date): boolean {
+    if (!startTime) return false;
+    
+    const start = new Date(startTime).getTime();
+    const now = Date.now();
+    const tenMinutesInMillis = 10 * 60 * 1000;
+
+    //return true if started but 10 mins not passed
+    return now >= start && now <= start + tenMinutesInMillis;
+  }
+
 }
