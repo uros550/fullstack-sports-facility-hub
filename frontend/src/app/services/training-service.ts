@@ -21,5 +21,17 @@ export class TrainingService {
   reserveTraining(newTraining: Training) {
     return this.http.post(`${this.path}/create`, newTraining, { responseType: 'text' });
   }
+
+  acceptTraining(id: number) {
+    return this.http.post(`${this.path}/accept/${id}`, null, { responseType: 'text' });
+  }
+
+  rejectTraining(id: number) {
+    return this.http.post(`${this.path}/reject/${id}`, null, { responseType: 'text' });
+  }
+
+  noShowTraining(id: number, athleteId: number, facilityId: number) {
+    return this.http.post(`${this.path}/noShow/${id}`, null, { params: { athleteId, facilityId }, responseType: 'text'});
+  }  
   
 }

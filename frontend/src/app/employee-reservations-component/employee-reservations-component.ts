@@ -80,4 +80,22 @@ export class EmployeeReservationsComponent implements OnInit {
     })
   }
 
+  acceptTraining(id: number) {
+    this.trainingService.acceptTraining(id).subscribe(data => {
+      this.loadData();
+    })
+  }
+
+  rejectTraining(id: number) {
+    this.trainingService.rejectTraining(id).subscribe(data => {
+      this.loadData();
+    })
+  }
+
+  noShowTraining(id: number, athleteId: number, facilityId: number) {
+    this.trainingService.noShowTraining(id, athleteId, facilityId).subscribe(data => {
+      this.loadData();
+    })
+  }
+
 }

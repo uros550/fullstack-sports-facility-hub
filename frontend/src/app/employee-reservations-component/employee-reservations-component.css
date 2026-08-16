@@ -172,7 +172,7 @@
 }
 
 .btn-yellow {
-  background-color: rgb(176, 176, 26);
+  background-color: rgb(253, 76, 0);
   color: rgb(255, 255, 255);
   border: none;
   padding: 6px 14px;
@@ -184,7 +184,7 @@
 }
 
 .btn-yellow:hover {
-  background-color: rgb(114, 126, 2);
+  background-color: rgb(200, 61, 2);
 }
 
 .no-data {

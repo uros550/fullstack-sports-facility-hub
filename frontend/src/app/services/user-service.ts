@@ -53,9 +53,9 @@ export class UserService {
   rejectReservation(id: number) {
     return this.http.post(`${this.path}/reservations/reject/${id}`, null, { responseType: 'text' });
   }
- 
+
   cancelReservation(id: number) {
-    return this.http.post(`${this.path}/reservations/cancel/${id}`, { responseType: 'text' });
+    return this.http.post(`${this.path}/reservations/cancel/${id}`, null, { responseType: 'text' });
   }
 
   noShowReservation(id: number, athleteId: number, facilityId: number) {

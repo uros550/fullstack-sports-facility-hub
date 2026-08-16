@@ -158,5 +158,90 @@ public class TrainingRepo implements TrainingRepoInterface {
 
         return "";
     }
-    
+
+    @Override
+    public boolean acceptTraining(int trainingId) {
+        
+        String query = "update training set status = 'CONFIRMED' where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ) {
+            stm.setInt(1, trainingId);
+            return stm.executeUpdate() > 0; //true if affected
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean rejectTraining(int trainingId) {
+        
+        String query = "update training set status = 'CANCELLED' where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ) {
+            stm.setInt(1, trainingId);
+            return stm.executeUpdate() > 0; //true if affected
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean noShowTraining(int trainingId, int athleteId, int facilityId) {
+        
+        String noShowQuery = "update training set status = 'DIDNT_SHOW' where id = ?";
+        String checkQuery = "select count(*) as count from training where athleteId = ? and facilityId = ? and status = 'DIDNT_SHOW'";
+        String maxQuery = "select maxPenalties from sportsfacility where id = ?";
+        String blockQuery = "insert into facilityblock values (?, ?)";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement noShowStm = conn.prepareStatement(noShowQuery);
+            PreparedStatement checkStm = conn.prepareStatement(checkQuery);
+            PreparedStatement maxStm = conn.prepareStatement(maxQuery);
+            PreparedStatement blockStm = conn.prepareStatement(blockQuery);
+        ){
+            conn.setAutoCommit(false);
+
+            noShowStm.setInt(1, trainingId);
+            if (noShowStm.executeUpdate() == 0) {
+                conn.rollback();
+                return false;
+            }
+
+            checkStm.setInt(1, athleteId);
+            checkStm.setInt(2, facilityId);
+            maxStm.setInt(1, facilityId);
+            
+            int count = 0;
+            int max = 0;
+            ResultSet countRs = checkStm.executeQuery();
+            ResultSet maxRs = maxStm.executeQuery();
+            if (countRs.next()) count = countRs.getInt("count");
+            if (maxRs.next()) max = maxRs.getInt("maxPenalties");
+            if (count > max && max > 0) {
+                blockStm.setInt(1, facilityId);
+                blockStm.setInt(2, athleteId);
+                if (blockStm.executeUpdate() == 0) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }
