@@ -177,6 +177,40 @@ public class ReservationRepo implements ReservationRepoInterface {
     }
 
     @Override
+    public boolean acceptReservation(int reservationId) {
+
+        String query = "update reservation set status = 'CONFIRMED' where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ) {
+            stm.setInt(1, reservationId);
+            return stm.executeUpdate() > 0; //true if affected
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean rejectReservation(int reservationId) {
+
+        String query = "update reservation set status = 'CANCELLED' where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ) {
+            stm.setInt(1, reservationId);
+            return stm.executeUpdate() > 0; //true if affected
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public boolean cancelReservation(int reservationId) {
         //update only if more than 12hours
         String query = "update reservation set status = 'CANCELLED' where id = ? and startTime >= NOW() + INTERVAL 12 HOUR";
@@ -190,6 +224,57 @@ public class ReservationRepo implements ReservationRepoInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    @Override
+    public boolean noShowReservation(int reservationId, int athleteId, int facilityId) {
+
+        String noShowQuery = "update reservation set status = 'DIDNT_SHOW' where id = ?";
+        String checkQuery = "select count(*) as count from reservation where athleteId = ? and facilityId = ? and status = 'DIDNT_SHOW'";
+        String maxQuery = "select maxPenalties from sportsfacility where id = ?";
+        String blockQuery = "insert into facilityblock values (?, ?)";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement noShowStm = conn.prepareStatement(noShowQuery);
+            PreparedStatement checkStm = conn.prepareStatement(checkQuery);
+            PreparedStatement maxStm = conn.prepareStatement(maxQuery);
+            PreparedStatement blockStm = conn.prepareStatement(blockQuery);
+        ){
+            conn.setAutoCommit(false);
+
+            noShowStm.setInt(1, reservationId);
+            if (noShowStm.executeUpdate() == 0) {
+                conn.rollback();
+                return false;
+            }
+
+            checkStm.setInt(1, athleteId);
+            checkStm.setInt(2, facilityId);
+            maxStm.setInt(1, facilityId);
+            
+            int count = 0;
+            int max = 0;
+            ResultSet countRs = checkStm.executeQuery();
+            ResultSet maxRs = maxStm.executeQuery();
+            if (countRs.next()) count = countRs.getInt("count");
+            if (maxRs.next()) max = maxRs.getInt("maxPenalties");
+            if (count > max && max > 0) {
+                blockStm.setInt(1, facilityId);
+                blockStm.setInt(2, athleteId);
+                if (blockStm.executeUpdate() == 0) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 

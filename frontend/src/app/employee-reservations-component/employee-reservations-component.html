@@ -46,10 +46,10 @@
               <td>
                 <div class="actions-cell">
                   @if (res.status === 'PENDING') {
-                    <button type="button" class="btn-green">🗸</button>
-                    <button type="button" class="btn-red">x</button>
+                    <button type="button" class="btn-green" (click)="acceptReservation(res.id)">🗸</button>
+                    <button type="button" class="btn-red" (click)="rejectReservation(res.id)">x</button>
                   } @else {
-                    <button type="button" class="btn-yellow">No Show</button>
+                    <button type="button" class="btn-yellow" (click)="noShowReservation(res.id, res.athleteId, res.facilityId)">No Show</button>
                   }
                 </div>
               </td>

@@ -61,4 +61,23 @@ export class EmployeeReservationsComponent implements OnInit {
   toggleView(isRes: boolean) {
     this.showRes = isRes;
   }
+
+  acceptReservation(id: number) {
+    this.userService.acceptReservation(id).subscribe(data => {
+      this.loadData();
+    })
+  }
+
+  rejectReservation(id: number) {
+    this.userService.rejectReservation(id).subscribe(data => {
+      this.loadData();
+    })
+  }
+
+  noShowReservation(id: number, athleteId: number, facilityId: number) {
+    this.userService.noShowReservation(id, athleteId, facilityId).subscribe(data => {
+      this.loadData();
+    })
+  }
+
 }

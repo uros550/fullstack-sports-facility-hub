@@ -27,10 +27,28 @@ public class ReservationController {
     public List<Reservation> getActiveReservationsByEmployeeId(@PathVariable int employeeId) {
         return new ReservationRepo().getActiveReservationsByEmployeeId(employeeId);
     }
+
+    @PostMapping("/accept/{id}")
+    public String acceptReservation(@PathVariable int id) {
+        boolean success = new ReservationRepo().acceptReservation(id);
+        return success ? "Success" : "Error";
+    }
+
+    @PostMapping("/reject/{id}")
+    public String rejectReservation(@PathVariable int id) {
+        boolean success = new ReservationRepo().rejectReservation(id);
+        return success ? "Success" : "Error";
+    }
     
     @PostMapping("/cancel/{id}")
     public String cancelReservation(@PathVariable int id) {
         boolean success = new ReservationRepo().cancelReservation(id);
+        return success ? "Success" : "Error";
+    }
+
+    @PostMapping("/noShow/{id}")
+    public String noShowReservation(@PathVariable int id, @RequestParam int athleteId, @RequestParam int facilityId) {  
+        boolean success = new ReservationRepo().noShowReservation(id, athleteId, facilityId);
         return success ? "Success" : "Error";
     }
 

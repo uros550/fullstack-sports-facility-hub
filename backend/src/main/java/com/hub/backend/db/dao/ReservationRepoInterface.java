@@ -12,7 +12,10 @@ public interface ReservationRepoInterface {
     List<Reservation> getReservationsByAthleteId(int athleteId);
     List<Reservation> getActiveReservationsByAthleteId(int athleteId);
     List<Reservation> getActiveReservationsByEmployeeId(int employeeId); 
+    boolean acceptReservation(int reservationId);
+    boolean rejectReservation(int reservationId); 
     boolean cancelReservation(int reservationId);
+    boolean noShowReservation(int reservationId, int athleteId, int facilityId);
     String addReservation(Reservation newReservation);
     List<AvailabilitySlot> getAvailabilityByCourtAndDate(int courtId, LocalDate date);
     int updateMissingPlayers(int missingPlayer, int reservationId);

@@ -45,9 +45,21 @@ export class UserService {
   getActiveReservationsByEmployeeId(id: number) {
     return this.http.get<Reservation[]>(`${this.path}/reservations/employee/${id}`);
   }
+
+  acceptReservation(id: number) {
+    return this.http.post(`${this.path}/reservations/accept/${id}`, null, { responseType: 'text' });
+  }
+
+  rejectReservation(id: number) {
+    return this.http.post(`${this.path}/reservations/reject/${id}`, null, { responseType: 'text' });
+  }
  
   cancelReservation(id: number) {
     return this.http.post(`${this.path}/reservations/cancel/${id}`, { responseType: 'text' });
+  }
+
+  noShowReservation(id: number, athleteId: number, facilityId: number) {
+    return this.http.post(`${this.path}/reservations/noShow/${id}`, null, { params: { athleteId, facilityId }, responseType: 'text'});
   }
 
   getCourtAvailability(courtId: number, date: string) {
