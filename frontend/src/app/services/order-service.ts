@@ -11,6 +11,10 @@ export class OrderService {
   private http = inject(HttpClient);
   private path = 'http://localhost:8080/orders';
 
+  getAllOrders() {
+    return this.http.get<Order[]>(this.path);
+  }
+
   getHistory(athleteId: number) {
     return this.http.get<Order[]>(`${this.path}/history/${athleteId}`);
   }
@@ -29,6 +33,10 @@ export class OrderService {
 
   cancelOrder(orderId: number) {
     return this.http.put<boolean>(`${this.path}/cancel/${orderId}`, {});
+  }
+
+  pickedOrder(orderId: number) {
+    return this.http.put<boolean>(`${this.path}/picked/${orderId}`, {});
   }
 
 }

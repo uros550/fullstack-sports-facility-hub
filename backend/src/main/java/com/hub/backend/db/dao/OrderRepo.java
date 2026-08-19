@@ -16,6 +16,38 @@ import com.hub.backend.models.OrderItem;
 public class OrderRepo implements OrderRepoInterface {
 
     @Override
+    public List<Order> getAllOrders() {
+        
+        List<Order> orders = new ArrayList<>();
+        String query = "select * from `Order`";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()) {
+                Timestamp orderTs = rs.getTimestamp("orderDate");
+                LocalDateTime orderDate = (orderTs != null) ? orderTs.toLocalDateTime() : null;
+                
+                Order o = new Order(
+                    rs.getInt("id"),
+                    rs.getInt("athleteId"),
+                    orderDate,
+                    rs.getString("status")
+                );
+                orders.add(o);
+            }
+            return orders;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
+    @Override
     public List<Order> getHistory(int athleteId) {
         
         List<Order> orders = new ArrayList<>();
@@ -236,6 +268,25 @@ public class OrderRepo implements OrderRepoInterface {
 
             conn.commit();
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean pickedOrder(int orderId) {
+        
+        String query = "UPDATE `Order` SET status = 'PICKED_UP' WHERE id = ? AND status = 'ACCEPTED'";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, orderId);
+
+            return stm.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }

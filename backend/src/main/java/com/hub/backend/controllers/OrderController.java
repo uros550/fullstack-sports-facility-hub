@@ -19,6 +19,11 @@ import com.hub.backend.models.OrderItem;
 @RequestMapping("/orders")
 @CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
+
+    @GetMapping()
+    public List<Order> getAllOrders() {
+        return new OrderRepo().getAllOrders();
+    }
     
     @GetMapping("/history/{athleteId}")
     public List<Order> getHistory(@PathVariable int athleteId) {
@@ -43,6 +48,11 @@ public class OrderController {
     @PutMapping("/cancel/{orderId}")
     public boolean cancelOrder(@PathVariable int orderId) {
         return new OrderRepo().cancelOrder(orderId);
+    }
+
+    @PutMapping("/picked/{orderId}")
+    public boolean pickedOrder(@PathVariable int orderId) {
+        return new OrderRepo().pickedOrder(orderId);
     }
 
 }

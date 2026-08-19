@@ -2,12 +2,17 @@ import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../models/User';
 import { Promotion } from '../models/Promotion';
 import { PromotionService } from '../services/promotion-service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { EmployeePromotionModalComponent } from '../employee-promotion-modal-component/employee-promotion-modal-component';
+import { EquipmentService } from '../services/equipment-service';
+import { Equipment } from '../models/Equipment';
+import { Order } from '../models/Order';
+import { OrderService } from '../services/order-service';
+import { UserService } from '../services/user-service';
 
 @Component({
   selector: 'app-employee-promotions-component',
-  imports: [DatePipe, EmployeePromotionModalComponent],
+  imports: [DatePipe, EmployeePromotionModalComponent, NgClass],
   templateUrl: './employee-promotions-component.html',
   styleUrl: './employee-promotions-component.css',
 })
@@ -15,12 +20,19 @@ export class EmployeePromotionsComponent implements OnInit {
   
   currentUser: User | null = null;
   promotions: Promotion[] = [];
-  showPromo: boolean = true;
+  equipment: Equipment[] = [];
+  orders: Order[] = [];
+  selectedView: 'Promo' | 'Equip' | 'Order' = 'Promo';
   showModal: boolean = false;
   currentEmployeeId: number = 0;
   selectedPromotionForEdit: Promotion | null = null;
 
+  successMessage: string = '';
+
   private promoService = inject(PromotionService);
+  private equipmentService = inject(EquipmentService);
+  private orderService = inject(OrderService);
+  private userService = inject(UserService);
 
   ngOnInit() {
     const userJson = localStorage.getItem('loggedUser');
@@ -41,7 +53,8 @@ export class EmployeePromotionsComponent implements OnInit {
 
   loadData() {
     this.loadPromotions();
-    //load equipment
+    this.loadEquipment();
+    this.loadOrders();
   }
 
   loadPromotions() {
@@ -50,8 +63,25 @@ export class EmployeePromotionsComponent implements OnInit {
     })
   }
 
-  toggleView(isPromo: boolean) {
-    this.showPromo = isPromo;
+  loadEquipment() {
+    this.equipmentService.getEquipmentBySport(0).subscribe(data => {
+      this.equipment = data;
+    })
+  }
+
+  loadOrders() {
+    this.orderService.getAllOrders().subscribe(data => {
+      this.orders = data;
+      this.orders.forEach(o => {
+        this.userService.getProfileById(o.athleteId).subscribe(user => {
+            o.athleteName = user.username;
+        })
+      })
+    })
+  }
+
+  toggleView(view: 'Promo' | 'Equip' | 'Order') {
+    this.selectedView = view;
   }
 
   openCreate() {
@@ -72,4 +102,30 @@ export class EmployeePromotionsComponent implements OnInit {
       this.loadPromotions();
     }
   }
+
+  changeStatus(orderId: number, status: 'PICKED_UP' | 'CANCELLED') {
+    if (status === 'CANCELLED') {
+      this.orderService.cancelOrder(orderId).subscribe(data => {
+        if (data) {
+          this.successMessage = 'Successfully changed';
+          this.loadOrders();
+        }
+        else {
+          this.successMessage = 'Error';
+        }
+      })
+    }
+    else {
+      this.orderService.pickedOrder(orderId).subscribe(data => {
+        if (data) {
+          this.successMessage = 'Successfully changed';
+          this.loadOrders();
+        }
+        else {
+          this.successMessage = 'Error';
+        }
+      })
+    }
+  }
+
 }
