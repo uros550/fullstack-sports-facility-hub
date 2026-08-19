@@ -4,6 +4,7 @@ export class Promotion {
   facilityId!: number;
   facilityName!: string;
   sportId!: number;
+  sportName!: string;
   discountType!: 'PERCENTAGE' | 'FIXED';
   discountValue!: number;
   startDate!: string;

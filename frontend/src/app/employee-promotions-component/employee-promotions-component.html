@@ -1,0 +1,78 @@
+<div class="container">
+
+  <div class="toggle-container">
+    <button type="button" class="toggle-btn" [class.active]="showPromo" (click)="toggleView(true)">
+      Promotions
+    </button>
+    <button type="button" class="toggle-btn" [class.active]="!showPromo" (click)="toggleView(false)">
+      Equipment
+    </button>
+  </div>
+
+  @if(showPromo) {
+    <div class="table-wrapper">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Facility</th>
+            <th>Sport</th>
+            <th class="time-cell">Time</th>
+            <th>Discount</th>
+            <th class="actions-txt">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (promo of promotions; track promo.id) {
+            <tr>
+              <td>
+                {{ promo.name }}
+              </td>
+              <td>
+                {{ promo.facilityName }}
+              </td>
+              <td>
+                {{ promo.sportName }}
+              </td>
+              <td class="time-cell">
+                <div class="date-text">{{ promo.startDate | date:'dd.MM.yyyy.' }}</div>
+                <div class="time-text">{{ promo.startDate | date:'HH:mm' }} - {{ promo.endDate | date:'HH:mm' }}</div>
+              </td>
+              <td>
+                {{ promo.discountValue }} 
+                @if (promo.discountType == 'PERCENTAGE') {
+                    %
+                }
+                @else {
+                    RSD
+                }
+              </td>
+              <td>
+                <div class="actions-cell">
+                    <button type="button" class="btn-green" (click)="openUpdate(promo)">Update</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="no-data">No promotions found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="btn-blue" (click)="openCreate()">Create</button>
+  }
+  @else {
+
+  }
+
+  @if (showModal) {
+    <app-employee-promotion-modal-component 
+        [employeeId]="currentEmployeeId"
+        [promotionToEdit]="selectedPromotionForEdit"
+        (close)="closeModal($event)">
+    </app-employee-promotion-modal-component>
+  }
+
+</div>

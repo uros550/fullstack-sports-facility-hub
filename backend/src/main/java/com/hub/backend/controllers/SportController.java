@@ -26,4 +26,9 @@ public class SportController {
         return new SportRepo().getMaxMissingPlayers(sportId);
     }
 
+    @GetMapping("/facility/{facilityId}")
+    public List<Sport> getSportsByFacilityId(@PathVariable int facilityId) {
+        return new SportRepo().getSportsByFacilityId(facilityId);
+    }
+
 }

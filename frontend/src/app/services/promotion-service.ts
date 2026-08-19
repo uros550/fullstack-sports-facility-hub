@@ -14,4 +14,16 @@ export class PromotionService {
     return this.http.get<Promotion[]>(`${this.path}/active`);
   }
 
+  getPromotionsByEmployeeId(employeeId: number) {
+    return this.http.get<Promotion[]>(`${this.path}/employee/${employeeId}`);
+  }
+
+  createPromotion(promotion: Promotion) {
+    return this.http.post(`${this.path}/create`, promotion, { responseType: 'text' });
+  }
+
+  updatePromotion(promotion: Promotion) {
+    return this.http.put(`${this.path}/update`, promotion, { responseType: 'text' });
+  }
+  
 }

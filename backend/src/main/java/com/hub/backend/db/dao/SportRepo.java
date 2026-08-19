@@ -56,5 +56,35 @@ public class SportRepo implements SportRepoInterface {
         
         return 0;
     }
+
+    @Override
+    public List<Sport> getSportsByFacilityId(int facilityId) {
+        
+        List<Sport> sports = new ArrayList<>();
+        String query =  "select distinct s.* from sport s join court c on c.sportId = s.id where c.facilityId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, facilityId);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Sport sp = new Sport(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("requiredPlayers")
+                );
+                sports.add(sp);
+            }
+
+            return sports;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+  
+        return sports;
+    }
     
 }

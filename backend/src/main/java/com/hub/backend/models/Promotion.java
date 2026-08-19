@@ -9,6 +9,7 @@ public class Promotion {
     private int facilityId;
     private String facilityName;
     private int sportId;
+    private String sportName;
     private String discountType;
     private float discountValue;
     private LocalDateTime startDate;
@@ -17,12 +18,13 @@ public class Promotion {
     //constructors
     public Promotion() {}
 
-    public Promotion(int id, String name, int facilityId, String facilityName, int sportId, String discountType, float discountValue, LocalDateTime startDate, LocalDateTime endDate) {
+    public Promotion(int id, String name, int facilityId, String facilityName, int sportId, String sportName, String discountType, float discountValue, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.name = name;
         this.facilityId = facilityId;
         this.facilityName = facilityName;
         this.sportId = sportId;
+        this.sportName = sportName;
         this.discountType = discountType;
         this.discountValue = discountValue;
         this.startDate = startDate;
@@ -59,6 +61,12 @@ public class Promotion {
     }
     public void setSportId(int sportId) {
         this.sportId = sportId;
+    }
+    public String getSportName() {
+        return sportName;
+    }
+    public void setSportName(String sportName) {
+        this.sportName = sportName;
     }
     public String getDiscountType() {
         return discountType;

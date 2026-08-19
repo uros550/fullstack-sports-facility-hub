@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../models/User';
 import { EmployeeProfileComponent } from '../employee-profile-component/employee-profile-component';
 import { EmployeeReservationsComponent } from '../employee-reservations-component/employee-reservations-component';
+import { EmployeePromotionsComponent } from '../employee-promotions-component/employee-promotions-component';
 
 @Component({
   selector: 'app-employee-component',
-  imports: [EmployeeProfileComponent, EmployeeReservationsComponent],
+  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent],
   templateUrl: './employee-component.html',
   styleUrl: './employee-component.css',
 })
