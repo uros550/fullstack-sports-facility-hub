@@ -3,11 +3,16 @@ package com.hub.backend.db.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.AvailabilitySlot;
+import com.hub.backend.models.Court;
+import com.hub.backend.models.CourtOccupancyReport;
 import com.hub.backend.models.EquipmentSpending;
+import com.hub.backend.models.EquipmentTurnoverReport;
 import com.hub.backend.models.MonthlyActivity;
 import com.hub.backend.models.SportReservationStats;
 
@@ -110,4 +115,80 @@ public class StatsRepo implements StatsRepoInterface {
         return stats;
     }
         
+    @Override
+    public List<CourtOccupancyReport> getCourtOccupancyReport(int facilityId, int year, int month) {
+       
+        List<CourtOccupancyReport> list = new ArrayList<>(); 
+        //get courts for selected facility
+        List<Court> courts = new SportsFacilityRepo().getCourtsByFacilityId(facilityId);
+        
+        //get selected month length
+        java.time.YearMonth yearMonth = java.time.YearMonth.of(year, month);
+        int daysInMonth = yearMonth.lengthOfMonth();
+
+        for (Court court : courts) {
+            int totalSlotsCount = 0;
+            int takenSlotsCount = 0;
+
+            for (int day = 1; day <= daysInMonth; day++) {
+                LocalDate date = LocalDate.of(year, month, day);
+                
+                //get slots for a day
+                List<AvailabilitySlot> slots = new ReservationRepo().getAvailabilityByCourtAndDate(court.getId(), date);
+                //add number of slots
+                totalSlotsCount += slots.size();
+                //add number of slots that are not available
+                takenSlotsCount += (int) slots.stream().filter(slot -> !slot.isAvailable()).count();
+            }
+
+            //calculate percentage
+            double percentage = totalSlotsCount > 0 ? ((double) takenSlotsCount / totalSlotsCount) * 100.0 : 0.0;
+
+            //create court report
+            CourtOccupancyReport cor = new CourtOccupancyReport(
+                court.getName(),
+                takenSlotsCount,
+                Math.round(percentage * 100.0) / 100.0
+            );
+            list.add(cor);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<EquipmentTurnoverReport> getEquipmentTurnoverReport(int year, int month) {
+
+        List<EquipmentTurnoverReport> list = new ArrayList<>();
+        String query =  "SELECT e.name AS equipmentName, " +
+                        "COALESCE(SUM(oi.quantity), 0) AS totalQuantitySold, " +
+                        "COALESCE(SUM(oi.quantity * oi.priceAtPurchase), 0) AS totalRevenue " +
+                        "FROM equipment e " +
+                        "JOIN orderItem oi ON e.id = oi.equipmentId " +
+                        "JOIN `Order` o ON oi.orderId = o.id " +
+                        "WHERE YEAR(o.orderDate) = ? AND MONTH(o.orderDate) = ? AND o.status = 'PICKED_UP' " +
+                        "GROUP BY e.id, e.name " +
+                        "ORDER BY totalRevenue DESC";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setInt(1, year);
+            stm.setInt(2, month);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                EquipmentTurnoverReport etr = new EquipmentTurnoverReport(
+                    rs.getString("equipmentName"),
+                    rs.getInt("totalQuantitySold"),
+                    rs.getDouble("totalRevenue")
+                );
+                list.add(etr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

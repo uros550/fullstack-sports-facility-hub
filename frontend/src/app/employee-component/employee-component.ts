@@ -4,10 +4,11 @@ import { EmployeeProfileComponent } from '../employee-profile-component/employee
 import { EmployeeReservationsComponent } from '../employee-reservations-component/employee-reservations-component';
 import { EmployeePromotionsComponent } from '../employee-promotions-component/employee-promotions-component';
 import { EmployeeCalendarComponent } from '../employee-calendar-component/employee-calendar-component';
+import { EmployeePDFComponent } from '../employee-pdfcomponent/employee-pdfcomponent';
 
 @Component({
   selector: 'app-employee-component',
-  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent, EmployeeCalendarComponent],
+  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent, EmployeeCalendarComponent, EmployeePDFComponent],
   templateUrl: './employee-component.html',
   styleUrl: './employee-component.css',
 })

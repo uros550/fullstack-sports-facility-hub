@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.StatsRepo;
+import com.hub.backend.models.CourtOccupancyReport;
 import com.hub.backend.models.EquipmentSpending;
+import com.hub.backend.models.EquipmentTurnoverReport;
 import com.hub.backend.models.MonthlyActivity;
 import com.hub.backend.models.SportReservationStats;
 
@@ -32,4 +35,14 @@ public class StatsController {
         return new StatsRepo().getEquipmentSpending();
     }
 
+    @GetMapping("/court/occupancy")
+    public List<CourtOccupancyReport> getCourtOccupancyReport(@RequestParam int facilityId, @RequestParam int year, @RequestParam int month) {
+        return new StatsRepo().getCourtOccupancyReport(facilityId, year, month);
+    }
+
+    @GetMapping("/equipment/turnover")
+    public List<EquipmentTurnoverReport> getEquipmentTurnoverReport(@RequestParam int year, @RequestParam int month) {
+        return new StatsRepo().getEquipmentTurnoverReport(year, month);
+    }
+    
 }
