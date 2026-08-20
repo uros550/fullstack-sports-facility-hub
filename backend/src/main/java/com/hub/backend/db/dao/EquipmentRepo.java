@@ -49,5 +49,26 @@ public class EquipmentRepo implements EquipmentRepoInterface {
 
         return equipment;
     }
+
+    @Override
+    public boolean updatePriceStock(Equipment equipment) {
+        
+        String query = "update equipment set price = ?, stock = ? where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setDouble(1, equipment.getPrice());
+            stm.setInt(2, equipment.getStock());
+            stm.setInt(3, equipment.getId());
+
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+
+        return false;
+    }
     
 }

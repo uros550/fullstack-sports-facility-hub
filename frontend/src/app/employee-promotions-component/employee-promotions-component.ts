@@ -9,10 +9,11 @@ import { Equipment } from '../models/Equipment';
 import { Order } from '../models/Order';
 import { OrderService } from '../services/order-service';
 import { UserService } from '../services/user-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-promotions-component',
-  imports: [DatePipe, EmployeePromotionModalComponent, NgClass],
+  imports: [DatePipe, EmployeePromotionModalComponent, NgClass, FormsModule],
   templateUrl: './employee-promotions-component.html',
   styleUrl: './employee-promotions-component.css',
 })
@@ -26,6 +27,10 @@ export class EmployeePromotionsComponent implements OnInit {
   showModal: boolean = false;
   currentEmployeeId: number = 0;
   selectedPromotionForEdit: Promotion | null = null;
+  selectedEquipmentId: number = 0;
+  newPrice: number = 0;
+  newStock: number = 0;
+  showAdd: boolean = false;
 
   successMessage: string = '';
 
@@ -126,6 +131,41 @@ export class EmployeePromotionsComponent implements OnInit {
         }
       })
     }
+  }
+
+  openEdit(item: Equipment) {
+    this.selectedEquipmentId = item.id;
+    this.newPrice = item.price;
+    this.newStock = item.stock;
+  }
+
+  confirmEdit(item: Equipment) {
+    if (this.newPrice < 0 || this.newStock < 0) return;
+
+    const updatedEquipment = {...item, price: this.newPrice, stock: this.newStock};
+
+    this.equipmentService.updatePriceStock(updatedEquipment).subscribe(data => {
+      if (data) {
+        this.loadEquipment();
+        this.selectedEquipmentId = 0;
+        this.successMessage = 'Successfully updated';
+      }
+      else {
+        this.successMessage = 'Error';
+      }
+    })
+  }
+
+  cancelEdit() {
+    this.selectedEquipmentId = 0;
+  }
+
+  openAdd() {
+    this.showAdd = true;
+  }
+
+  closeAdd() {
+    this.showAdd = false;
   }
 
 }

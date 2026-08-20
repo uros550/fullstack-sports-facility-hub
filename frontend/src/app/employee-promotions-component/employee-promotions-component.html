@@ -66,7 +66,7 @@
     </div>
     <button type="button" class="btn-blue" (click)="openCreate()">Create</button>
   }
-  @else if (selectedView === 'Equip'){
+  @else if (selectedView === 'Equip' && !showAdd){
     <div class="table-wrapper">
       <table class="custom-table">
         <thead>
@@ -96,17 +96,35 @@
                 {{ item.sportName }}
               </td>
               <td>
-                {{ item.price }} RSD
+                @if (selectedEquipmentId === item.id) {
+                  <input type="number" [(ngModel)]="newPrice" class="inline-input" min="1" />
+                }
+                @else {
+                  {{ item.price }} RSD
+                }
               </td>
               <td>
-                <span class="stock-badge" [class.out-of-stock]="item.stock === 0">
+                @if (selectedEquipmentId === item.id) {
+                  <input type="number" [(ngModel)]="newStock" class="inline-input" min="0" />
+                }
+                @else {
+                  <span class="stock-badge" [class.out-of-stock]="item.stock === 0">
                     {{ item.stock > 0 ? item.stock + ' in stock' : 'Out of stock' }}
-                </span>
+                  </span>
+                }
               </td>
               <td>
-                <div class="actions-cell">
-                    <button type="button" class="btn-green">Update</button>
-                </div>
+                @if (selectedEquipmentId === item.id) {
+                  <div class="inline-actions">
+                    <button type="button" class="btn-icon btn-confirm" (click)="confirmEdit(item)" title="Confirm">✓</button>
+                    <button type="button" class="btn-icon btn-cancel" (click)="cancelEdit()" title="Cancel">✕</button>
+                  </div>
+                }
+                @else {
+                  <div class="actions-cell">
+                    <button type="button" class="btn-green" (click)="openEdit(item)">Update</button>
+                  </div>
+                }
               </td>
             </tr>
           } @empty {
@@ -117,7 +135,10 @@
         </tbody>
       </table> 
     </div>
-    <button type="button" class="btn-blue">Add</button>
+    <button type="button" class="btn-blue" (click)="openAdd()">Add</button>
+  }
+  @else if (selectedView === 'Equip' && showAdd) {
+    <button type="button" class="btn-blue" (click)="closeAdd()">Close</button>
   }
   @else {
     <div class="table-wrapper2">

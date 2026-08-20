@@ -14,4 +14,8 @@ export class EquipmentService {
     return this.http.get<Equipment[]>(`${this.path}/${sportId}`);
   }
 
+  updatePriceStock(equipment: Equipment) {
+    return this.http.post<boolean>(`${this.path}/update`, equipment);
+  }
+
 }
