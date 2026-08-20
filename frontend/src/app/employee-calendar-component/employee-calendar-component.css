@@ -1,0 +1,162 @@
+.calendar-wrapper {
+  background-color: rgb(255, 255, 255);
+  padding: 24px;
+  border-radius: 8px;
+  border: 2px solid rgb(15, 23, 42);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.select-group {
+  display: flex;
+  gap: 16px;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(15, 23, 42);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-field select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgb(203, 213, 225);
+  font-size: 14px;
+  background-color: rgb(255, 255, 255);
+  outline: none;
+  color: rgb(15, 23, 42);
+  font-weight: 500;
+}
+
+.input-field select:focus {
+  border-color: rgb(15, 23, 42);
+}
+
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-nav {
+  padding: 8px 14px;
+  border: 1px solid rgb(15, 23, 42);
+  background-color: rgb(255, 255, 255);
+  color: rgb(15, 23, 42);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.btn-nav:hover {
+  background-color: rgb(15, 23, 42);
+  color: rgb(255, 255, 255);
+}
+
+.week-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+  margin-left: 8px;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 2px solid rgb(15, 23, 42);
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  background-color: rgb(255, 255, 255);
+}
+
+.calendar-table th {
+  background-color: rgb(15, 23, 42);
+  color: rgb(255, 255, 255);
+  padding: 12px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  border-right: 1px solid rgb(30, 41, 59);
+}
+
+.calendar-table td {
+  border-bottom: 1px solid rgb(226, 232, 240);
+  border-right: 1px solid rgb(226, 232, 240);
+  padding: 6px;
+  text-align: center;
+  height: 52px;
+  vertical-align: middle;
+}
+
+.time-col, .time-cell {
+  width: 70px;
+  background-color: rgb(248, 250, 252);
+  font-weight: 700;
+  font-size: 12px;
+  color: rgb(15, 23, 42);
+}
+
+.slot-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+/* Free (Slobodno) Slot - Zelena */
+.slot-badge.free {
+  background-color: rgb(220, 252, 231);
+  color: rgb(21, 128, 61);
+  border: 1px solid rgb(187, 247, 208);
+}
+
+/* Reserved (Zauzeto) Slot - Crvena */
+.slot-badge.taken {
+  background-color: rgb(254, 226, 226);
+  color: rgb(185, 28, 28);
+  border: 1px solid rgb(254, 202, 202);
+}
+
+.status-txt {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.time-txt {
+  font-size: 10px;
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+.no-data {
+  padding: 30px;
+  color: rgb(100, 116, 139);
+  font-weight: 500;
+}

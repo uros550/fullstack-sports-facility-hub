@@ -1,0 +1,67 @@
+<div class="calendar-wrapper">
+  <div class="controls-bar">
+    <div class="select-group">
+      <div class="input-field">
+        <label>Facility</label>
+        <select [(ngModel)]="selectedFacilityId" (change)="onFacilityChange()">
+          @for (f of facilities; track f.id) {
+            <option [value]="f.id">{{ f.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="input-field">
+        <label>Court / Hall</label>
+        <select [(ngModel)]="selectedCourtId" (change)="onCourtChange()">
+          @for (c of courts; track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button type="button" class="btn-nav" (click)="prevWeek()">&lt;</button>
+      <button type="button" class="btn-nav" (click)="nextWeek()">&gt;</button>
+      <span class="week-label">{{ getWeekRangeLabel() }}</span>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="calendar-table">
+      <thead>
+        <tr>
+          <th class="time-col">Time</th>
+          @for (day of weekDays; track day) {
+            <th>{{ getDayHeader(day) }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (time of timeSlots; track time) {
+          <tr>
+            <td class="time-cell">{{ time }}</td>
+            @for (day of weekDays; track day) {
+              @let slot = getSlot(day, time);
+              <td class="slot-cell">
+                @if (slot) {
+                  <div 
+                    class="slot-badge" 
+                    [class.free]="slot.available" 
+                    [class.taken]="!slot.available">
+                    <span class="status-txt">{{ slot.available ? 'Free' : 'Reserved' }}</span>
+                    <span class="time-txt">{{ slot.startTime }} - {{ slot.endTime }}</span>
+                  </div>
+                }
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="no-data">No available slots found for the selected court.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -3,10 +3,11 @@ import { User } from '../models/User';
 import { EmployeeProfileComponent } from '../employee-profile-component/employee-profile-component';
 import { EmployeeReservationsComponent } from '../employee-reservations-component/employee-reservations-component';
 import { EmployeePromotionsComponent } from '../employee-promotions-component/employee-promotions-component';
+import { EmployeeCalendarComponent } from '../employee-calendar-component/employee-calendar-component';
 
 @Component({
   selector: 'app-employee-component',
-  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent],
+  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent, EmployeeCalendarComponent],
   templateUrl: './employee-component.html',
   styleUrl: './employee-component.css',
 })
