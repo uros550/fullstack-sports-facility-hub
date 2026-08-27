@@ -7,6 +7,9 @@ import { SportsFacilityService } from '../services/sports-facility-service';
 import { CourtOccupancyReport } from '../models/CourtOccupancyReport';
 import { EquipmentTurnoverReport } from '../models/EquipmentTurnoverReport';
 import { StatsService } from '../services/stats-service';
+//generate pdf
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-employee-pdfcomponent',
@@ -84,6 +87,69 @@ export class EmployeePDFComponent implements OnInit {
 
   changeFilter() {
     this.loadData();
+  }
+
+  generatePDF() {
+    const doc = new jsPDF();
+    
+    const facilityName = this.sanitizeText(this.facilities.find(f => f.id == this.selectedFacilityId)?.name || '');
+    const monthName = this.sanitizeText(this.months.find(m => m.value == this.selectedMonth)?.name || '');
+
+    doc.setFontSize(18);
+    doc.setTextColor(15, 23, 42);
+    doc.text('Reports and Statistics', 14, 20);
+
+    doc.setFontSize(11);
+    doc.setTextColor(51, 65, 85);
+    doc.text(`Sports Facility: ${facilityName}`, 14, 28);
+    doc.text(`Period: ${monthName} ${this.selectedYear}`, 14, 34);
+
+    doc.setFontSize(14);
+    doc.setTextColor(15, 23, 42);
+    doc.text('Court Occupancy', 14, 46);
+
+    autoTable(doc, {
+      startY: 50,
+      head: [['Court', 'Reserved Hours', 'Occupancy (%)']],
+      body: this.occupancyData.map(item => [
+        this.sanitizeText(item.courtName),
+        `${item.reservedHours} h`,
+        `${item.occupancyPercentage}%`
+      ]),
+      headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255] },
+      styles: { fontSize: 10, cellPadding: 4 }
+    });
+
+    const lastY = (doc as any).lastAutoTable.finalY || 50;
+
+    doc.setFontSize(14);
+    doc.setTextColor(15, 23, 42);
+    doc.text('Equipment Turnover', 14, lastY + 14);
+
+    autoTable(doc, {
+      startY: lastY + 18,
+      head: [['Equipment', 'Quantity', 'Total Revenue']],
+      body: this.equipmentData.map(item => [
+        this.sanitizeText(item.equipmentName),
+        item.totalQuantitySold.toString(),
+        `${item.totalRevenue.toFixed(2)} RSD`
+      ]),
+      headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255] },
+      styles: { fontSize: 10, cellPadding: 4 }
+    });
+
+    doc.save(`Report_${facilityName}_${monthName}_${this.selectedYear}.pdf`);
+  }
+
+  //remove serbian latin letters
+  sanitizeText(str: string): string {
+    if (!str) return '';
+    return str
+      .replace(/č/g, 'c').replace(/Č/g, 'C')
+      .replace(/ć/g, 'c').replace(/Ć/g, 'C')
+      .replace(/š/g, 's').replace(/Š/g, 'S')
+      .replace(/ž/g, 'z').replace(/Ž/g, 'Z')
+      .replace(/đ/g, 'dj').replace(/Đ/g, 'Dj');
   }
 
 }

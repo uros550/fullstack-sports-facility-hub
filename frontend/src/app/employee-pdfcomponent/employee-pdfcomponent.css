@@ -91,3 +91,29 @@ td {
   color: rgb(100, 116, 139);
   padding: 24px;
 }
+
+.actions-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btn-generate-pdf {
+  background-color: rgb(0, 177, 106);
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-generate-pdf:hover {
+  background-color: rgb(0, 155, 93);
+}
+
+.btn-generate-pdf:active {
+  transform: scale(0.98);
+}
