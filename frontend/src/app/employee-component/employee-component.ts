@@ -5,10 +5,11 @@ import { EmployeeReservationsComponent } from '../employee-reservations-componen
 import { EmployeePromotionsComponent } from '../employee-promotions-component/employee-promotions-component';
 import { EmployeeCalendarComponent } from '../employee-calendar-component/employee-calendar-component';
 import { EmployeePDFComponent } from '../employee-pdfcomponent/employee-pdfcomponent';
+import { EmployeeFacilitiesComponent } from '../employee-facilities-component/employee-facilities-component';
 
 @Component({
   selector: 'app-employee-component',
-  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent, EmployeeCalendarComponent, EmployeePDFComponent],
+  imports: [EmployeeProfileComponent, EmployeeReservationsComponent, EmployeePromotionsComponent, EmployeeCalendarComponent, EmployeePDFComponent, EmployeeFacilitiesComponent],
   templateUrl: './employee-component.html',
   styleUrl: './employee-component.css',
 })

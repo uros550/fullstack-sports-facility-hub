@@ -50,12 +50,10 @@
 
       @switch (activeTab) {
                 @case ('profile') {
-                    <app-employee-profile-component></app-employee-profile-component>
+                  <app-employee-profile-component></app-employee-profile-component>
                 }
                 @case('facilities') {
-                  <div class="content-placeholder">
-                        Facilities Component goes here.
-                  </div>
+                  <app-employee-facilities-component></app-employee-facilities-component>
                 }
                 @case('reservations') {
                   <app-employee-reservations-component></app-employee-reservations-component>

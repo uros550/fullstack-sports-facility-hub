@@ -1,0 +1,176 @@
+<div class="facilities-container">
+  <div class="header-section">
+    <div class="title-group">
+      <h2>Facility Management</h2>
+      <p class="subtitle">Manage sports facilities, courts, and image galleries</p>
+    </div>
+    <div class="select-facility-box">
+      <label for="facilitySelect">Select Facility:</label>
+      <select id="facilitySelect" [(ngModel)]="selectedFacilityId" (change)="changeFacilitySelect()">
+        <option [ngValue]="null">+ Create New Facility</option>
+        @for (f of facilities; track f.id) {
+          <option [value]="f.id">{{ f.name }} ({{ f.city }})</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="card-section import-card">
+    <h3>Import Facility via JSON File</h3>
+    <div class="upload-row">
+      <label class="custom-file-upload">
+        <input type="file" accept=".json" (change)="selectJsonFile($event)" />
+        <span>Choose JSON</span>
+      </label>
+      <span class="file-name-display">{{ selectedJsonFile ? selectedJsonFile.name : 'No file chosen' }}</span>
+      <button type="button" class="btn-primary" (click)="uploadJson()">Upload JSON</button>
+    </div>
+  </div>
+
+  <form #facilityForm="ngForm" (ngSubmit)="saveFacility(facilityForm)" class="form-container" novalidate>
+    <div class="card-section">
+      <h3>Facility Details</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Facility Name</label>
+          <input type="text" [(ngModel)]="facility.name" name="name" placeholder="Name of the facility" required />
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" [(ngModel)]="facility.city" name="city" placeholder="e.g. Belgrade" required />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Address</label>
+          <input type="text" [(ngModel)]="facility.address" name="address" placeholder="Street and number" required />
+        </div>
+
+        <div class="form-group">
+          <label>Registration Number (MB)</label>
+          <input type="text" [(ngModel)]="facility.mb" name="mb" placeholder="8 digits" required pattern="^[0-9]{8}$" />
+        </div>
+
+        <div class="form-group">
+          <label>Tax ID (PIB)</label>
+          <input type="text" [(ngModel)]="facility.pib" name="pib" placeholder="9 digits" required pattern="^[0-9]{9}$" />
+        </div>
+
+        <div class="form-group">
+          <label>Working Hours</label>
+          <input type="text" [(ngModel)]="facility.workingHours" name="workingHours" placeholder="e.g. 07:00 - 22:00" required pattern="^([01]\d|2[0-3]):[0-5]\d\s*-\s*([01]\d|2[0-3]):[0-5]\d$" />
+        </div>
+
+        <div class="form-group">
+          <label>Max Penalties Allowed</label>
+          <input type="number" [(ngModel)]="facility.maxPenalties" name="maxPenalties" required min="0" />
+        </div>
+
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="number" step="any" [(ngModel)]="facility.latitude" name="latitude" placeholder="44.xxxx" required />
+        </div>
+
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="number" step="any" [(ngModel)]="facility.longitude" name="longitude" placeholder="20.xxxx" required />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Description</label>
+          <textarea [(ngModel)]="facility.description" name="description" rows="3" placeholder="Brief description of facility features..." required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h3>Facility Gallery</h3>
+      <div class="image-gallery-grid">
+        @for (imgUrl of existingImages; track $index) {
+          <div class="image-card" [style.background-image]="'url(' + getImageUrl(imgUrl) + ')'">
+            <button type="button" class="remove-img-btn" (click)="removeExistingImage($index)" title="Remove Photo">✕</button>
+          </div>
+        }
+
+        @for (previewUrl of newImagePreviews; track $index) {
+          <div class="image-card" [style.background-image]="'url(' + previewUrl + ')'">
+            <button type="button" class="remove-img-btn" (click)="removeNewImage($index)" title="Remove Photo">✕</button>
+          </div>
+        }
+
+        <label class="upload-photo-card">
+          <input type="file" accept="image/*" multiple (change)="onImageSelected($event)" class="hidden-file-input" />
+          <div class="upload-photo-content">
+            <span class="upload-icon">+</span>
+            <span class="upload-text">Add Photo</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <div class="section-header">
+        <h3>Courts & Halls</h3>
+        <button type="button" class="btn-secondary" (click)="addCourt()">+ Add Court</button>
+      </div>
+
+      @for (court of courts; track $index) {
+        <div class="court-card">
+          <div class="court-header">
+            <h4>Court #{{ $index + 1 }}</h4>
+            <button type="button" class="btn-danger" (click)="removeCourt($index)">Remove Court</button>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Court Name</label>
+              <input type="text" [(ngModel)]="court.name" name="courtName_{{ $index }}" required />
+            </div>
+
+            <div class="form-group">
+                <label>Sport Type</label>
+                <select [(ngModel)]="court.sportId" name="courtSport_{{ $index }}" required>
+                    @for (sport of sports; track sport.id) {
+                    <option [value]="sport.id">{{ sport.name }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+              <label>Facility Type</label>
+              <select [(ngModel)]="court.type" name="courtType_{{ $index }}">
+                <option value="OPEN">Outdoor</option>
+                <option value="CLOSED">Indoor</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Capacity</label>
+              <input type="number" [(ngModel)]="court.capacity" name="courtCapacity_{{ $index }}" min="1" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label>Price Per Hour (RSD)</label>
+              <input type="number" [(ngModel)]="court.pricePerHour" name="courtPrice_{{ $index }}" min="1" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label>Equipment Description</label>
+              <textarea [(ngModel)]="court.equipmentDescription" name="courtEquipment_{{ $index }}" maxlength="300" rows="2"></textarea>
+              <small class="char-counter">{{ court.equipmentDescription ? court.equipmentDescription.length : 0 }}/300 characters</small>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p>No courts added yet. Click <strong>"+ Add Court"</strong> above.</p>
+        </div>
+      }
+    </div>
+
+    <div class="actions-footer">
+      <button type="button" class="btn-reset" (click)="resetForm()">Reset</button>
+      <button type="submit" class="btn-save">Save Facility</button>
+    </div>
+  </form>
+</div>
