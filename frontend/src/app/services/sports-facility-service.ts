@@ -54,5 +54,13 @@ export class SportsFacilityService {
   searchFacilities(request: any) {
     return this.http.post<SportsFacility[]>(`${this.path}/search`, request);
   }
+
+  updateFacility(facility: SportsFacility, courts: Court[], images: string[]) {
+    
+  }
+
+  addFacility(newFacility: SportsFacility, courts: Court[], images: string[]) {
+
+  }
   
 }
