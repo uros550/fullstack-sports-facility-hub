@@ -14,11 +14,23 @@ export class AdminService {
     return this.http.get<User[]>(`${this.path}/users/all`);
   }
 
+  getPendingUsers() {
+    return this.http.get<User[]>(`${this.path}/users/pending`);
+  }
+
   changeUsername(userId: number, newUsername: string) {
     return this.http.post<boolean>(`${this.path}/users/update/${userId}`, null, {
     params: {
       newUsername: newUsername
     }});
+  }
+
+  acceptRegistration(userId: number) {
+    return this.http.post<boolean>(`${this.path}/users/accept/${userId}`, {});
+  }
+
+  rejectRegistration(userId: number) {
+    return this.http.post<boolean>(`${this.path}/users/reject/${userId}`, {});
   }
 
   deleteAccount(userId: number) {

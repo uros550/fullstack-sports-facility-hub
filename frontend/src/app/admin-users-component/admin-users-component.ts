@@ -67,8 +67,8 @@ export class AdminUsersComponent implements OnInit {
       })
     }
     else if (this.actionType === 'DELETE') {
-      this.adminService.deleteAccount(this.selectedUserId).subscribe(success => {
-        if (success) {
+      this.adminService.deleteAccount(this.selectedUserId).subscribe(data => {
+        if (data) {
           this.successMessage = 'Successfully deleted user account';
           const user = this.users.find(u => u.id === this.selectedUserId);
           if (user) user.status = 'REJECTED';

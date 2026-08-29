@@ -23,10 +23,25 @@ public class AdminController {
         return new AdminRepo().getAllUsers();
     }
 
+    @GetMapping("/users/pending")
+    public List<User> getPendingUsers() {
+        return new AdminRepo().getPendingUsers();
+    }
+
     @PostMapping("/users/update/{userId}")
     public boolean changeUsername(@PathVariable int userId, @RequestParam String newUsername) {
         if (newUsername == null || newUsername.trim().isEmpty()) return false;
         return new AdminRepo().changeUsername(userId, newUsername);
+    }
+
+    @PostMapping("/users/accept/{userId}")
+    public boolean acceptRegistration(@PathVariable int userId) {
+        return new AdminRepo().acceptRegistration(userId);
+    }
+
+    @PostMapping("/users/reject/{userId}")
+    public boolean rejectRegistration(@PathVariable int userId) {
+        return new AdminRepo().rejectRegistration(userId);
     }
 
     @PostMapping("/users/delete/{userId}")
