@@ -27,14 +27,16 @@ export class AdminComponent implements OnInit {
       }
     }
 
-    //get back after details
-    if (history.state.section === 'facilities') {
-      this.activeTab = 'facilities';
+    //if refresh go back to correct tab
+    if (history.state?.section) {
+      this.activeTab = history.state.section;
     }
+
   }
 
-  setActiveTab(tabName: string): void {
+  setActiveTab(tabName: string) {
     this.activeTab = tabName;
+    history.replaceState({ ...history.state, section: tabName }, '');
   }
 
 }

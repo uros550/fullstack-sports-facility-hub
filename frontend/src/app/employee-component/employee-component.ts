@@ -28,10 +28,16 @@ export class EmployeeComponent implements OnInit {
         console.error('Local storage getItem error:', error);
       }
     }
+    
+    //if refresh go back to correct tab
+    if (history.state?.section) {
+      this.activeTab = history.state.section;
+    }
   }
 
   setActiveTab(tabName: string): void {
     this.activeTab = tabName;
+    history.replaceState({ ...history.state, section: tabName }, '');
   }
 
 }

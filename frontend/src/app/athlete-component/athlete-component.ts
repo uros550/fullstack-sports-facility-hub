@@ -29,14 +29,16 @@ export class AthleteComponent implements OnInit {
         console.error('Local storage getItem error:', error);
       }
     }
-    //restore search session
-    if (history.state.section === 'reservations') {
-      this.activeTab = 'reservations';
+
+    //if refresh go back to correct tab
+    if (history.state?.section) {
+      this.activeTab = history.state.section;
     }
   }
 
   setActiveTab(tabName: string): void {
     this.activeTab = tabName;
+    history.replaceState({ ...history.state, section: tabName }, '');
   }
 
 }
