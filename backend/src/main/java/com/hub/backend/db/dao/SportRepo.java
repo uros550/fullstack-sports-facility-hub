@@ -86,5 +86,25 @@ public class SportRepo implements SportRepoInterface {
   
         return sports;
     }
+
+    @Override
+    public boolean addSport(Sport newSport) {
+        
+        String query = "insert into sport(name, requiredPlayers) values (?, ?)";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setString(1, newSport.getName());
+            stm.setInt(2, newSport.getRequiredPlayers());
+
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
     
 }

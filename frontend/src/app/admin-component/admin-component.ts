@@ -4,10 +4,11 @@ import { AdminUsersComponent } from '../admin-users-component/admin-users-compon
 import { AdminPendingUsersComponent } from '../admin-pending-users-component/admin-pending-users-component';
 import { AdminFacilitiesComponent } from '../admin-facilities-component/admin-facilities-component';
 import { AdminCoachesComponent } from '../admin-coaches-component/admin-coaches-component';
+import { AdminSportsComponent } from '../admin-sports-component/admin-sports-component';
 
 @Component({
   selector: 'app-admin-component',
-  imports: [AdminUsersComponent, AdminPendingUsersComponent, AdminFacilitiesComponent, AdminCoachesComponent],
+  imports: [AdminUsersComponent, AdminPendingUsersComponent, AdminFacilitiesComponent, AdminCoachesComponent, AdminSportsComponent],
   templateUrl: './admin-component.html',
   styleUrl: './admin-component.css',
 })

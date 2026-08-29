@@ -9,5 +9,6 @@ public interface SportRepoInterface {
     List<Sport> getAllSports();
     int getMaxMissingPlayers(int sportId);
     List<Sport> getSportsByFacilityId(int facilityId);
+    boolean addSport(Sport newSport);
 
 }

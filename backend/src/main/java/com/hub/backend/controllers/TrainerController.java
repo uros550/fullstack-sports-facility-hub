@@ -39,5 +39,5 @@ public class TrainerController {
     public boolean changeIsActive(@RequestParam int trainerId, @RequestParam boolean activate) {
         return new TrainerRepo().changeIsActive(trainerId, activate);
     }
-
+    
 }

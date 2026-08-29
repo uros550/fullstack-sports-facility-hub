@@ -23,4 +23,8 @@ export class SportService {
     return this.http.get<Sport[]>(`${this.path}/facility/${facilityId}`);
   }
 
+  addSport(newSport: Sport) {
+    return this.http.post<boolean>(`${this.path}/add`, newSport);
+  }
+
 }
