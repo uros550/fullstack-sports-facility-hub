@@ -1,0 +1,60 @@
+<div class="table-container">
+  <div class="table-header">
+    <div>
+      <h3 class="table-title">Coaches & Trainers</h3>
+      <p class="table-subtitle">Manage trainer profiles and account statuses</p>
+    </div>
+    <span class="users-count-badge">{{ trainers.length }} Total</span>
+  </div>
+
+  @if (successMessage) {
+    <div class="status-message" [class.message-error]="successMessage.toLowerCase().includes('error')">
+      {{ successMessage }}
+    </div>
+  }
+
+  <div class="table-responsive">
+    <table class="coaches-table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Specialization</th>
+          <th>Rating</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (trainer of trainers; track trainer.id) {
+          <tr [class.row-active]="trainer.isActive" [class.row-inactive]="!trainer.isActive">
+            <td class="font-semibold">{{ trainer.firstName }}</td>
+            <td class="font-semibold">{{ trainer.lastName }}</td>
+            <td class="text-secondary">{{ trainer.specialization }}</td>
+            <td>
+                <span class="rating-badge">{{ trainer.rating}} ★</span>
+            </td>
+            <td>
+                <div class="actions-cell">
+                @if (selectedTrainerId === trainer.id) {
+                    <button type="button" class="btn-action btn-confirm" (click)="confirmAction()">CONFIRM</button>
+                    <button type="button" class="btn-action btn-cancel" (click)="cancelAction()">CANCEL</button>
+                } 
+                @else {
+                    @if (trainer.isActive) {
+                    <button type="button" class="btn-action btn-deactivate" (click)="openDeactivate(trainer.id)">DEACTIVATE</button>
+                    } @else {
+                    <button type="button" class="btn-action btn-activate" (click)="openActivate(trainer.id)">ACTIVATE</button>
+                    }
+                }
+                </div>
+            </td>
+            </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">No trainers found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

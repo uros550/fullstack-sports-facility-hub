@@ -3,10 +3,11 @@ import { User } from '../models/User';
 import { AdminUsersComponent } from '../admin-users-component/admin-users-component';
 import { AdminPendingUsersComponent } from '../admin-pending-users-component/admin-pending-users-component';
 import { AdminFacilitiesComponent } from '../admin-facilities-component/admin-facilities-component';
+import { AdminCoachesComponent } from '../admin-coaches-component/admin-coaches-component';
 
 @Component({
   selector: 'app-admin-component',
-  imports: [AdminUsersComponent, AdminPendingUsersComponent, AdminFacilitiesComponent],
+  imports: [AdminUsersComponent, AdminPendingUsersComponent, AdminFacilitiesComponent, AdminCoachesComponent],
   templateUrl: './admin-component.html',
   styleUrl: './admin-component.css',
 })
