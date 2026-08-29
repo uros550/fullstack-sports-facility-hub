@@ -51,6 +51,7 @@
     font-weight: 600;
     color: rgb(15, 23, 42);
     transition: .25s;
+    position: relative;
 }
 
 .menu-item:hover {

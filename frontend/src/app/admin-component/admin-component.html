@@ -11,27 +11,27 @@
         Admin Control Panel
       </h2>
 
-      <button class="menu-item active">
+      <button class="menu-item active" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
         👥
         <span>User Accounts</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'registration'" (click)="setActiveTab('registration')">
         📩
         <span>Registration Requests</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'facilities'" (click)="setActiveTab('facilities')">
         🏢
         <span>Facility Approvals</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'coaches'" (click)="setActiveTab('coaches')">
         👟
         <span>Coaches Directory</span>
       </button>
 
-      <button class="menu-item">
+      <button class="menu-item" [class.active]="activeTab === 'sports'" (click)="setActiveTab('sports')">
         ⚽
         <span>Sports Categories</span>
       </button>
@@ -42,20 +42,27 @@
     <section class="content-card">
 
       <div class="content-header">
-
         <h1>System Administration</h1>
-
-        <p>
-          Manage platform users, approve new registrations and sports facilities, and configure system sports.
-        </p>
-
       </div>
 
-      <div class="content-placeholder">
+      <!--dynamic content based on activeTab-->
+      @switch (activeTab) {
+          @case ('users') {
+            <app-admin-users-component></app-admin-users-component>
+          }
+          @case ('registration') {
 
-        User Management & System Overview goes here.
+          }
+          @case ('facilities') {
 
-      </div>
+          }
+          @case ('coaches') {
+            
+          }
+          @case ('sports') {
+            
+          }
+      }
 
     </section>
 

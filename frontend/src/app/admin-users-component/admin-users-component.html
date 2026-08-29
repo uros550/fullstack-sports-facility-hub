@@ -1,0 +1,79 @@
+<div class="table-container">
+  <div class="table-header">
+    <div>
+      <h3 class="table-title">User Accounts</h3>
+      <p class="table-subtitle">Manage system users, roles, and status</p>
+    </div>
+    <span class="users-count-badge">{{ users.length }} Total</span>
+  </div>
+
+  <div class="table-responsive">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>Name & Surname</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Update/Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr 
+            [class.row-approved]="user.status === 'APPROVED'"
+            [class.row-pending]="user.status === 'PENDING'"
+            [class.row-rejected]="user.status === 'REJECTED'">
+            <td>
+              <img 
+                [src]="user.profilePicture ? ('http://localhost:8080/' + user.profilePicture) : 'default-pfp.jpg'"
+                class="item-img"
+              />
+            </td>
+            <td class="font-semibold">{{ user.firstName }} {{ user.lastName }}</td>
+            <td>
+                @if (selectedUserId === user.id && actionType === 'UPDATE') {
+                <input 
+                  type="text" 
+                  class="username-input" 
+                  [(ngModel)]="editingUsername" 
+                />
+              } @else {
+                <span class="text-secondary">@{{ user.username }}</span>
+              }
+            </td>
+            <td><code class="password-code">{{ user.password }}</code></td>
+            <td>{{ user.email }}</td>
+            <td class="text-secondary">{{ user.phone ? user.phone : '-' }}</td>
+            <td>
+              <span class="badge badge-role">{{ user.role }}</span>
+            </td>
+            <td>
+              <span class="badge badge-status">{{ user.status }}</span>
+            </td>
+            <td>
+              <div class="actions-cell">
+                @if (selectedUserId === user.id) {
+                  <button type="button" class="btn-action btn-confirm" (click)="confirmAction()">✓</button>
+                  <button type="button" class="btn-action btn-cancel" (click)="cancelAction()">✕</button>
+                } 
+                @else {
+                  <button type="button" class="btn-action btn-update" (click)="openUpdate(user)">U</button>
+                  <button type="button" class="btn-action btn-delete" (click)="openDelete(user.id)">D</button>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="9" class="empty-state">No users registered in the system.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
