@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/User';
+import { SportsFacility } from '../models/SportsFacility';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,18 @@ export class AdminService {
 
   deleteAccount(userId: number) {
     return this.http.post<boolean>(`${this.path}/users/delete/${userId}`, {});
+  }
+
+  getPendingFacilities() {
+    return this.http.get<SportsFacility[]>(`${this.path}/facilities/pending`);
+  }
+
+  acceptFacility(facilityId: number) {
+    return this.http.post<boolean>(`${this.path}/facilities/accept/${facilityId}`, {});
+  }
+
+  rejectFacility(facilityId: number) {
+    return this.http.post<boolean>(`${this.path}/facilities/reject/${facilityId}`, {});
   }
   
 }

@@ -1,0 +1,59 @@
+<div class="table-container">
+  <div class="table-header">
+    <div>
+      <h3 class="table-title">Pending Facility Registrations</h3>
+      <p class="table-subtitle">Review and approve new sports facilities</p>
+    </div>
+    <span class="users-count-badge">{{ facilities.length }} Total</span>
+  </div>
+
+  @if (successMessage) {
+    <div class="status-message" [class.message-error]="successMessage.includes('Error')">
+      {{ successMessage }}
+    </div>
+  }
+
+  <div class="table-responsive">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Details</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (facility of facilities; track facility.id) {
+          <tr>
+            <td class="font-semibold">{{ facility.name }}</td>
+            <td>{{ facility.address }}</td>
+            <td class="text-secondary">{{ facility.city }}</td>
+            <td class="details-col">
+              <button type="button" class="btn-action btn-details" (click)="viewDetails(facility.id)">
+                Details
+              </button>
+            </td>
+            <td>
+              <div class="actions-cell">
+                @if (selectedFacilityId === facility.id) {
+                  <button type="button" class="btn-action btn-confirm" (click)="confirmAction()">CONFIRM</button>
+                  <button type="button" class="btn-action btn-cancel" (click)="cancelAction()">CANCEL</button>
+                } 
+                @else {
+                  <button type="button" class="btn-action btn-update" (click)="openAccept(facility.id)">APPROVE</button>
+                  <button type="button" class="btn-action btn-delete" (click)="openReject(facility.id)">REJECT</button>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">No facility registration requests pending.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

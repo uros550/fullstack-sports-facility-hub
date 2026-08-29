@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.backend.db.dao.AdminRepo;
+import com.hub.backend.models.SportsFacility;
 import com.hub.backend.models.User;
 
 @RestController
@@ -47,6 +48,21 @@ public class AdminController {
     @PostMapping("/users/delete/{userId}")
     public boolean deleteAccount(@PathVariable int userId) {
         return new AdminRepo().deleteAccount(userId);
+    }
+
+    @GetMapping("/facilities/pending")
+    public List<SportsFacility> getPendingFacilities() {
+        return new AdminRepo().getPendingFacilities();
+    }
+
+    @PostMapping("/facilities/accept/{facilityId}")
+    public boolean acceptFacility(@PathVariable int facilityId) {
+        return new AdminRepo().acceptFacility(facilityId);
+    }
+
+    @PostMapping("/facilities/reject/{facilityId}")
+    public boolean rejectFacility(@PathVariable int facilityId) {
+        return new AdminRepo().rejectFacility(facilityId);
     }
 
 }

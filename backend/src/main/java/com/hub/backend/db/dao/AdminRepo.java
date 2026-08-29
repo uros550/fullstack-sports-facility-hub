@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hub.backend.db.DB;
+import com.hub.backend.models.SportsFacility;
 import com.hub.backend.models.User;
 
 public class AdminRepo implements AdminRepoInterface {
@@ -148,6 +149,80 @@ public class AdminRepo implements AdminRepoInterface {
         ){
             stm.setInt(1, userId);
             
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<SportsFacility> getPendingFacilities() {
+        
+        List<SportsFacility> facilities = new ArrayList<>();
+        String query = "select * from sportsfacility where status = 'PENDING'";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                SportsFacility sf = new SportsFacility(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("address"),
+                    rs.getString("city"),
+                    rs.getString("mb"),
+                    rs.getString("pib"),
+                    rs.getString("description"),
+                    rs.getDouble("latitude"),
+                    rs.getDouble("longitude"),
+                    rs.getString("workingHours"),
+                    rs.getInt("maxPenalties"),
+                    rs.getInt("likesCount"),
+                    rs.getString("status")
+                );
+                facilities.add(sf);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return facilities;
+    }
+
+    @Override
+    public boolean acceptFacility(int facilityId) {
+        
+        String query = "update sportsfacility set status = 'APPROVED' where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, facilityId);
+
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean rejectFacility(int facilityId) {
+        
+        String query = "update sportsfacility set status = 'REJECTED' where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, facilityId);
+
             return stm.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();

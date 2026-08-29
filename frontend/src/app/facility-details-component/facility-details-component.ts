@@ -61,6 +61,7 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
   //is employee logged in
   isEmployee: boolean = false;
   employeeId: number = 0;
+  isAdmin: boolean = false;
 
   errorMessage: string = '';
 
@@ -104,6 +105,9 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
     else if (user && user.role === 'EMPLOYEE') {
       this.employeeId = user.id;
       this.isEmployee = true;
+    }
+    else if (user && user.role === 'ADMIN') {
+      this.isAdmin = true;
     }
   }
 
@@ -365,7 +369,14 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
       });
     }
     if (this.isEmployee) {
-      this.router.navigate(['/employee-dashboard'])
+      this.router.navigate(['/employee-dashboard']);
+    }
+    if (this.isAdmin) {
+      this.router.navigate(['/admin-dashboard'], {
+        state: {
+          section: 'facilities'
+        }
+      });
     }
     else {
       this.router.navigate(['/home'], {
