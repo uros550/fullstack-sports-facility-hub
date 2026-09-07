@@ -58,8 +58,14 @@ export class AthleteProfileComponent implements OnInit {
     }
 
     if (this.currentUser) {
+      this.loadProfile();
+      this.loadSports();
+      this.loadReservations();
+    }
+  }
 
-      this.userService.getProfileById(this.currentUser.id).subscribe(data => {
+  loadProfile() {
+      this.userService.getProfileById(this.currentUser!.id).subscribe(data => {
         if(data) {
           this.profile = data;
           this.originalProfile = structuredClone(data);
@@ -69,22 +75,24 @@ export class AthleteProfileComponent implements OnInit {
           }
         }
       });
+  }
 
+  loadSports() {
       this.sportService.getAllSports().subscribe(data => {
         this.allSports = data;
       });
 
-      this.userService.getUserSportIds(this.currentUser.id).subscribe(data => {
+      this.userService.getUserSportIds(this.currentUser!.id).subscribe(data => {
         this.selectedSports = data;
         this.originalSports = data;
       });
+  }
 
-      this.userService.getReservationsByAthleteId(this.currentUser.id).subscribe(data => {
+  loadReservations() {
+      this.userService.getReservationsByAthleteId(this.currentUser!.id).subscribe(data => {
           this.reservations = data;
           this.filteredReservations = structuredClone(data);
       });
-
-    }
   }
 
   //main methods
@@ -329,6 +337,7 @@ export class AthleteProfileComponent implements OnInit {
     this.userService.cancelReservation(reservation.id).subscribe(data => {
       if (data === 'Success') {
         reservation.status = 'CANCELLED';
+        this.loadReservations();
       }
     });
   }
