@@ -213,15 +213,15 @@
 }
 
 .cancel-badge {
-  background-color: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background-color: rgb(254, 226, 226);
+  color: rgb(185, 28, 28);
+  border: 1px solid rgb(254, 202, 202);
 }
 
 .picked-badge {
-  background-color: #fef3c7;
-  color: #b45309;
-  border: 1px solid #fde68a;
+  background-color: rgb(254, 243, 199);
+  color: rgb(180, 83, 9);
+  border: 1px solid rgb(253, 230, 138);
 }
 
 .no-data {
@@ -238,6 +238,7 @@
   font-size: 13px;
   outline: none;
   background-color: rgb(255, 255, 255);
+  box-sizing: border-box;
 }
 
 .inline-input:focus {
@@ -266,23 +267,61 @@
 }
 
 .btn-confirm {
-  background-color: #dcfce7;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
+  background-color: rgb(220, 252, 231);
+  color: rgb(21, 128, 61);
+  border: 1px solid rgb(187, 247, 208);
 }
 
 .btn-confirm:hover {
-  background-color: #16a34a;
-  color: #ffffff;
+  background-color: rgb(22, 163, 74);
+  color: rgb(255, 255, 255);
 }
 
 .btn-cancel {
-  background-color: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background-color: rgb(254, 226, 226);
+  color: rgb(185, 28, 28);
+  border: 1px solid rgb(254, 202, 202);
 }
 
 .btn-cancel:hover {
-  background-color: #dc2626;
-  color: #ffffff;
+  background-color: rgb(220, 38, 38);
+  color: rgb(255, 255, 255);
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(15, 23, 42);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.form-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(15, 23, 42);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(51, 65, 85);
+}
+
+.form-group .inline-input {
+  width: 100%;
 }

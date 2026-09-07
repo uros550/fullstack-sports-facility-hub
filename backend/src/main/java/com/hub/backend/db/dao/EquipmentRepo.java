@@ -1,10 +1,17 @@
 package com.hub.backend.db.dao;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.backend.db.DB;
 import com.hub.backend.models.Equipment;
@@ -68,6 +75,53 @@ public class EquipmentRepo implements EquipmentRepoInterface {
             e.printStackTrace();    
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean addEquipment(String name, int sportId, double price, int stock, MultipartFile file) {
+        //image is required
+        if (file == null || file.isEmpty()) {
+            return false;
+        }
+        try {
+            //setting up dir
+            String uploadDir = "uploads/equipment/";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            //get file extension
+            String originalFilename = file.getOriginalFilename();
+            String extension = ".jpg";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+
+            //generate unique name and save
+            String fileName = name.replace(" ", "_") + extension;
+            Path filePath = Paths.get(uploadDir + fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            String imageUrl = uploadDir + fileName;
+
+            //insert in db
+            String query = "insert into equipment (name, sportId, price, stock, imageUrl) values (?, ?, ?, ?, ?)";
+            try (Connection conn = DB.source().getConnection();
+                 PreparedStatement stm = conn.prepareStatement(query)) {
+                
+                stm.setString(1, name);
+                stm.setInt(2, sportId);
+                stm.setDouble(3, price);
+                stm.setInt(4, stock);
+                stm.setString(5, imageUrl);
+
+                return stm.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
     

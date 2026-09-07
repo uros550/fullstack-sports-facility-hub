@@ -138,7 +138,48 @@
     <button type="button" class="btn-blue" (click)="openAdd()">Add</button>
   }
   @else if (selectedView === 'Equip' && showAdd) {
-    <button type="button" class="btn-blue" (click)="closeAdd()">Close</button>
+    <!-- Forma za dodavanje opreme -->
+    <div class="form-card">
+      <h3>Add New Equipment</h3>
+
+      <div class="form-group">
+        <label>Image</label>
+        <input type="file" accept="image/*" (change)="changeFile($event)" class="inline-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="newEqName" placeholder="Equipment name" class="inline-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Sport *</label>
+        <select [(ngModel)]="selectedSportId" class="inline-input">
+          @for (sport of sports; track sport.id) {
+            <option [value]="sport.id">{{ sport.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Price (RSD) *</label>
+        <input type="number" [(ngModel)]="newEqPrice" placeholder="Price" min="1" class="inline-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Stock *</label>
+        <input type="number" [(ngModel)]="newEqStock" placeholder="Stock" min="0" class="inline-input" />
+      </div>
+
+      @if(successMessage) {
+        {{successMessage}}
+      }
+
+      <div class="actions-cell">
+        <button type="button" class="btn-green" (click)="createEquipment()">Save</button>
+        <button type="button" class="btn-red" (click)="closeAdd()">Cancel</button>
+      </div>
+    </div>
   }
   @else {
     <div class="table-wrapper2">

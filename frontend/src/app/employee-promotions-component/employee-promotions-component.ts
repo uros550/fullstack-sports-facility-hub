@@ -10,6 +10,8 @@ import { Order } from '../models/Order';
 import { OrderService } from '../services/order-service';
 import { UserService } from '../services/user-service';
 import { FormsModule } from '@angular/forms';
+import { SportService } from '../services/sport-service';
+import { Sport } from '../models/Sport';
 
 @Component({
   selector: 'app-employee-promotions-component',
@@ -31,6 +33,13 @@ export class EmployeePromotionsComponent implements OnInit {
   newPrice: number = 0;
   newStock: number = 0;
   showAdd: boolean = false;
+  //new equipment
+  sports: Sport[] = [];
+  selectedSportId: number = 0;
+  newEqName: string = '';
+  newEqPrice: number | null = null;
+  newEqStock: number | null = null;
+  selectedFile: File | null = null;
 
   successMessage: string = '';
 
@@ -38,6 +47,7 @@ export class EmployeePromotionsComponent implements OnInit {
   private equipmentService = inject(EquipmentService);
   private orderService = inject(OrderService);
   private userService = inject(UserService);
+  private sportService = inject(SportService);
 
   ngOnInit() {
     const userJson = localStorage.getItem('loggedUser');
@@ -60,6 +70,7 @@ export class EmployeePromotionsComponent implements OnInit {
     this.loadPromotions();
     this.loadEquipment();
     this.loadOrders();
+    this.loadSports();
   }
 
   loadPromotions() {
@@ -82,6 +93,15 @@ export class EmployeePromotionsComponent implements OnInit {
             o.athleteName = user.username;
         })
       })
+    })
+  }
+
+  loadSports() {
+    this.sportService.getAllSports().subscribe(data => {
+      this.sports = data;
+      if (this.sports.length > 0) {
+        this.selectedSportId = this.sports[0].id;
+      }
     })
   }
 
@@ -118,6 +138,7 @@ export class EmployeePromotionsComponent implements OnInit {
         else {
           this.successMessage = 'Error';
         }
+        this.clearMessageAfterDelay();
       })
     }
     else {
@@ -129,6 +150,7 @@ export class EmployeePromotionsComponent implements OnInit {
         else {
           this.successMessage = 'Error';
         }
+        this.clearMessageAfterDelay();
       })
     }
   }
@@ -153,6 +175,7 @@ export class EmployeePromotionsComponent implements OnInit {
       else {
         this.successMessage = 'Error';
       }
+      this.clearMessageAfterDelay();
     })
   }
 
@@ -166,6 +189,61 @@ export class EmployeePromotionsComponent implements OnInit {
 
   closeAdd() {
     this.showAdd = false;
+    this.newEqName = '';
+    this.newEqPrice = null;
+    this.newEqStock = null;
+    this.selectedFile = null;
+    if (this.sports.length > 0) {
+      this.selectedSportId = this.sports[0].id;
+    }
+  }
+
+  changeFile(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
+  createEquipment() {
+    if (
+      !this.newEqName.trim() ||
+      !this.selectedSportId ||
+      this.newEqPrice === null ||
+      this.newEqPrice <= 0 ||
+      this.newEqStock === null ||
+      this.newEqStock < 0 ||
+      !this.selectedFile
+    ){
+      this.successMessage = 'Error: Fill in all required fields correctly';
+      this.clearMessageAfterDelay();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', this.newEqName);
+    formData.append('sportId', this.selectedSportId.toString());
+    formData.append('price', this.newEqPrice.toString());
+    formData.append('stock', this.newEqStock.toString());
+    formData.append('image', this.selectedFile);
+
+    this.equipmentService.addEquipment(formData).subscribe(data => {
+      if (data) {
+        this.successMessage = 'Successfully added equipment';
+        this.loadEquipment();
+        this.closeAdd();
+      } 
+      else {
+        this.successMessage = 'Error while adding equipment';
+      }
+      this.clearMessageAfterDelay();
+    });
+  }
+
+  clearMessageAfterDelay() {
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 5000);
   }
 
 }

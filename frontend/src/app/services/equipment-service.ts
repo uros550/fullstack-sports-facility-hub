@@ -18,4 +18,8 @@ export class EquipmentService {
     return this.http.post<boolean>(`${this.path}/update`, equipment);
   }
 
+  addEquipment(formData: FormData) {
+    return this.http.post<boolean>(`${this.path}/add`, formData);
+  }
+
 }
