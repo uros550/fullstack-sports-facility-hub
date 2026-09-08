@@ -14,6 +14,7 @@ import com.hub.backend.db.dao.SportsFacilityRepo;
 import com.hub.backend.models.Court;
 import com.hub.backend.models.SearchFacilitiesRequest;
 import com.hub.backend.models.SportsFacility;
+import com.hub.backend.models.AddFacilityRequest;
 
 @RestController
 @RequestMapping("/sportsFacilities")
@@ -73,6 +74,26 @@ public class SportsFacilityController {
     @PostMapping("/search")
     public List<SportsFacility> searchFacilities(@RequestBody SearchFacilitiesRequest request) {
         return new SportsFacilityRepo().searchFacilities(request);
+    }
+
+    @PostMapping("/add/{employeeId}")
+    public String addFacility(@RequestBody AddFacilityRequest request, @PathVariable int employeeId) {
+        return new SportsFacilityRepo().addFacility(request.getFacility(), request.getCourts(), employeeId);
+    }
+
+    @PostMapping("/update")
+    public boolean updateFacility(@RequestBody SportsFacility facility) {
+        return new SportsFacilityRepo().updateFacility(facility);
+    }
+
+    @PostMapping("/add/court")
+    public boolean addCourt(@RequestBody Court court) {
+        return new SportsFacilityRepo().addCourt(court);
+    }
+
+    @PostMapping("/update/court")
+    public boolean updateCourt(@RequestBody Court court) {
+        return new SportsFacilityRepo().updateCourt(court);
     }
 
 }

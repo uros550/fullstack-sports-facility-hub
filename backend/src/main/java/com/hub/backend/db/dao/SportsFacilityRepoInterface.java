@@ -1,5 +1,6 @@
 package com.hub.backend.db.dao;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.hub.backend.models.Court;
@@ -19,5 +20,10 @@ public interface SportsFacilityRepoInterface {
     List<String> getImagesByFacilityId(int facilityId);
     List<String> getAllCities();
     List<SportsFacility> searchFacilities(SearchFacilitiesRequest request);
+    String addFacility(SportsFacility facility, List<Court> courts, int employeeId);
+    boolean linkEmployeeToFacility(Connection conn, int facilityId, int employeeId);
+    boolean updateFacility(SportsFacility facility); //just for info
+    boolean addCourt(Court court);
+    boolean checkCourtNameUnique(int facilityId, String courtName);
 
 }

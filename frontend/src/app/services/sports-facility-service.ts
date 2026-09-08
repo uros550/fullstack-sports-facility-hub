@@ -55,12 +55,21 @@ export class SportsFacilityService {
     return this.http.post<SportsFacility[]>(`${this.path}/search`, request);
   }
 
-  updateFacility(facility: SportsFacility, courts: Court[], images: string[]) {
-    
+  addFacility(facility: SportsFacility, courts: Court[], employeeId: number) {
+    const data = { facility, courts };
+    return this.http.post(`${this.path}/add/${employeeId}`, data, { responseType: 'text' });
   }
 
-  addFacility(newFacility: SportsFacility, courts: Court[], images: string[]) {
+  updateFacility(facility: SportsFacility) {
+    return this.http.post<boolean>(`${this.path}/update`, facility);
+  }
 
+  addCourt(court: Court) {
+    return this.http.post<boolean>(`${this.path}/add/court`, court); 
+  }
+
+  updateCourt(court: Court) {
+    return this.http.post<boolean>(`${this.path}/update/court`, court);
   }
   
 }

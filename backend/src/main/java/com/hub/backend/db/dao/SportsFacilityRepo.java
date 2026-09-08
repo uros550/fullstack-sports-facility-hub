@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.hub.backend.db.DB;
 import com.hub.backend.models.AvailabilitySlot;
@@ -458,6 +460,204 @@ public class SportsFacilityRepo implements SportsFacilityRepoInterface {
         }
 
         return facilities;
+    }
+
+    @Override
+    public String addFacility(SportsFacility facility, List<Court> courts, int employeeId) {
+        if (employeeId <= 0) {
+            return "Error: employeeId not valid.";
+        }
+
+        if (courts == null || courts.isEmpty()) {
+            return "Error: at least one court is required.";
+        }
+
+        Set<String> courtNames = new HashSet<>();
+        for (Court court : courts) {
+            if (court.getEquipmentDescription() != null && court.getEquipmentDescription().length() > 300) {
+                return "Error: description on court '" + court.getName() + "' invalid.";
+            }
+            if (!courtNames.add(court.getName().trim().toLowerCase())) {
+                return "Error: court names must be unique (Duplicate: '" + court.getName() + "').";
+            }
+        }
+
+        String insertFacilityQuery = "INSERT INTO sportsfacility (name, address, city, mb, pib, description, latitude, longitude, workingHours, maxPenalties, likesCount, status) " +
+                                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 'PENDING')";
+        String insertCourtQuery = "INSERT INTO court (facilityId, sportId, name, type, capacity, equipmentDescription, pricePerHour) " +
+                                  "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (
+            Connection conn = DB.source().getConnection()
+        ){
+            conn.setAutoCommit(false);
+
+            int facilityId = 0;
+            try (PreparedStatement facStm = conn.prepareStatement(insertFacilityQuery, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+                facStm.setString(1, facility.getName());
+                facStm.setString(2, facility.getAddress());
+                facStm.setString(3, facility.getCity());
+                facStm.setString(4, facility.getMb());
+                facStm.setString(5, facility.getPib());
+                facStm.setString(6, facility.getDescription());
+                facStm.setDouble(7, facility.getLatitude());
+                facStm.setDouble(8, facility.getLongitude());
+                facStm.setString(9, facility.getWorkingHours());
+                facStm.setInt(10, facility.getMaxPenalties());
+
+                int rows = facStm.executeUpdate();
+                if (rows == 0) {
+                    conn.rollback();
+                    return "Error: Failed to insert sports facility.";
+                }
+
+                ResultSet rs = facStm.getGeneratedKeys();
+                if (rs.next()) {
+                    facilityId = rs.getInt(1);
+                }
+            }
+
+            if (facilityId == 0) {
+                conn.rollback();
+                return "Error: Could not retrieve generated facility ID.";
+            }
+
+            boolean linked = linkEmployeeToFacility(conn, facilityId, employeeId);
+            if (!linked) {
+                conn.rollback();
+                return "Error: Failed to link employee to facility.";
+            }
+
+            try (PreparedStatement courtStm = conn.prepareStatement(insertCourtQuery)) {
+                for (Court court : courts) {
+                    courtStm.setInt(1, facilityId);
+                    courtStm.setInt(2, court.getSportId());
+                    courtStm.setString(3, court.getName());
+                    courtStm.setString(4, court.getType());
+                    courtStm.setInt(5, court.getCapacity());
+                    courtStm.setString(6, court.getEquipmentDescription());
+                    courtStm.setDouble(7, court.getPricePerHour());
+                    if (courtStm.executeUpdate() == 0) {
+                        conn.rollback();
+                        return "Error: Failed to insert a court.";
+                    };
+                }
+            }
+
+            conn.commit();
+            return "SUCCESS";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    @Override
+    public boolean linkEmployeeToFacility(Connection conn, int facilityId, int employeeId) {
+
+        String query = "INSERT INTO facilityemployee (facilityId, employeeId) VALUES (?, ?)";
+
+        try (
+            PreparedStatement stm = conn.prepareStatement(query);
+        ){
+            stm.setInt(1, facilityId);
+            stm.setInt(2, employeeId);
+
+            return stm.executeUpdate() > 0; 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateFacility(SportsFacility facility) {
+
+        String query = "UPDATE sportsfacility SET name = ?, address = ?, city = ?, mb = ?, pib = ?, description = ?, " +
+                       "latitude = ?, longitude = ?, workingHours = ?, maxPenalties = ? WHERE id = ?";
+
+        try (Connection conn = DB.source().getConnection();
+             PreparedStatement stm = conn.prepareStatement(query)) {
+
+            stm.setString(1, facility.getName());
+            stm.setString(2, facility.getAddress());
+            stm.setString(3, facility.getCity());
+            stm.setString(4, facility.getMb());
+            stm.setString(5, facility.getPib());
+            stm.setString(6, facility.getDescription());
+            stm.setDouble(7, facility.getLatitude());
+            stm.setDouble(8, facility.getLongitude());
+            stm.setString(9, facility.getWorkingHours());
+            stm.setInt(10, facility.getMaxPenalties());
+            stm.setInt(11, facility.getId());
+
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean addCourt(Court court) {
+        if (court.getEquipmentDescription() != null && court.getEquipmentDescription().length() > 300) {
+            return false;
+        }
+        //check unique name
+        if (!checkCourtNameUnique(court.getFacilityId(), court.getName())) {
+            return false;
+        }
+
+        String query = "INSERT INTO court (facilityId, sportId, name, type, capacity, equipmentDescription, pricePerHour) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ){
+            stm.setInt(1, court.getFacilityId());
+            stm.setInt(2, court.getSportId());
+            stm.setString(3, court.getName());
+            stm.setString(4, court.getType());
+            stm.setInt(5, court.getCapacity());
+            stm.setString(6, court.getEquipmentDescription());
+            stm.setDouble(7, court.getPricePerHour());
+
+            return stm.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+    
+    @Override
+    public boolean checkCourtNameUnique(int facilityId, String courtName) {
+        if (courtName == null || courtName.trim().isEmpty()) {
+            return false;
+        }
+
+        String query = "SELECT COUNT(*) FROM court WHERE facilityId = ? AND LOWER(TRIM(name)) = LOWER(TRIM(?))";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query)
+        ){
+            stm.setInt(1, facilityId);
+            stm.setString(2, courtName);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;    
     }
      
 }

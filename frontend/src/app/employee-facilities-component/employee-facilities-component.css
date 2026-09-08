@@ -1,395 +1,277 @@
-.facilities-container {
-  max-width: 960px;
-  margin: 32px auto;
-  padding: 0 16px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: rgb(15, 23, 42);
-}
-
-.header-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
-}
-
-.title-group h2 {
-  font-size: 24px;
-  font-weight: 800;
-  color: rgb(15, 23, 42);
-  margin: 0 0 4px 0;
-  letter-spacing: -0.3px;
-}
-
-.title-group .subtitle {
-  font-size: 13px;
-  color: rgb(100, 116, 139);
-  margin: 0;
-}
-
-.select-facility-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.view-btn {
+  padding: 10px 20px;
+  margin-right: 12px;
+  margin-bottom: 24px;
+  border: 2px solid rgb(15, 23, 42);
   background-color: rgb(255, 255, 255);
-  padding: 8px 16px;
-  border-radius: 12px;
-  border: 1px solid rgb(226, 232, 240);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.select-facility-box label {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgb(71, 85, 105);
-}
-
-.select-facility-box select {
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgb(47, 181, 130);
-  outline: none;
+  color: rgb(15, 23, 42);
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active, 
+.view-btn:hover {
+  background-color: rgb(15, 23, 42);
+  color: rgb(255, 255, 255);
 }
 
 .card-section {
   background-color: rgb(255, 255, 255);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
   border: 1px solid rgb(226, 232, 240);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  margin-bottom: 24px;
 }
 
-.card-section h3 {
-  font-size: 16px;
-  font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 18px;
-  color: rgb(15, 23, 42);
-}
-
-.upload-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.custom-file-upload {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  background-color: rgb(241, 245, 249);
-  color: rgb(30, 41, 59);
+.file-upload-box {
+  background-color: rgb(248, 250, 252);
+  border: 2px dashed rgb(203, 213, 225);
+  padding: 20px;
   border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid rgb(203, 213, 225);
-  transition: all 0.2s ease;
-}
-
-.custom-file-upload:hover {
-  background-color: rgb(226, 232, 240);
-}
-
-.custom-file-upload input[type="file"] {
-  display: none;
-}
-
-.file-name-display {
-  font-size: 13px;
-  color: rgb(100, 116, 139);
-  flex-grow: 1;
-}
-
-.form-container {
+  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+
+.file-input {
+  font-size: 14px;
+  color: rgb(15, 23, 42);
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
+  margin-bottom: 16px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 12px;
 }
 
 .form-group.full-width {
   grid-column: 1 / -1;
-}
-
-.form-group label {
-  font-size: 11px;
-  font-weight: 700;
-  color: rgb(71, 85, 105);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgb(203, 213, 225);
-  background-color: rgb(255, 255, 255);
-  font-size: 14px;
-  color: rgb(15, 23, 42);
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: rgb(47, 181, 130);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-.image-gallery-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-}
-
-.image-card {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  border-radius: 14px;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgb(226, 232, 240);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.image-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
-}
-
-.remove-img-btn {
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: rgb(239, 68, 68);
-  color: rgb(255, 255, 255);
-  border: 2px solid rgb(255, 255, 255);
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
-  transition: transform 0.15s ease, background-color 0.15s ease;
-}
-
-.remove-img-btn:hover {
-  transform: scale(1.15);
-  background-color: rgb(220, 38, 38);
-}
-
-.upload-photo-card {
-  width: 130px;
-  height: 130px;
-  border-radius: 14px;
-  border: 2px dashed rgb(203, 213, 225);
-  background-color: rgb(248, 250, 252);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.upload-photo-card:hover {
-  border-color: rgb(28, 122, 86);
-  background-color: rgba(37, 99, 235, 0.04);
-  transform: translateY(-2px);
-}
-
-.hidden-file-input {
-  display: none;
-}
-
-.upload-photo-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.upload-icon {
-  font-size: 22px;
-  font-weight: 600;
-  color: rgb(47, 181, 130);
-  line-height: 1;
-}
-
-.upload-text {
-  font-size: 11px;
-  font-weight: 700;
-  color: rgb(47, 181, 130);
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 16px;
 }
 
-.court-card {
-  background-color: rgb(248, 250, 252);
-  border-radius: 12px;
-  padding: 18px;
-  margin-bottom: 14px;
-  border: 1px solid rgb(226, 232, 240);
-}
-
-.court-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgb(226, 232, 240);
-}
-
-.court-header h4 {
-  margin: 0;
+.form-group label {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: rgb(15, 23, 42);
 }
 
-.char-counter {
-  font-size: 11px;
-  color: rgb(148, 163, 184);
-  text-align: right;
-  margin-top: 4px;
+.form-control {
+  padding: 10px 14px;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.empty-state {
-  text-align: center;
-  color: rgb(100, 116, 139);
-  padding: 24px;
-  background-color: rgb(248, 250, 252);
-  border-radius: 12px;
-  border: 1px dashed rgb(203, 213, 225);
-  margin: 0;
-  font-size: 13px;
+.form-control:focus {
+  outline: none;
+  border-color: rgb(47, 181, 130);
+  box-shadow: 0 0 0 3px rgba(47, 181, 130, 0.2);
 }
 
-.actions-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
 }
 
-.btn-primary {
-  background-color: rgb(47, 181, 130);
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.sub-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgb(226, 232, 240);
 }
 
-.btn-primary:hover {
-  background-color: rgb(28, 122, 86);
+.inline-court-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.btn-secondary {
+.btn-add-court {
+  padding: 10px 16px;
   background-color: rgb(15, 23, 42);
   color: rgb(255, 255, 255);
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
   transition: background-color 0.2s ease;
 }
 
-.btn-secondary:hover {
+.btn-add-court:hover {
   background-color: rgb(30, 41, 59);
 }
 
-.btn-danger {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: rgb(239, 68, 68);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.courts-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
 }
 
-.btn-danger:hover {
-  background-color: rgb(239, 68, 68);
+.court-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgb(241, 245, 249);
+  border: 1px solid rgb(226, 232, 240);
+  padding: 8px 14px;
+  border-radius: 30px;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+}
+
+.court-chip.readonly-chip {
+  background-color: rgb(226, 232, 240);
+  border: 1px solid rgb(203, 213, 225);
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: rgb(239, 68, 68);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.btn-remove:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+.btn-confirm {
+  padding: 12px 24px;
+  background-color: rgb(47, 181, 130);
   color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  margin-right: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-confirm:hover {
+  background-color: rgb(38, 150, 107);
 }
 
 .btn-reset {
+  padding: 12px 24px;
   background-color: rgb(241, 245, 249);
-  color: rgb(71, 85, 105);
+  color: rgb(15, 23, 42);
   border: 1px solid rgb(203, 213, 225);
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 15px;
+  margin-right: 12px;
+  transition: background-color 0.2s ease;
 }
 
 .btn-reset:hover {
   background-color: rgb(226, 232, 240);
 }
 
-.btn-save {
-  background-color: rgb(16, 185, 129);
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 10px 24px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
+.btn-edit {
+  padding: 8px 16px;
+  background-color: rgb(241, 245, 249);
+  color: rgb(15, 23, 42);
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
 }
 
-.btn-save:hover {
-  background-color: rgb(5, 150, 105);
-  transform: translateY(-1px);
+.btn-edit:hover {
+  background-color: rgb(226, 232, 240);
 }
 
-.form-group input.ng-invalid.ng-touched,
-.form-group select.ng-invalid.ng-touched,
-.form-group textarea.ng-invalid.ng-touched {
-  border-color: rgb(239, 68, 68) !important;
-  background-color: rgba(239, 68, 68, 0.03) !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.facilities-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.facilities-table th,
+.facilities-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgb(226, 232, 240);
+  text-align: left;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+}
+
+.facilities-table th {
+  background-color: rgb(248, 250, 252);
+  color: rgb(15, 23, 42);
+  font-weight: 600;
+}
+
+.selected-row {
+  background-color: rgba(47, 181, 130, 0.08);
+}
+
+.edit-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid rgb(47, 181, 130);
+}
+
+.no-data {
+  color: rgb(100, 116, 139);
+  font-style: italic;
+}
+
+.alert {
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-top: 24px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: rgb(185, 28, 28);
+  border: 1px solid rgb(239, 68, 68);
+}
+
+.alert-success {
+  background-color: rgba(47, 181, 130, 0.15);
+  color: rgb(15, 23, 42);
+  border: 1px solid rgb(47, 181, 130);
 }

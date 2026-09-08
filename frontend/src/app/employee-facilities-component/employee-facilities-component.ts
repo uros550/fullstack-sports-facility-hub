@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { User } from '../models/User';
 import { SportsFacility } from '../models/SportsFacility';
 import { Court } from '../models/Court';
-import { SportsFacilityService } from '../services/sports-facility-service';
 import { Sport } from '../models/Sport';
+import { SportsFacilityService } from '../services/sports-facility-service';
 import { SportService } from '../services/sport-service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-employee-facilities-component',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, NgClass],
   templateUrl: './employee-facilities-component.html',
   styleUrl: './employee-facilities-component.css',
 })
@@ -18,18 +18,18 @@ export class EmployeeFacilitiesComponent implements OnInit {
 
   currentUser: User | null = null;
   facilities: SportsFacility[] = [];
-  selectedFacilityId: number | null = null;
-
-  facility: SportsFacility = this.getEmptyFacility();
-  courts: Court[] = [];
   sports: Sport[] = [];
+  
+  newFacility: SportsFacility = this.getEmptyFacility();
+  newFacilityCourts: Court[] = [];
+  tempCourt: Court = this.getEmptyCourt();
 
-  existingImages: string[] = [];
-  newImageFiles: File[] = [];
-  newImagePreviews: string[] = [];
-  selectedJsonFile: File | null = null;
+  selectedFacility: SportsFacility | null = null;
+  selectedFacilityCourts: Court[] = [];
 
-  imgUrl = 'http://localhost:8080/';
+  showAdd: boolean = true;
+
+  message: string = '';
 
   private facilityService = inject(SportsFacilityService);
   private sportService = inject(SportService);
@@ -40,7 +40,7 @@ export class EmployeeFacilitiesComponent implements OnInit {
       try {
         this.currentUser = JSON.parse(userJson);
       } catch (error) {
-        console.error('Local storage getItem error:', error);
+        console.error(error);
       }
     }
 
@@ -51,161 +51,122 @@ export class EmployeeFacilitiesComponent implements OnInit {
   }
 
   loadFacilities() {
-    this.facilityService.getFacilitiesForEmployee(this.currentUser!.id).subscribe(data => {
+    if (!this.currentUser) return;
+    this.facilityService.getFacilitiesForEmployee(this.currentUser.id).subscribe(data => {
       this.facilities = data;
-    });
+      if (this.facilities.length > 0) {
+        this.selectedFacility = this.facilities[0];
+      }
+    })
   }
 
   loadSports() {
     this.sportService.getAllSports().subscribe(data => {
       this.sports = data;
-    })
-  }
-
-  changeFacilitySelect() {
-    if (!this.selectedFacilityId) {
-      this.resetForm();
-      return;
-    }
-
-    const found = this.facilities.find(f => f.id == this.selectedFacilityId);
-    if (found) {
-      this.facility = { ...found };
-      this.loadFacilityImages(found.id);
-      this.loadFacilityCourts(found.id);
-    }
-  }
-
-  loadFacilityImages(facilityId: number) {
-    this.facilityService.getFacilityImagesById(facilityId).subscribe(images => {
-      this.existingImages = images;
     });
   }
 
-  loadFacilityCourts(facilityId: number) {
-    this.facilityService.getAllCourtsById(facilityId).subscribe(data => {
-      this.courts = data;
-    });
-  }
-
-  addCourt() {
-    this.courts.push({
-      id: 0,
-      facilityId: this.facility.id || 0,
-      sportId: 1,
-      name: '',
-      type: 'OPEN',
-      capacity: 1,
-      equipmentDescription: '',
-      pricePerHour: 0,
-      sportName: ''
-    });
-  }
-
-  removeCourt(index: number) {
-    this.courts.splice(index, 1);
-  }
-
-  selectJsonFile(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedJsonFile = file;
+  changeView(showAdd: boolean) {
+    this.showAdd = showAdd;
+    this.message = '';
+    if (!showAdd) {
+      this.loadFacilities();
     }
   }
 
-  uploadJson() {
-    if (!this.selectedJsonFile) return;
-  }
+  JsonFileUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
 
-  getImageUrl(path: string): string {
-    if (!path) return '';
-    return `${this.imgUrl}${path}`;
-  }
+    const file = input.files[0];
+    const reader = new FileReader();
 
-  onImageSelected(event: any) {
-    const files: FileList = event.target.files;
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        this.newImageFiles.push(file);
-
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.newImagePreviews.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  }
-
-  removeExistingImage(index: number) {
-    this.existingImages.splice(index, 1);
-  }
-
-  removeNewImage(index: number) {
-    this.newImageFiles.splice(index, 1);
-    this.newImagePreviews.splice(index, 1);
-  }
-
-  areCourtsValid(): boolean {
-    if (this.courts.length === 0) return false;
-    return this.courts.every(court => 
-      court.name && court.name.trim() !== '' &&
-      court.capacity > 0 && 
-      court.pricePerHour > 0
-    );
-  }
-
-  hasImages(): boolean {
-    return (this.existingImages.length + this.newImageFiles.length) > 0;
-  }
-
-  saveFacility(form: NgForm) {
-    //mark all form controls as touched to trigger css validation styles
-    form.control.markAllAsTouched();
-
-    const courtsValid = this.areCourtsValid();
-    const imagesValid = this.hasImages();
-
-    if (form.invalid || !courtsValid || !imagesValid) {
-      let errors: string[] = [];
-
-      if (form.invalid || !courtsValid) {
-        errors.push('• Please fill in all fields correctly, all fields are required.');
-      }
-      if (!imagesValid) {
-        errors.push('• You must upload at least one facility photo.');
-      }
-      if (this.courts.length === 0) {
-        errors.push('• You must add at least one court.');
-      }
-
-      alert('Please fix the following errors:\n\n' + errors.join('\n'));
-
-      //find the first invalid element in the dom, focus it, and scroll to it
-      setTimeout(() => {
-        const firstInvalidElement = document.querySelector('.ng-invalid') as HTMLElement;
-        if (firstInvalidElement) {
-          firstInvalidElement.focus();
-          firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      try {
+        const parsed = JSON.parse(e.target?.result as string);
+        
+        if (parsed.facility) {
+          this.newFacility = { ...this.getEmptyFacility(), ...parsed.facility };
+        } else {
+          this.newFacility = { ...this.getEmptyFacility(), ...parsed };
         }
-      }, 50);
 
+        if (parsed.courts && Array.isArray(parsed.courts)) {
+          this.newFacilityCourts = parsed.courts;
+        }
+
+        this.message = 'JSON file successfully loaded! Form fields populated.';
+      } catch (err) {
+        this.message = 'Error reading JSON file. Check format.';
+      }
+      this.clearMessageAfterDelay();
+    };
+
+    reader.readAsText(file);
+  }
+
+  addTempCourt() {
+    if (!this.tempCourt.name || !this.tempCourt.sportId) {
+      this.message = 'Error: Enter court name and select a sport.';
+      return;
+    }
+    this.newFacilityCourts.push({ ...this.tempCourt });
+    this.tempCourt = this.getEmptyCourt();
+    this.clearMessageAfterDelay();
+  }
+
+  removeTempCourt(index: number) {
+    this.newFacilityCourts.splice(index, 1);
+  }
+
+  confirmAddFacility() {
+    if (!this.currentUser) {
+      this.message = 'Error: User is not authenticated.';
       return;
     }
 
-    //all fields are valid, proceed with sending data to backend
-    console.log('All fields are valid, sending data to backend...');
-  }
+    const f = this.newFacility;
 
-  resetForm() {
-    this.selectedFacilityId = null;
-    this.facility = this.getEmptyFacility();
-    this.courts = [];
-    this.existingImages = [];
-    this.newImageFiles = [];
-    this.newImagePreviews = [];
-    this.selectedJsonFile = null;
+    if (!f.name?.trim() || !f.address?.trim() || !f.city?.trim() || !f.mb?.trim() || !f.pib?.trim() || !f.workingHours?.trim()) {
+      this.message = 'Error: All required fields must be filled.';
+      return;
+    }
+
+    const mbRegex = /^\d{8}$/;
+    if (!mbRegex.test(f.mb.trim())) {
+      this.message = 'Error: Registry number (MB) must contain exactly 8 digits.';
+      return;
+    }
+
+    const pibRegex = /^\d{9}$/;
+    if (!pibRegex.test(f.pib.trim())) {
+      this.message = 'Error: Tax ID (PIB) must contain exactly 9 digits.';
+      return;
+    }
+
+    const timeRegex = /^([01]\d|2[0-3]):[0-5]\d\s*-\s*([01]\d|2[0-3]):[0-5]\d$/;
+    if (!timeRegex.test(f.workingHours.trim())) {
+      this.message = 'Error: Working hours must be in HH:MM - HH:MM format (e.g. 08:00 - 23:00).';
+      return;
+    }
+
+    if (f.description && f.description.length > 500) {
+      this.message = 'Error: Description cannot exceed 500 characters.';
+      return;
+    }
+
+    if (this.newFacilityCourts.length === 0) {
+      this.message = 'Error: You must add at least one court for the facility.';
+      return;
+    }
+
+    this.facilityService.addFacility(this.newFacility, this.newFacilityCourts, this.currentUser.id).subscribe(data => {
+      this.message = data;
+      this.loadFacilities();
+      if (!data.includes('Error')) {
+        this.resetForm();
+      }
+    })
   }
 
   getEmptyFacility(): SportsFacility {
@@ -222,7 +183,112 @@ export class EmployeeFacilitiesComponent implements OnInit {
       workingHours: '',
       maxPenalties: 3,
       likesCount: 0,
-      status: 'ACTIVE'
+      status: 'PENDING'
     };
   }
+
+  getEmptyCourt(): Court {
+    return {
+      id: 0,
+      facilityId: 0,
+      sportId: 0,
+      name: '',
+      type: 'OPEN',
+      capacity: 0,
+      equipmentDescription: '',
+      pricePerHour: 0,
+      sportName: ''
+    };
+  }
+
+  resetForm() {
+    this.newFacility = this.getEmptyFacility();
+    this.newFacilityCourts = [];
+    this.tempCourt = this.getEmptyCourt();
+  }
+
+  selectFacility(facility: SportsFacility) {
+    this.selectedFacility = { ...facility };
+    this.tempCourt = this.getEmptyCourt();
+    this.loadCourtsForFacility(facility.id);
+  }
+
+  loadCourtsForFacility(facilityId: number) {
+    this.facilityService.getAllCourtsById(facilityId).subscribe(data => {
+      this.selectedFacilityCourts = data;
+    })
+  }
+
+  confirmUpdateFacility() {
+    if (!this.selectedFacility) return;
+    const f = this.selectedFacility;
+
+    if (!f.name?.trim() || !f.address?.trim() || !f.city?.trim() || !f.mb?.trim() || !f.pib?.trim() || !f.workingHours?.trim()) {
+      this.message = 'Error: All required fields must be filled.';
+      return;
+    }
+
+    const mbRegex = /^\d{8}$/;
+    if (!mbRegex.test(f.mb.trim())) {
+      this.message = 'Error: Registry number (MB) must contain exactly 8 digits.';
+      return;
+    }
+
+    const pibRegex = /^\d{9}$/;
+    if (!pibRegex.test(f.pib.trim())) {
+      this.message = 'Error: Tax ID (PIB) must contain exactly 9 digits.';
+      return;
+    }
+
+    const timeRegex = /^([01]\d|2[0-3]):[0-5]\d\s*-\s*([01]\d|2[0-3]):[0-5]\d$/;
+    if (!timeRegex.test(f.workingHours.trim())) {
+      this.message = 'Error: Working hours must be in HH:MM - HH:MM format (e.g. 08:00 - 23:00).';
+      return;
+    }
+
+    if (f.description && f.description.length > 500) {
+      this.message = 'Error: Description cannot exceed 500 characters.';
+      return;
+    }
+
+    this.facilityService.updateFacility(f).subscribe(data => {
+      if (data) {
+        this.message = 'Facility details updated successfully.';
+        this.loadFacilities();
+      }
+      else {
+        this.message = 'Error updating facility.';
+      }
+    });
+  }
+
+  confirmAddSingleCourt() {
+    if (!this.selectedFacility) return;
+    const c = this.tempCourt;
+
+    if (!c.name?.trim() || !c.sportId) {
+      this.message = 'Error: Enter court name and select a sport.';
+      return;
+    }
+
+    c.facilityId = this.selectedFacility.id;
+
+    this.facilityService.addCourt(c).subscribe(data => {
+      if (data) {
+        this.message = 'Court added successfully.';
+        this.loadCourtsForFacility(this.selectedFacility!.id);
+        this.tempCourt = this.getEmptyCourt();
+      }
+      else {
+        this.message = 'Error adding court.';
+      }
+    });
+  }
+
+  clearMessageAfterDelay() {
+    setTimeout(() => {
+      this.message = '';
+    }, 5000);
+  }
+
 }
