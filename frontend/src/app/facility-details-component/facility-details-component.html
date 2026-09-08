@@ -174,10 +174,20 @@
 
                 <div class="form-actions">
 
-                  <button class="cancel-btn" (click)="closeReservation()">Cancel</button>
-                  <button class="submit-btn" [disabled]="!reservedStartTime || reservationSlots.length === 0" (click)="submitReservation()">
-                    Confirm Reservation
-                  </button>
+                  @if (isAthleteBlocked) {
+                    <div class="blocked-container">
+                      <div class="blocked-msg">
+                        Unfortunately, you are blocked from this facility for not showing up to your reservations.
+                      </div>
+                      <button type="button" class="blocked-btn" (click)="closeReservation()">Return</button>
+                    </div>
+                  }
+                  @else {
+                    <button class="cancel-btn" (click)="closeReservation()">Cancel</button>
+                    <button class="submit-btn" [disabled]="!reservedStartTime || reservationSlots.length === 0" (click)="submitReservation()">
+                      Confirm Reservation
+                    </button>
+                  }
 
                 </div>
 

@@ -99,5 +99,9 @@ export class UserService {
   getAllApplicationsByAthlete(athleteId: number) {
     return this.http.get<Application[]>(`${this.path}/reservations/applications/${athleteId}`);
   }
+
+  checkIfBlocked(userId: number, facilityId: number) {
+    return this.http.get<boolean>(`${this.path}/reservations/blocked/${userId}/${facilityId}`);
+  }
   
 }

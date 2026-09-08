@@ -19,5 +19,6 @@ public interface UserRepoInterface {
     String updateProfile(AthleteProfile newProfile);
     String updateUserSportIds(int userId, List<Integer> newSportIds);
     String removeProfilePicture(String username);
+    boolean checkIfBlocked(int userId, int facilityId);
 
 }

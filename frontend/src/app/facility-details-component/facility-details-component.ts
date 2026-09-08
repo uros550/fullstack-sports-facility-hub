@@ -9,6 +9,8 @@ import { UserService } from '../services/user-service';
 import { FormsModule } from '@angular/forms';
 import { Reservation } from '../models/Reservation';
 import * as L from 'leaflet';
+import { Promotion } from '../models/Promotion';
+import { PromotionService } from '../services/promotion-service';
 
 
 @Component({
@@ -24,6 +26,7 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
   private facilityService = inject(SportsFacilityService);
   private userService = inject(UserService);
   private authService = inject(AuthenticationService);
+  private promoService = inject(PromotionService);
 
   facility!: SportsFacility;
   courts: Court[] = [];
@@ -53,6 +56,8 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
   reservationSlots: AvailabilitySlot[] = [];
   selectedDuration: number = 1;
   availableDurations: number[] = [1];
+  isAthleteBlocked: boolean = false;
+  currentPromotion: Promotion | null = null;
   //images
   images: string[] = [];
   baseUrl: string = 'http://localhost:8080/';
@@ -101,6 +106,7 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
     if (user && user.role === 'ATHLETE') {
       this.athleteId = user.id;
       this.isAthlete = true;
+      this.checkIfBlocked();
     }
     else if (user && user.role === 'EMPLOYEE') {
       this.employeeId = user.id;
@@ -108,6 +114,17 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
     }
     else if (user && user.role === 'ADMIN') {
       this.isAdmin = true;
+    }
+  }
+
+  checkIfBlocked() {
+    const user = this.authService.currentUser();
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (user && id) {
+      this.userService.checkIfBlocked(user.id, id).subscribe(data => {
+        this.isAthleteBlocked = data;
+      })
     }
   }
 
@@ -255,17 +272,25 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
     this.showReservation = true;
     this.reservedDate = this.minDate;
     this.errorMessage = '';
+    if (this.reservedCourt) this.getCurrentPromotion(this.facility.id, this.reservedCourt.sportId);
     this.loadReservationAvailability();
   }
 
   closeReservation() {
     this.showReservation = false;
+    this.currentPromotion = null;
     this.reservedCourt = null;
     this.reservationSlots = [];
     this.reservedStartTime = '';
     this.reservedEndTime = '';
     this.missingPlayers = 0; 
     this.errorMessage = '';
+  }
+
+  getCurrentPromotion(facilityId: number, sportId: number) {
+    this.promoService.getCurrentPromotion(facilityId, sportId).subscribe(data => {
+      this.currentPromotion = data;
+    })
   }
 
   loadReservationAvailability() {
@@ -368,10 +393,10 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
         }
       });
     }
-    if (this.isEmployee) {
+    else if (this.isEmployee) {
       this.router.navigate(['/employee-dashboard']);
     }
-    if (this.isAdmin) {
+    else if (this.isAdmin) {
       this.router.navigate(['/admin-dashboard'], {
         state: {
           section: 'facilities'

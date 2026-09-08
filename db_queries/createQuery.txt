@@ -145,6 +145,7 @@ CREATE TABLE Reservation (
     sportId INT NOT NULL,
     startTime DATETIME NOT NULL,
     endTime DATETIME NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
     status VARCHAR(20) NOT NULL,
     missingPlayers INT NOT NULL DEFAULT 0,
     CONSTRAINT fk_reservation_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
@@ -153,7 +154,8 @@ CREATE TABLE Reservation (
     CONSTRAINT fk_reservation_sport FOREIGN KEY (sportId) REFERENCES Sport(id),
     CONSTRAINT chk_reservation_missing_players CHECK (missingPlayers >= 0),
     CONSTRAINT chk_reservation_status CHECK (status IN ('PENDING', 'CONFIRMED', 'CANCELLED', 'DIDNT_SHOW')),
-    CHECK (endTime > startTime)
+    CHECK (endTime > startTime),
+    CHECK (price > 0)
 );
 
 -- =====================================================

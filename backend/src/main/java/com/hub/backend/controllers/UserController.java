@@ -76,4 +76,8 @@ public class UserController {
         return new ReservationRepo().getActiveReservationsByAthleteId(id);
     }
 
+    @GetMapping("/reservations/blocked/{userId}/{facilityId}")
+    public boolean checkIfBlocked(@PathVariable int userId, @PathVariable int facilityId) {
+        return new UserRepo().checkIfBlocked(userId, facilityId);
+    }
 }

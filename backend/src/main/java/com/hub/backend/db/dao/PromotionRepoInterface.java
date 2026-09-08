@@ -10,5 +10,6 @@ public interface PromotionRepoInterface {
     public List<Promotion> getPromotionsByEmployeeId(int employeeId);
     public boolean createPromotion(Promotion newPromotion);
     public boolean updatePromotion(Promotion newPromotion);
+    public Promotion getCurrentPromotion(int facilityId, int sportId);
 
 }

@@ -25,5 +25,9 @@ export class PromotionService {
   updatePromotion(promotion: Promotion) {
     return this.http.put(`${this.path}/update`, promotion, { responseType: 'text' });
   }
+
+  getCurrentPromotion(facilityId: number, sportId: number) {
+    return this.http.get<Promotion>(`${this.path}/facility/${facilityId}/sport/${sportId}`);
+  }
   
 }

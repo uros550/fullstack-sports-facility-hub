@@ -406,5 +406,27 @@ public class UserRepo implements UserRepoInterface {
         }
         return "";
     }
+
+    @Override
+    public boolean checkIfBlocked(int userId, int facilityId) {
+        String query = "select count(*) from facilityblock where athleteId = ? and facilityId = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setInt(1, userId);
+            stm.setInt(2, facilityId);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
     
 }

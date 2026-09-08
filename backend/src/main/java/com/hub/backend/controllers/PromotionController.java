@@ -40,5 +40,10 @@ public class PromotionController {
         boolean success = new PromotionRepo().updatePromotion(promotion);
         return success ? "Success" : "Error";
     }
+
+    @GetMapping("/facility/{facilityId}/sport/{sportId}")
+    public Promotion getCurrentPromotion(@PathVariable int facilityId, @PathVariable int sportId) {
+        return new PromotionRepo().getCurrentPromotion(facilityId, sportId);
+    }
     
 }

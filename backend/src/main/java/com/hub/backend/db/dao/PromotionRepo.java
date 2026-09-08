@@ -151,5 +151,49 @@ public class PromotionRepo implements PromotionRepoInterface {
 
         return false;
     }
+
+    @Override
+    public Promotion getCurrentPromotion(int facilityId, int sportId) {
+        String query = "select p.*, sf.name as facilityName, s.name as sportName " +
+                       "from promotion p " +
+                       "join sportsFacility sf on p.facilityId = sf.id " +
+                       "join sport s on s.id = p.sportId " +
+                       "where p.facilityId = ? and p.sportId = ? and now() between p.startDate and p.endDate " +
+                       "limit 1";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setInt(1, facilityId);
+            stm.setInt(2, sportId);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Timestamp startTs = rs.getTimestamp("startDate");
+                LocalDateTime startDate = (startTs != null) ? startTs.toLocalDateTime() : null;
+
+                Timestamp endTs = rs.getTimestamp("endDate");
+                LocalDateTime endDate = (endTs != null) ? endTs.toLocalDateTime() : null;
+
+                return new Promotion(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("facilityId"),
+                    rs.getString("facilityName"),
+                    rs.getInt("sportId"),
+                    rs.getString("sportName"),
+                    rs.getString("discountType"),
+                    rs.getFloat("discountValue"),
+                    startDate,
+                    endDate
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     
 }
