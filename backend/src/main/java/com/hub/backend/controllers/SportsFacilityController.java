@@ -91,9 +91,4 @@ public class SportsFacilityController {
         return new SportsFacilityRepo().addCourt(court);
     }
 
-    @PostMapping("/update/court")
-    public boolean updateCourt(@RequestBody Court court) {
-        return new SportsFacilityRepo().updateCourt(court);
-    }
-
 }
