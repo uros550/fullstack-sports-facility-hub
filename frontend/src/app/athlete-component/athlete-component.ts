@@ -6,10 +6,11 @@ import { AthleteTeammatesComponent } from '../athlete-teammates-component/athlet
 import { AthleteTrainingComponent } from '../athlete-training-component/athlete-training-component';
 import { AthleteStoreComponent } from '../athlete-store-component/athlete-store-component';
 import { AthleteStatsComponent } from '../athlete-stats-component/athlete-stats-component';
+import { AthleteReviewComponent } from '../athlete-review-component/athlete-review-component';
 
 @Component({
   selector: 'app-athlete-component',
-  imports: [AthleteProfileComponent, AthleteReservationComponent, AthleteTeammatesComponent, AthleteTrainingComponent, AthleteStoreComponent, AthleteStatsComponent],
+  imports: [AthleteProfileComponent, AthleteReservationComponent, AthleteTeammatesComponent, AthleteTrainingComponent, AthleteStoreComponent, AthleteStatsComponent, AthleteReviewComponent],
   templateUrl: './athlete-component.html',
   styleUrl: './athlete-component.css',
 })

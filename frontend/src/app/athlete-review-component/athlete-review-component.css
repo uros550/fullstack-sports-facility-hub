@@ -1,0 +1,266 @@
+.facility-container,
+.review-container {
+  padding: 24px;
+  background-color: rgb(255, 255, 255);
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+h2 {
+  color: rgb(0, 0, 0);
+  font-size: 30px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+h3 {
+  color: rgb(10, 17, 34);
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.facility-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.facility-table th {
+  background-color: rgb(10, 17, 34);
+  color: rgb(255, 255, 255);
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.facility-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid rgb(241, 245, 249);
+  color: rgb(15, 23, 42);
+  font-size: 14px;
+  background-color: rgb(255, 255, 255);
+}
+
+.facility-table tr:hover td {
+  background-color: rgb(248, 250, 252);
+}
+
+.btn-review {
+  background-color: rgb(10, 17, 34);
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.btn-review:hover {
+  background-color: rgb(25, 38, 66);
+}
+
+.btn-back {
+  display: block;
+  margin-left: auto;
+  margin-bottom: 20px;
+  background-color: rgb(10, 17, 34);
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-back:hover {
+  background-color: rgb(25, 38, 66);
+}
+
+.reviews-section {
+  margin-bottom: 32px;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-card {
+  padding: 16px;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 8px;
+  background-color: rgb(248, 250, 252);
+}
+
+.review-card.my-review {
+  border-color: rgb(147, 197, 253);
+  background-color: rgb(239, 246, 255);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.athlete-name {
+  font-weight: 600;
+  color: rgb(15, 23, 42);
+  font-size: 14px;
+}
+
+.my-badge {
+  font-size: 12px;
+  color: rgb(29, 78, 216);
+  margin-left: 6px;
+}
+
+.like-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.like-badge.liked {
+  background-color: rgb(220, 252, 231);
+  color: rgb(22, 101, 52);
+}
+
+.like-badge.disliked {
+  background-color: rgb(254, 226, 226);
+  color: rgb(153, 27, 27);
+}
+
+.review-comment {
+  margin: 0 0 10px 0;
+  color: rgb(51, 65, 85);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.review-date {
+  font-size: 12px;
+  color: rgb(148, 163, 184);
+  text-align: right;
+}
+
+.no-data {
+  color: rgb(100, 116, 139);
+  font-style: italic;
+  font-size: 14px;
+}
+
+.form-section {
+  padding: 20px;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: rgb(15, 23, 42);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-label {
+  font-weight: normal;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgb(51, 65, 85);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: rgb(10, 17, 34);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save {
+  background-color: rgb(10, 17, 34);
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: rgb(25, 38, 66);
+}
+
+.btn-save:disabled {
+  background-color: rgb(203, 213, 225);
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: rgb(241, 245, 249);
+  color: rgb(51, 65, 85);
+  border: 1px solid rgb(203, 213, 225);
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-cancel:hover {
+  background-color: rgb(226, 232, 240);
+}
+
+.info-box {
+  padding: 14px 18px;
+  background-color: rgb(248, 250, 252);
+  border-left: 4px solid rgb(10, 17, 34);
+  border-radius: 4px;
+}
+
+.info-box p {
+  margin: 0;
+  color: rgb(51, 65, 85);
+  font-size: 14px;
+}

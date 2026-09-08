@@ -1,0 +1,110 @@
+@if (!showReview) {
+  <div class="facility-container">
+    <h2>Sports Facilities</h2>
+    <table class="facility-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (facility of facilities; track facility.id) {
+          <tr>
+            <td>{{ facility.name }}</td>
+            <td>{{ facility.address }}, {{ facility.city }}</td>
+            <td>
+              <button class="btn-review" (click)="openReview(facility)">
+                Reviews
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3">There are no active facilities.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <div class="review-container">
+    <button class="btn-back" (click)="closeReview()">
+      &larr; Back to Facilities
+    </button>
+
+    <h2>Reviews for {{ selectedFacility?.name }}</h2>
+
+    <div class="reviews-section">
+      <h3>Latest Reviews</h3>
+      @if (topReviews.length > 0) {
+        <div class="reviews-list">
+          @for (rev of topReviews; track rev.id) {
+            <div class="review-card" [class.my-review]="rev.athleteId === currentUser?.id">
+              <div class="review-header">
+                <span class="athlete-name">
+                  {{ rev.athleteName || 'User #' + rev.athleteId }}
+                  @if (rev.athleteId === currentUser?.id) {
+                    <span class="my-badge">(Your review)</span>
+                  }
+                </span>
+                <span class="like-badge" [class.liked]="rev.liked" [class.disliked]="!rev.liked">
+                  {{ rev.liked ? 'Recommends' : 'Does not recommend' }}
+                </span>
+              </div>
+              <p class="review-comment">{{ rev.comment }}</p>
+              <div class="review-date">
+                {{ rev.reviewDate | date:'dd.MM.yyyy. HH:mm' }}
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="no-data">No reviews for this facility yet.</p>
+      }
+    </div>
+
+    <div class="form-section">
+      @if (isEligible) {
+        <h3>Leave a Review</h3>
+        <form (ngSubmit)="saveReview()">
+          <div class="form-group">
+            <label>Recommendation:</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="liked" [value]="true" [(ngModel)]="newLiked">
+                Recommend
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="liked" [value]="false" [(ngModel)]="newLiked">
+                Do not recommend
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea 
+              id="comment" 
+              name="comment" 
+              rows="4" 
+              [(ngModel)]="newComment" 
+              placeholder="Write your review here..."
+              required>
+            </textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save" [disabled]="!newComment.trim()">Save</button>
+            <button type="button" class="btn-cancel" (click)="cancelReview()">Cancel</button>
+          </div>
+        </form>
+      } @else {
+        <div class="info-box">
+          <p>You are not eligible to leave a review for this facility. You have {{ reservations }} confirmed reservation(s) and {{ reviews }} submitted review(s).</p>
+        </div>
+      }
+    </div>
+  </div>
+}
