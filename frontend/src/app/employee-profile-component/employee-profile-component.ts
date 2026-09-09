@@ -242,4 +242,21 @@ export class EmployeeProfileComponent implements OnInit {
     this.router.navigate(['/facility', facilityId]);
   }
 
+  changePassword() {
+    if (!this.currentUser) return;
+
+    this.authService.requestPasswordChange(this.currentUser.id).subscribe({
+      next: (data) => {
+        if (data.success && data.token) {
+          this.router.navigate(['reset-password'], { queryParams: { token: data.token } });
+        } else {
+          this.successMessage = data.message || 'Could not start password change.';
+        }
+      },
+      error: () => {
+        this.successMessage = 'Something went wrong. Please try again.';
+      }
+    });
+  }
+  
 }

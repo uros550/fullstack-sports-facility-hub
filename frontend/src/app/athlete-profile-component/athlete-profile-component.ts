@@ -8,6 +8,7 @@ import { Sport } from '../models/Sport';
 import { AuthenticationService } from '../services/authentication-service';
 import { Reservation } from '../models/Reservation';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-athlete-profile-component',
@@ -45,6 +46,7 @@ export class AthleteProfileComponent implements OnInit {
   private userService = inject(UserService);
   private sportService = inject(SportService);
   private authService = inject(AuthenticationService);
+  private router = inject(Router);
 
   ngOnInit() {
     const userJson = localStorage.getItem('loggedUser');
@@ -338,6 +340,23 @@ export class AthleteProfileComponent implements OnInit {
       if (data === 'Success') {
         reservation.status = 'CANCELLED';
         this.loadReservations();
+      }
+    });
+  }
+
+  changePassword() {
+    if (!this.currentUser) return;
+
+    this.authService.requestPasswordChange(this.currentUser.id).subscribe({
+      next: (data) => {
+        if (data.success && data.token) {
+          this.router.navigate(['reset-password'], { queryParams: { token: data.token } });
+        } else {
+          this.successMessage = data.message || 'Could not start password change.';
+        }
+      },
+      error: () => {
+        this.successMessage = 'Something went wrong. Please try again.';
       }
     });
   }
