@@ -1,0 +1,277 @@
+.view-btn {
+  padding: 10px 20px;
+  margin-right: 12px;
+  margin-bottom: 24px;
+  border: 2px solid rgb(15, 23, 42);
+  background-color: rgb(255, 255, 255);
+  color: rgb(15, 23, 42);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active, 
+.view-btn:hover {
+  background-color: rgb(15, 23, 42);
+  color: rgb(255, 255, 255);
+}
+
+.card-section {
+  background-color: rgb(255, 255, 255);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+  border: 1px solid rgb(226, 232, 240);
+  margin-bottom: 24px;
+}
+
+.file-upload-box {
+  background-color: rgb(248, 250, 252);
+  border: 2px dashed rgb(203, 213, 225);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-input {
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(15, 23, 42);
+}
+
+.form-control {
+  padding: 10px 14px;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: rgb(47, 181, 130);
+  box-shadow: 0 0 0 3px rgba(47, 181, 130, 0.2);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.sub-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgb(226, 232, 240);
+}
+
+.inline-court-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-add-court {
+  padding: 10px 16px;
+  background-color: rgb(15, 23, 42);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-add-court:hover {
+  background-color: rgb(30, 41, 59);
+}
+
+.courts-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.court-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgb(241, 245, 249);
+  border: 1px solid rgb(226, 232, 240);
+  padding: 8px 14px;
+  border-radius: 30px;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+}
+
+.court-chip.readonly-chip {
+  background-color: rgb(226, 232, 240);
+  border: 1px solid rgb(203, 213, 225);
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: rgb(239, 68, 68);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.btn-remove:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+.btn-confirm {
+  padding: 12px 24px;
+  background-color: rgb(47, 181, 130);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  margin-right: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-confirm:hover {
+  background-color: rgb(38, 150, 107);
+}
+
+.btn-reset {
+  padding: 12px 24px;
+  background-color: rgb(241, 245, 249);
+  color: rgb(15, 23, 42);
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  margin-right: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-reset:hover {
+  background-color: rgb(226, 232, 240);
+}
+
+.btn-edit {
+  padding: 8px 16px;
+  background-color: rgb(241, 245, 249);
+  color: rgb(15, 23, 42);
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-edit:hover {
+  background-color: rgb(226, 232, 240);
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.facilities-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.facilities-table th,
+.facilities-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgb(226, 232, 240);
+  text-align: left;
+  font-size: 14px;
+  color: rgb(15, 23, 42);
+}
+
+.facilities-table th {
+  background-color: rgb(248, 250, 252);
+  color: rgb(15, 23, 42);
+  font-weight: 600;
+}
+
+.selected-row {
+  background-color: rgba(47, 181, 130, 0.08);
+}
+
+.edit-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid rgb(47, 181, 130);
+}
+
+.no-data {
+  color: rgb(100, 116, 139);
+  font-style: italic;
+}
+
+.alert {
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-top: 24px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: rgb(185, 28, 28);
+  border: 1px solid rgb(239, 68, 68);
+}
+
+.alert-success {
+  background-color: rgba(47, 181, 130, 0.15);
+  color: rgb(15, 23, 42);
+  border: 1px solid rgb(47, 181, 130);
+}

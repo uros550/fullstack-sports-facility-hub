@@ -1,0 +1,243 @@
+<div class="container">
+
+  <div class="toggle-container">
+    <button type="button" class="toggle-btn" [class.active]="selectedView === 'Promo'" (click)="toggleView('Promo')">
+      Promotions
+    </button>
+    <button type="button" class="toggle-btn" [class.active]="selectedView === 'Equip'" (click)="toggleView('Equip')">
+      Equipment
+    </button>
+    <button type="button" class="toggle-btn" [class.active]="selectedView === 'Order'" (click)="toggleView('Order')">
+      Orders
+    </button>
+  </div>
+
+  @if(selectedView === 'Promo') {
+    <div class="table-wrapper">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Facility</th>
+            <th>Sport</th>
+            <th class="time-cell">Time</th>
+            <th>Discount</th>
+            <th class="actions-txt">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (promo of promotions; track promo.id) {
+            <tr>
+              <td>
+                {{ promo.name }}
+              </td>
+              <td>
+                {{ promo.facilityName }}
+              </td>
+              <td>
+                {{ promo.sportName }}
+              </td>
+              <td class="time-cell">
+                <div class="date-text">{{ promo.startDate | date:'dd.MM.yyyy.' }}</div>
+                <div class="time-text">{{ promo.startDate | date:'HH:mm' }} - {{ promo.endDate | date:'HH:mm' }}</div>
+              </td>
+              <td>
+                {{ promo.discountValue }} 
+                @if (promo.discountType == 'PERCENTAGE') {
+                    %
+                }
+                @else {
+                    RSD
+                }
+              </td>
+              <td>
+                <div class="actions-cell">
+                    <button type="button" class="btn-green" (click)="openUpdate(promo)">Update</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="no-data">No promotions found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="btn-blue" (click)="openCreate()">Create</button>
+  }
+  @else if (selectedView === 'Equip' && !showAdd){
+    <div class="table-wrapper">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Sport</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th class="actions-txt">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of equipment; track item.id) {
+            <tr>
+              <td>
+                <img 
+                    [src]="'http://localhost:8080/' + item.imageUrl" 
+                    [alt]="item.name" 
+                    class="item-img"
+                />
+              </td>
+              <td>
+                {{ item.name }}
+              </td>
+              <td>
+                {{ item.sportName }}
+              </td>
+              <td>
+                @if (selectedEquipmentId === item.id) {
+                  <input type="number" [(ngModel)]="newPrice" class="inline-input" min="1" />
+                }
+                @else {
+                  {{ item.price }} RSD
+                }
+              </td>
+              <td>
+                @if (selectedEquipmentId === item.id) {
+                  <input type="number" [(ngModel)]="newStock" class="inline-input" min="0" />
+                }
+                @else {
+                  <span class="stock-badge" [class.out-of-stock]="item.stock === 0">
+                    {{ item.stock > 0 ? item.stock + ' in stock' : 'Out of stock' }}
+                  </span>
+                }
+              </td>
+              <td>
+                @if (selectedEquipmentId === item.id) {
+                  <div class="inline-actions">
+                    <button type="button" class="btn-icon btn-confirm" (click)="confirmEdit(item)" title="Confirm">✓</button>
+                    <button type="button" class="btn-icon btn-cancel" (click)="cancelEdit()" title="Cancel">✕</button>
+                  </div>
+                }
+                @else {
+                  <div class="actions-cell">
+                    <button type="button" class="btn-green" (click)="openEdit(item)">Update</button>
+                  </div>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="no-data">No equipment found.</td>
+            </tr>
+          }
+        </tbody>
+      </table> 
+    </div>
+    <button type="button" class="btn-blue" (click)="openAdd()">Add</button>
+  }
+  @else if (selectedView === 'Equip' && showAdd) {
+    <!-- Forma za dodavanje opreme -->
+    <div class="form-card">
+      <h3>Add New Equipment</h3>
+
+      <div class="form-group">
+        <label>Image</label>
+        <input type="file" accept="image/*" (change)="changeFile($event)" class="inline-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="newEqName" placeholder="Equipment name" class="inline-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Sport *</label>
+        <select [(ngModel)]="selectedSportId" class="inline-input">
+          @for (sport of sports; track sport.id) {
+            <option [value]="sport.id">{{ sport.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Price (RSD) *</label>
+        <input type="number" [(ngModel)]="newEqPrice" placeholder="Price" min="1" class="inline-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Stock *</label>
+        <input type="number" [(ngModel)]="newEqStock" placeholder="Stock" min="0" class="inline-input" />
+      </div>
+
+      @if(successMessage) {
+        {{successMessage}}
+      }
+
+      <div class="actions-cell">
+        <button type="button" class="btn-green" (click)="createEquipment()">Save</button>
+        <button type="button" class="btn-red" (click)="closeAdd()">Cancel</button>
+      </div>
+    </div>
+  }
+  @else {
+    <div class="table-wrapper2">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Athlete Username</th>
+            <th>Order Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of orders; track item.id) {
+            <tr>
+              <td class="date-text">
+                {{ item.athleteName }}
+              </td>
+              <td class="time-cell">
+                <div class="date-text">{{ item.orderDate | date:'dd.MM.yyyy.' }}</div>
+                <div class="time-text">{{ item.orderDate | date:'HH:mm' }}</div>
+              <td>
+                <span 
+                  class="order-badge" 
+                  [ngClass]="{
+                    'cancel-badge': item.status === 'CANCELLED',
+                    'picked-badge': item.status === 'PICKED_UP'
+                  }">
+                  @if (item.status === 'ACCEPTED') {
+                    <div class="actions-cell">
+                      <button type="button" class="btn-green" (click)="changeStatus(item.id,'PICKED_UP')">Picked-up</button>
+                      <button type="button" class="btn-red" (click)="changeStatus(item.id, 'CANCELLED')">Cancel</button>
+                    </div>
+                  }
+                  @else {
+                    {{ item.status }}
+                  }
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="no-data">No orders found.</td>
+            </tr>
+          }
+        </tbody>
+      </table> 
+    </div>
+    @if (successMessage) {
+      <span class="picked-badge">{{successMessage}}</span>
+    }
+  }
+
+  @if (showModal) {
+    <app-employee-promotion-modal-component 
+        [employeeId]="currentEmployeeId"
+        [promotionToEdit]="selectedPromotionForEdit"
+        (close)="closeModal($event)">
+    </app-employee-promotion-modal-component>
+  }
+
+</div>

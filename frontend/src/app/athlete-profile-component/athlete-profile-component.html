@@ -1,0 +1,232 @@
+@if (profile) {
+    <div class="profile-layout">
+
+        <!--left side-->
+        <div class="profile-avatar-section">
+            
+            @if (!showPhotoDialog) {
+                <!--change phtoo not opened-->
+                <div class="profile-picture-wrapper">
+                    <img [src]="getCurrentProfilePicture()" class="profile-picture">
+                </div>
+
+                <button type="button" class="upload-btn" (click)="openPhotoDialog()">
+                    Change Photo
+                </button>
+            }
+            @else {
+                <div class="photo-menu">
+
+                    <div class="photo-preview">
+                        <img [src]="getCurrentProfilePicture()" class="preview-picture">
+                    </div>
+
+                    <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">
+
+                    <button type="button" class="avatar-btn" (click)="fileInput.click()"> 
+                        Upload Photo
+                    </button>
+
+                    <button type="button" class="avatar-btn" (click)="generateAvatar()">
+                        Generate Avatar
+                    </button>
+
+                    @if (isGeneratedAvatar) {
+                        <button type="button" class="avatar-btn save-avatar-btn" (click)="saveAvatarAsFile()">
+                            Save Generated Avatar
+                        </button>
+                    }
+
+                    <button type="button" class="avatar-btn remove-btn" (click)="removePhoto()">
+                        Remove Photo
+                    </button>
+
+                    <button type="button" class="close-btn" (click)="closePhotoDialog()">
+                        Close
+                    </button>
+
+                </div>
+            }
+
+        </div>
+
+        <!--profile fields-->
+        <div class="profile-fields-section">
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label>First Name</label>
+                    <input type="text" [(ngModel)]="profile.firstName" placeholder="Enter first name">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Last Name</label>
+                    <input type="text" [(ngModel)]="profile.lastName" placeholder="Enter last name">
+
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label>Username</label>
+                    <input type="text" [value]="profile.username" class="disabled-input" disabled>
+
+                </div>
+
+                <div class="field">
+
+                    <label>E-mail</label>
+                    <input type="email" [(ngModel)]="profile.email" placeholder="Enter email address">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Phone</label>
+                    <input type="text" [(ngModel)]="profile.phone" placeholder="Enter phone number">
+
+                </div>
+
+            </div>
+
+            <div class="field full-width">
+
+                <label>Favourite Sports (max 5)</label>
+
+                <div class="sports-grid">
+
+                    @for (sport of allSports; track sport.id) {
+                        <label class="sport-checkbox">
+
+                            <input type="checkbox" [checked]="selectedSports.includes(sport.id)"
+                                [disabled]="selectedSports.length >= 5 && !selectedSports.includes(sport.id)"
+                                (change)="toggleSport(sport.id)">
+                            <span>{{ sport.name }}</span>
+
+                        </label>
+                    }
+
+                </div>
+
+            </div>
+
+            @if (successMessage) {
+                <div class="success-message">
+                    {{ successMessage }}
+                </div>
+            }
+
+            <div class="form-actions">
+
+                <button type="button" class="upload-btn" (click)="changePassword()">
+                    Change Password
+                </button>
+
+                <button type="button" class="cancel-btn" (click)="cancelChanges()">
+                    Cancel
+                </button>
+
+                <button type="button" class="save-btn" (click)="saveChanges()">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="reservations-section">
+
+        <h3>Reservations</h3>
+
+        <table class="reservations-table">
+            <thead>
+            <tr>
+                <th (click)="sort('facilityName')">
+                Facility 
+                <span class="sort-icon">{{ sortColumn === 'facilityName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th (click)="sort('city')">
+                City 
+                <span class="sort-icon">{{ sortColumn === 'city' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th (click)="sort('courtName')">
+                Court 
+                <span class="sort-icon">{{ sortColumn === 'courtName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th (click)="sort('sportName')">
+                Sport 
+                <span class="sort-icon">{{ sortColumn === 'sportName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th (click)="sort('price')">
+                Price (RSD)
+                <span class="sort-icon">{{ sortColumn === 'price' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th (click)="sort('startTime')">
+                Time
+                <span class="sort-icon">{{ sortColumn === 'startTime' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th (click)="sort('status')">
+                Status 
+                <span class="sort-icon">{{ sortColumn === 'status' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @for (res of filteredReservations; track res.id) {
+                <tr>
+                    <td>{{ res.facilityName }}</td>
+                    <td>{{ res.city }}</td>
+                    <td>{{ res.courtName }}</td>
+                    <td>{{ res.sportName }}</td>
+                    <td>{{ res.price | number:'1.2-2' }}</td>
+                    <td>
+                        {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
+                    </td>
+                    <td>
+                        <span class="status-badge" [class]="res.status.toLowerCase()">
+                        {{ res.status }}
+                        </span>
+                    </td>
+                    <td>
+                        @if (canCancel(res)) {
+                            <button class="btn-cancel" (click)="cancelReservation(res)">
+                                Cancel reservation
+                            </button>
+                        } @else {
+                            <span class="no-action-text">-</span>
+                        }
+                    </td>
+                </tr>
+            } @empty {
+                <tr>
+                    <td colspan="7" class="no-data">No reservation record.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+}
+@else {
+    <div class="negative-state">
+        <p>Profile data could not be loaded.</p>
+    </div>
+}

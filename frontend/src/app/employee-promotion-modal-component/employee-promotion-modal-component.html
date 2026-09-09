@@ -1,0 +1,75 @@
+<div class="modal-backdrop">
+  <div class="modal-card">
+    <h2 class="modal-title">
+      {{ isEditMode ? 'Update Promotion' : 'Create New Promotion' }}
+    </h2>
+
+    <form [formGroup]="promoForm" (ngSubmit)="confirm()" class="form-container">
+      
+      <!-- Facility Select (U Edit modu se prikazuje kao onemogućeno polje ili izabrani naziv) -->
+      <div class="form-group">
+        <label>Facility</label>
+        <select formControlName="facilityId" (change)="changeFacility()">
+          <option value="" disabled>Select Facility</option>
+          @if (isEditMode) {
+            <option [value]="promotionToEdit?.facilityId">{{ promotionToEdit?.facilityName || 'Selected Facility' }}</option>
+          } @else {
+            @for (f of facilities; track f.id) {
+              <option [value]="f.id">{{ f.name }}</option>
+            }
+          }
+        </select>
+      </div>
+
+      <!-- Sport Select -->
+      <div class="form-group">
+        <label>Sport</label>
+        <select formControlName="sportId" (change)="changeSport()">
+          <option value="" disabled>Select Sport</option>
+          @for (s of sports; track s.id) {
+            <option [value]="s.id">{{ s.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Promotion Name</label>
+        <input type="text" formControlName="name" placeholder="e.g. Summer Discount" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Value</label>
+          <input type="number" formControlName="discountValue" placeholder="e.g. 20" />
+        </div>
+        <div class="form-group">
+          <label>Discount Type</label>
+          <select formControlName="discountType">
+            <option value="PERCENTAGE">Percentage (%)</option>
+            <option value="FIXED">Fixed Amount (RSD)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date & Time</label>
+          <input type="datetime-local" formControlName="startDate" [min]="minDate" (change)="changeDate()"/>
+        </div>
+
+        <div class="form-group">
+          <label>End Date & Time</label>
+          <input type="datetime-local" formControlName="endDate" [min]="promoForm.get('startDate')?.value || minDate"/>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-red" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn-green" [disabled]="promoForm.invalid">
+          {{ isEditMode ? 'Update' : 'Confirm' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

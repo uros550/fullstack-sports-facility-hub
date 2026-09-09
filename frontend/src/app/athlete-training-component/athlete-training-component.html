@@ -1,0 +1,205 @@
+@if (!showArchive && !showSchedule) {
+    <div class="button-row">
+        <button class="redirect-btn" (click)="openArchive()">Training archive</button>
+    </div>
+}
+@else if (showArchive || showSchedule) {
+    <div class="button-row">
+        <button class="redirect-btn" (click)="close()">Back</button>
+    </div>
+}
+@if (!showArchive && !showSchedule) {
+    <!--search box-->
+    <div class="search-card">
+        <h2>Search Active Trainers</h2>
+
+        <div class="search-grid">
+            <select [(ngModel)]="selectedSportId">
+                <option [ngValue]="0">All Sports</option>
+                @for (sport of allSports; track sport.id) {
+                    <option [ngValue]="sport.id">
+                        {{ sport.name }}
+                    </option>
+                }
+            </select>
+
+            <select [(ngModel)]="selectedFacilityId">
+                <option [ngValue]="0">All Facilities</option>
+                @for (facility of allFacilities; track facility.id) {
+                    <option [ngValue]="facility.id">
+                        {{ facility.name }}
+                    </option>
+                }
+            </select>
+
+            <button (click)="searchTrainers()">Search</button>
+        </div>
+    </div>
+
+    <!--content layout-->
+    <div class="content-layout">
+        <div class="table-card">
+            <h1>Active Trainers</h1>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Specialization</th>
+                        <th>Sport</th>
+                        <th>Facility</th>
+                        <th>Rating</th>
+                        <th>Price / Hour</th>
+                        <th class="text-center">Schedule a training</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (trainer of displayedTrainers; track trainer.id) {
+                        <tr>
+                            <td>{{ trainer.firstName }}</td>
+                            <td>{{ trainer.lastName }}</td>
+                            <td>{{ trainer.specialization }}</td>
+                            <td>{{ trainer.sportName }}</td>
+                            <td>{{ trainer.facilityName }}</td>
+                            <td>{{ trainer.rating }} ★</td>
+                            <td>{{ trainer.pricePerHour }} RSD</td>
+                            <td>
+                                <button class="btn-schedule" (click)="openSchedule(trainer)">Apply</button>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #888;">No active trainers found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@else if (showArchive) {
+    <div class="content-layout">
+        <div class="table-card">
+            <h1>My trainings</h1>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Trainer Name</th>
+                        <th>Facility Name</th>
+                        <th>Court Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Price</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (training of myTrainings; track training.id) {
+                        <tr>
+                            <td>{{ training.trainerName }}</td>
+                            <td>{{ training.facilityName }}</td>
+                            <td>{{ training.courtName }}</td>
+                            <td>{{ getDate(training.startTime) }}</td>
+                            <td>{{ getTime(training.startTime, training.endTime) }}</td>
+                            <td>{{ training.price }} RSD</td>
+                            <td class="text-center">
+                                <span class="status-badge" [ngClass]="{
+                                        'status-success': training.status === 'CONFIRMED' || training.status === 'COMPLETED',
+                                        'status-pending': training.status === 'PENDING',
+                                        'status-fail': training.status === 'CANCELLED' || training.status === 'DIDNT_SHOW'}">
+                                    {{ training.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #888;">No traings found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@else if (showSchedule) {
+    <div class="schedule-header">
+        <div class="trainer-info">
+            <h2>{{ selectedTrainer?.firstName }} {{ selectedTrainer?.lastName }}</h2>
+            <span class="trainer-badge">{{ selectedTrainer?.pricePerHour }} RSD/h</span>
+        </div>
+    </div>
+    
+    @if (showReserve) {
+        <div class="search-card">
+            <div class="reserve-container">
+                {{reservedCourt?.name}}
+                <div class="reservation-form">
+                    <div class="form-group">
+                        <label for="resDate">Select Date:</label>
+                        <input type="date" id="resDate" [min]="minDate" [(ngModel)]="reservedDate" (change)="changeReservationDate()"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resStartTime">Start Time:</label>
+                        <select id="resStartTime" [(ngModel)]="reservedStartTime" (change)="changeReservationStartTime()">
+                            @for (slot of reservationSlots; track slot.startTime) {
+                                <option [value]="slot.startTime">{{ slot.startTime }}</option>
+                            } @empty {
+                                <option value="">No free slots available</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resDuration">Number of Hours:</label>
+                        <select id="resDuration" [(ngModel)]="selectedDuration">
+                            @for (dur of availableDurations; track dur) {
+                                <option [value]="dur">{{ dur }} {{ dur === 1 ? 'hour' : 'hours' }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="cancel-btn" (click)="closeReserve()">Cancel</button>
+                        <button class="submit-btn" [disabled]="!reservedStartTime || reservationSlots.length === 0" (click)="confirmReservation()">
+                            Confirm Reservation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @else {
+        <div class="search-card">
+            <div class="facility-title">
+                <h2>{{ selectedTrainer?.facilityName }}</h2>
+            </div>
+            <div class="courts-list">
+                @for (court of courts; track court.id) {
+                    <div class="court-row">
+                        <div class="court-meta">
+                            <h3>{{ court.name }}</h3>
+                            <div class="court-details">
+                                <span class="court-type">{{ court.type }} COURT</span>
+                            </div>
+                        </div>
+                        <button class="reserve-btn" (click)="openReserve(court)">Reserve</button>
+                    </div>
+                } @empty {
+                    <p class="no-courts-msg">No courts available for this facility at the moment.</p>
+                }
+            </div>
+        </div>
+        @if (errorMessage) {
+            <div class="message-banner"
+                [class.success]="errorMessage.includes('created') || errorMessage.includes('pending')"
+                [class.error]="!errorMessage.includes('created') && !errorMessage.includes('pending')">
+                {{ errorMessage }}
+            </div>
+        }
+    }
+}

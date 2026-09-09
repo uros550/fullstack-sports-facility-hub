@@ -1,0 +1,90 @@
+<div class="reports-container">
+  <h2>Reports and Statistics</h2>
+
+  <div class="filters-card">
+    <div class="filter-item">
+      <label for="facility">Sports Facility:</label>
+      <select id="facility" [(ngModel)]="selectedFacilityId" (change)="changeFilter()">
+        @for (f of facilities; track f.id) {
+          <option [value]="f.id">{{ f.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label for="month">Month:</label>
+      <select id="month" [(ngModel)]="selectedMonth" (change)="changeFilter()">
+        @for (m of months; track m.value) {
+          <option [value]="m.value">{{ m.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label for="year">Year:</label>
+      <select id="year" [(ngModel)]="selectedYear" (change)="changeFilter()">
+        @for (y of years; track y) {
+          <option [value]="y">{{ y }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="tables-container">
+    <div class="report-section">
+      <h3>Court Occupancy</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Court</th>
+            <th>Reserved Hours</th>
+            <th>Occupancy (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of occupancyData; track item.courtName) {
+            <tr>
+              <td>{{ item.courtName }}</td>
+              <td>{{ item.reservedHours }} h</td>
+              <td>{{ item.occupancyPercentage }}%</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="3" class="empty">No data available for the selected period.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="report-section">
+      <h3>Equipment Turnover</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Equipment</th>
+            <th>Quantity</th>
+            <th>Total Revenue</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of equipmentData; track item.equipmentName) {
+            <tr>
+              <td>{{ item.equipmentName }}</td>
+              <td>{{ item.totalQuantitySold }}</td>
+              <td>{{ item.totalRevenue | number:'1.2-2' }} RSD</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="3" class="empty">No data available for the selected period.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="actions-footer">
+    <button type="button" class="btn-generate-pdf" (click)="generatePDF()">Generate PDF</button>
+  </div>
+</div>

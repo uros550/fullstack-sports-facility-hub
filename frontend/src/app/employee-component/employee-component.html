@@ -1,0 +1,76 @@
+<div class="page-container">
+
+  <div class="dashboard-layout">
+
+    <!--sidebar menu-->
+    <aside class="sidebar">
+
+      <h2 class="sidebar-title">
+        Employee Menu
+      </h2>
+
+      <button class="menu-item active" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">
+        👤
+        <span>Profile</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'facilities'" (click)="setActiveTab('facilities')">
+        🏢
+        <span>Manage Facilities</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'reservations'" (click)="setActiveTab('reservations')">
+        📅
+        <span>Reservations & Trainings</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'promotions'" (click)="setActiveTab('promotions')">
+        🏷️
+        <span>Promotions & Equipment</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'calendar'" (click)="setActiveTab('calendar')">
+        📆
+        <span>Calendar</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
+        📊
+        <span>PDF Reports</span>
+      </button>
+
+    </aside>
+
+    <!--content-->
+    <section class="content-card">
+
+      <div class="content-header">
+        <h1>Welcome back, {{currentUser?.firstName}} {{currentUser?.lastName}}</h1>
+      </div>
+
+      @switch (activeTab) {
+                @case ('profile') {
+                  <app-employee-profile-component></app-employee-profile-component>
+                }
+                @case('facilities') {
+                  <app-employee-facilities-component></app-employee-facilities-component>
+                }
+                @case('reservations') {
+                  <app-employee-reservations-component></app-employee-reservations-component>
+                }
+                @case ('promotions') {
+                  <app-employee-promotions-component></app-employee-promotions-component>
+                }
+                @case ('calendar') {
+                  <app-employee-calendar-component></app-employee-calendar-component>
+                }
+                @case ('reports') {
+                  <app-employee-pdfcomponent></app-employee-pdfcomponent>
+                }
+      }
+
+    </section>
+
+  </div>
+
+</div>

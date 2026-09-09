@@ -1,0 +1,372 @@
+/*backdrop covering the whole screen*/
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, .6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .2s ease-out;
+}
+
+/*modal white box*/
+.modal-container {
+    background-color: rgb(255, 255, 255);
+    padding: 28px 32px;
+    border-radius: 16px; /*rounded*/
+    width: 100%;
+    max-width: 420px;
+    max-height: 90vh; /*keeps modal strictly inside screen*/
+    overflow-y: auto; /*scrolls internal content if needed*/
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
+    position: relative;
+    font-family: system-ui, -apple-system, sans-serif;
+    animation: slideUp .25s ease-out;
+}
+
+/*custom smooth scrollbar for modal*/
+.modal-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+    background-color: rgb(203, 213, 225);
+    border-radius: 4px;
+}
+
+/*close button*/
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: rgb(148, 163, 184);
+    cursor: pointer; /*cursor change when hovered*/
+    line-height: 1;
+    padding: 4px;
+    border-radius: 50%; /*circle*/
+    transition: .2s; /*smooth transition*/
+}
+
+/*close button when hovered*/
+.close-btn:hover {
+    color: rgb(15, 23, 42);
+    background-color: rgb(241, 245, 249);
+}
+
+/*auth title*/
+.auth-box h2 {
+    margin: 0 0 8px 0;
+    color: rgb(15, 23, 42);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+/*subtitle text under title*/
+.subtitle {
+    color: rgb(100, 116, 139);
+    font-size: .9rem;
+    margin: 0 0 20px 0;
+}
+
+/*avatar upload section*/
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px;
+    background-color: rgb(248, 250, 252);
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 12px;
+}
+
+/*avatar preview circle*/
+.avatar-preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(16, 185, 129);
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    color: rgb(255, 255, 255);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/*avatar controls buttons*/
+.avatar-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.avatar-btn {
+    background-color: rgb(255, 255, 255);
+    color: rgb(51, 65, 85);
+    border: 1px solid rgb(203, 213, 225);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.avatar-btn:hover {
+    background-color: rgb(241, 245, 249);
+    border-color: rgb(148, 163, 184);
+}
+
+.avatar-save-wrapper {
+    margin-top: 2px;
+}
+
+.save-avatar-btn {
+    background-color: rgb(16, 185, 129);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.save-avatar-btn:hover {
+    background-color: rgb(5, 150, 105);
+}
+
+.avatar-saved-tag {
+    color: rgb(5, 150, 105);
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+/*input fields wrapping box*/
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+/*input label text*/
+.input-group label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: rgb(71, 85, 105);
+}
+
+/*text inputs*/
+.input-group input {
+    padding: 10px 14px;
+    border: 1px solid rgb(203, 213, 225);
+    border-radius: 8px; /*rounded*/
+    font-size: .95rem;
+    outline: none;
+    transition: .2s; /*smooth glow transition*/
+}
+
+/*input when focused/clicked*/
+.input-group input:focus {
+    border-color: rgb(16, 185, 129);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
+}
+
+/*dropdown select fields*/
+.input-group select {
+    padding: 10px 14px;
+    border: 1px solid rgb(203, 213, 225);
+    border-radius: 8px; /*rounded*/
+    font-size: .95rem;
+    outline: none;
+    background-color: rgb(255, 255, 255);
+    transition: .2s; /*smooth glow transition*/
+}
+
+/*dropdown when focused/clicked*/
+.input-group select:focus {
+    border-color: rgb(16, 185, 129);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, .15);
+}
+
+/*multi-select box for sports*/
+.input-group .multi-select {
+    height: 120px;
+    padding: 8px;
+}
+
+/*field validation error text*/
+.field-error {
+    color: rgb(239, 68, 68);
+    font-size: .8rem;
+    margin-top: 4px;
+}
+
+/*dynamic section title in step 2*/
+.dynamic-section h3 {
+    margin: 0 0 16px 0;
+    color: rgb(15, 23, 42);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/*helper text for selections*/
+.helper-text {
+    color: rgb(148, 163, 184);
+    font-size: .8rem;
+    margin: -4px 0 8px 0;
+}
+
+/*container for forgot password link*/
+.forgot-link-container {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/*submit button for form*/
+.auth-submit-btn {
+    width: 100%;
+    background-color: rgb(16, 185, 129);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 12px;
+    border-radius: 8px; /*rounded*/
+    font-weight: 600;
+    font-size: .95rem;
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s; /*smooth color change*/
+}
+
+/*submit button when hovered*/
+.auth-submit-btn:hover {
+    background-color: rgb(5, 150, 105);
+}
+
+/*submit button when disabled*/
+.auth-submit-btn:disabled {
+    background-color: rgb(226, 232, 240);
+    color: rgb(148, 163, 184);
+    cursor: not-allowed;
+}
+
+/*container for multiple action buttons*/
+.action-buttons-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/*utility class to fill remaining space*/
+.flex-fill {
+    flex: 1;
+}
+
+/*back button for secondary action*/
+.back-btn {
+    background-color: rgb(241, 245, 249);
+    color: rgb(71, 85, 105);
+    border: 1px solid rgb(226, 232, 240);
+    padding: 12px 20px;
+    border-radius: 8px; /*rounded*/
+    font-weight: 600;
+    font-size: .95rem;
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s; /*smooth color change*/
+}
+
+/*back button when hovered*/
+.back-btn:hover {
+    background-color: rgb(226, 232, 240);
+    color: rgb(15, 23, 42);
+}
+
+/*general error alert banner*/
+.error-message {
+    color: rgb(220, 38, 38);
+    background-color: rgba(239, 68, 68, .1);
+    border: 1px solid rgba(239, 68, 68, .2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: .85rem;
+    margin-bottom: 16px;
+}
+
+/*general success alert banner*/
+.success-message {
+    color: rgb(5, 150, 105);
+    background-color: rgba(16, 185, 129, .1);
+    border: 1px solid rgba(16, 185, 129, .2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: .85rem;
+    margin-bottom: 16px;
+}
+
+/*bottom text for switching modal mode*/
+.switch-mode {
+    margin-top: 20px;
+    text-align: center;
+    font-size: .9rem;
+    color: rgb(100, 116, 139);
+}
+
+/*simple link style*/
+.switch-link {
+    font-size: .85rem;
+    color: rgb(100, 116, 139);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*simple link when hovered*/
+.switch-link:hover {
+    color: rgb(16, 185, 129);
+}
+
+/*bold green link style*/
+.switch-link-bold {
+    color: rgb(16, 185, 129);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*bold link when hovered*/
+.switch-link-bold:hover {
+    text-decoration: underline;
+}
+
+/*animations*/
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

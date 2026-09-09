@@ -1,0 +1,168 @@
+@if (profile) {
+    <div class="profile-layout">
+
+        <!--left side-->
+        <div class="profile-avatar-section">
+            
+            @if (!showPhotoDialog) {
+                <!--change phtoo not opened-->
+                <div class="profile-picture-wrapper">
+                    <img [src]="getCurrentProfilePicture()" class="profile-picture">
+                </div>
+
+                <button type="button" class="upload-btn" (click)="openPhotoDialog()">
+                    Change Photo
+                </button>
+            }
+            @else {
+                <div class="photo-menu">
+
+                    <div class="photo-preview">
+                        <img [src]="getCurrentProfilePicture()" class="preview-picture">
+                    </div>
+
+                    <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">
+
+                    <button type="button" class="avatar-btn" (click)="fileInput.click()"> 
+                        Upload Photo
+                    </button>
+
+                    <button type="button" class="avatar-btn" (click)="generateAvatar()">
+                        Generate Avatar
+                    </button>
+
+                    @if (isGeneratedAvatar) {
+                        <button type="button" class="avatar-btn save-avatar-btn" (click)="saveAvatarAsFile()">
+                            Save Generated Avatar
+                        </button>
+                    }
+
+                    <button type="button" class="avatar-btn remove-btn" (click)="removePhoto()">
+                        Remove Photo
+                    </button>
+
+                    <button type="button" class="close-btn" (click)="closePhotoDialog()">
+                        Close
+                    </button>
+
+                </div>
+            }
+
+        </div>
+
+        <!--profile fields-->
+        <div class="profile-fields-section">
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label>First Name</label>
+                    <input type="text" [(ngModel)]="profile.firstName" placeholder="Enter first name">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Last Name</label>
+                    <input type="text" [(ngModel)]="profile.lastName" placeholder="Enter last name">
+
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="field">
+
+                    <label>Username</label>
+                    <input type="text" [value]="profile.username" class="disabled-input" disabled>
+
+                </div>
+
+                <div class="field">
+
+                    <label>E-mail</label>
+                    <input type="email" [(ngModel)]="profile.email" placeholder="Enter email address">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Phone</label>
+                    <input type="text" [(ngModel)]="profile.phone" placeholder="Enter phone number">
+
+                </div>
+
+            </div>
+
+            @if (successMessage) {
+                <div class="success-message">
+                    {{ successMessage }}
+                </div>
+            }
+
+            <div class="form-actions">
+
+                <button type="button" class="upload-btn" (click)="changePassword()">
+                    Change Password
+                </button>
+
+                <button type="button" class="cancel-btn" (click)="cancelChanges()">
+                    Cancel
+                </button>
+
+                <button type="button" class="save-btn" (click)="saveChanges()">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="facilities-section">
+
+        <h3>My Facilities</h3>
+
+        <table class="facilities-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+
+                <th>Address</th>
+
+                <th>Description</th>
+
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @for (fac of myFacilities; track fac.id) {
+                <tr>
+                    <td>{{ fac.name }}</td>
+                    <td>{{ fac.address }}, {{ fac.city }}</td>
+                    <td>{{ fac.description }}</td>
+                    <td>
+                        <button class="details-btn" (click)="goToDetails(fac.id)">
+                            Details
+                        </button>
+                    </td>
+                </tr>
+            } @empty {
+                <tr>
+                    <td colspan="7" class="no-data">No reservation record.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+}
+@else {
+    <div class="negative-state">
+        <p>Profile data could not be loaded.</p>
+    </div>
+}

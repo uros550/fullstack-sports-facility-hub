@@ -1,0 +1,85 @@
+<div class="page-container">
+
+    <div class="dashboard-layout">
+
+        <!--sidebar menu-->
+        <aside class="sidebar">
+
+            <h2 class="sidebar-title">
+                Athlete Menu
+            </h2>
+
+            <button class="menu-item" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">
+                👤
+                <span>Profile</span>
+            </button>
+
+            <button class="menu-item" [class.active]="activeTab === 'reservations'" (click)="setActiveTab('reservations')">
+                📅
+                <span>Reservations</span>
+            </button>
+
+            <button class="menu-item" [class.active]="activeTab === 'teammates'" (click)="setActiveTab('teammates')">
+                👥
+                <span>Find Teammates</span>
+            </button>
+
+            <button class="menu-item" [class.active]="activeTab === 'training'" (click)="setActiveTab('training')">
+                🏋️
+                <span>Training</span>
+            </button>
+
+            <button class="menu-item" [class.active]="activeTab === 'store'" (click)="setActiveTab('store')">
+                🛒
+                <span>Equipment Store</span>
+            </button>
+
+            <button class="menu-item" [class.active]="activeTab === 'reviews'" (click)="setActiveTab('reviews')">
+                ⭐
+                <span>Reviews</span>
+            </button>
+
+            <button class="menu-item" [class.active]="activeTab === 'statistics'" (click)="setActiveTab('statistics')">
+                📊
+                <span>Statistics</span>
+            </button>
+
+        </aside>
+
+        <!--content area-->
+        <section class="content-card">
+
+            <div class="content-header">
+                <h1>Welcome back, {{currentUser?.firstName}} {{currentUser?.lastName}}</h1>
+            </div>
+
+            <!--dynamic content based on activeTab-->
+            @switch (activeTab) {
+                @case ('profile') {
+                    <app-athlete-profile-component></app-athlete-profile-component>
+                }
+                @case ('reservations') {
+                    <app-athlete-reservation-component></app-athlete-reservation-component>
+                }
+                @case ('teammates') {
+                    <app-athlete-teammates-component></app-athlete-teammates-component>
+                }
+                @case ('training') {
+                    <app-athlete-training-component></app-athlete-training-component>
+                }
+                @case ('store') {
+                    <app-athlete-store-component></app-athlete-store-component>
+                }
+                @case ('reviews') {
+                    <app-athlete-review-component></app-athlete-review-component>
+                }
+                @case ('statistics') {
+                    <app-athlete-stats-component></app-athlete-stats-component>
+                }
+            }
+
+        </section>
+
+    </div>
+
+</div>

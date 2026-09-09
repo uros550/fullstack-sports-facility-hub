@@ -1,0 +1,344 @@
+<div class="details-container">
+
+  @if (facility) {
+
+    <!--return button-->
+    <div class="navigation-header">
+      <button class="back-btn" (click)="return()">
+        <span class="arrow">←</span> Back
+      </button>
+    </div>
+
+    <!--basic facility info-->
+    <div class="facility-hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <!--status-->
+        <span class="status-badge" [class.active]="facility.status === 'APPROVED'">
+          {{ facility.status === 'APPROVED' ? 'Active' : 'Inactive' }}
+        </span>
+        
+        <!--facility name-->
+        <h1>{{ facility.name }}</h1>
+        
+        <!--facility location-->
+        <p class="location">
+          <span class="icon">📍</span> {{ facility.address }}, {{ facility.city }}
+        </p>
+        
+        <!-- Likes -->
+        <div class="rating-bar">
+          <span class="rating-pill like">
+            <span class="icon">👍</span> {{ facility.likesCount || 0 }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--main info-->
+    <div class="main-grid">
+      
+      <!--description and courts-->
+      <div class="info-column">
+        
+        <!--description-->
+        <div class="card about-card">
+          <h2>About the Facility</h2>
+          <p class="description">
+            {{ facility.description }}
+          </p>
+        </div>
+
+        <!--courts info-->
+        <div class="card courts-card">
+          
+          <!--header with title and availability button-->
+          <div class="courts-header">
+
+            <h2>Available Courts & Pricing</h2>
+            @if (isAthlete) {
+              <button class="availability-btn" (click)="openAvailability()">
+                Show availability
+              </button>
+            }
+
+          </div>
+
+          <p class="section-subtitle">All prices are listed per hour of court rental (not per person).</p>
+
+          <!--availability subsection (shown when button is clicked)-->
+          @if (showAvailability) {
+            <div class="availability-section">
+
+              <div class="availability-header">
+
+                <h3>Check Court Availability</h3>
+                <button class="close-btn" (click)="closeAvailability()">✕</button>
+
+              </div>
+
+              <div class="availability-controls">
+                <!--court navigation-->
+                <div class="court-selector">
+
+                  <button class="nav-arrow" (click)="previousCourt()">‹</button>
+                  <span class="current-court-name">
+                    {{ getSelectedCourt()?.name || 'Court' }}
+                  </span>
+                  <button class="nav-arrow" (click)="nextCourt()">›</button>
+
+                </div>
+
+                <!-- date picker -->
+                <div class="date-selector">
+
+                  <label for="availDate">Date:</label>
+                  <input type="date" [min]="minDate" id="availDate" [(ngModel)]="selectedDate" (change)="changeDate()"/>
+
+                </div>
+
+              </div>
+
+              <!--availability slots-->
+              <div class="slots-container">
+
+                @for (slot of availabilitySlots; track slot.startTime) {
+                  <div class="slot-item" [class.available]="slot.available" [class.taken]="!slot.available">
+
+                    <span class="time">{{ slot.startTime }} - {{ slot.endTime }}</span>
+                    <span class="status">{{ slot.available ? 'Free' : 'Reserved' }}</span>
+
+                  </div>
+                } @empty {
+                  <p class="no-slots">No availability slots found for this date.</p>
+                }
+
+              </div>
+
+            </div>
+          } 
+          @else if (showReservation) {
+            <div class="reservation-section">
+
+              <div class="reservation-header">
+
+                <h3>Reserve: {{ reservedCourt?.name }}</h3>
+                <button class="close-btn" (click)="closeReservation()">✕</button>
+
+              </div>
+
+              @if (errorMessage) {
+                <div class="message-banner" 
+                  [class.success]="errorMessage.includes('created') || errorMessage.includes('pending')"
+                  [class.error]="!errorMessage.includes('created') && !errorMessage.includes('pending')"
+                >
+                  {{ errorMessage }}
+                </div>
+              }
+
+              <div class="reservation-form">
+
+                <!--date select-->
+                <div class="form-group">
+
+                  <label for="resDate">Select Date:</label>
+                  <input type="date" id="resDate" [min]="minDate" [(ngModel)]="reservedDate" (change)="changeReservationDate()"/>
+
+                </div>
+
+                <!--start time select-->
+                <div class="form-group">
+
+                  <label for="resStartTime">Start Time:</label>
+                  <select id="resStartTime" [(ngModel)]="reservedStartTime" (change)="changeReservationStartTime()">
+                    @for (slot of reservationSlots; track slot.startTime) {
+                      <option [value]="slot.startTime">{{ slot.startTime }}</option>
+                    } @empty {
+                      <option value="">No free slots available</option>
+                    }
+                  </select>
+
+                </div>
+
+                <!--duration select-->
+                <div class="form-group">
+
+                  <label for="resDuration">Number of Hours:</label>
+                  <select id="resDuration" [(ngModel)]="selectedDuration">
+                    @for (dur of availableDurations; track dur) {
+                      <option [value]="dur">{{ dur }} {{ dur === 1 ? 'hour' : 'hours' }}</option>
+                    }
+                  </select>
+
+                </div>
+
+                <!--estimated price-->
+                @if (reservedCourt) {
+                  <div class="price-summary">
+
+                    @if (currentPromotion) {
+                      <div class="price-row original">
+                        <span>Base price ({{ selectedDuration }} {{ selectedDuration === 1 ? 'hour' : 'hours' }})</span>
+                        <span class="strikethrough">{{ reservedCourt.pricePerHour * selectedDuration | number:'1.2-2' }} RSD</span>
+                      </div>
+                      <div class="price-row promo">
+                        <span>🏷️ {{ currentPromotion.name }}</span>
+                        <span>
+                          {{ currentPromotion.discountType === 'PERCENTAGE' ? '-' + currentPromotion.discountValue + '%' : '-' + currentPromotion.discountValue + ' RSD' }}
+                        </span>
+                      </div>
+                    }
+
+                    <div class="price-row total">
+                      <span>Total price</span>
+                      <span class="total-amount">{{ getEstimatedPrice() | number:'1.2-2' }} RSD</span>
+                    </div>
+
+                  </div>
+                }
+
+                <div class="form-actions">
+
+                  @if (isAthleteBlocked) {
+                    <div class="blocked-container">
+                      <div class="blocked-msg">
+                        Unfortunately, you are blocked from this facility for not showing up to your reservations.
+                      </div>
+                      <button type="button" class="blocked-btn" (click)="closeReservation()">Return</button>
+                    </div>
+                  }
+                  @else {
+                    <button class="cancel-btn" (click)="closeReservation()">Cancel</button>
+                    <button class="submit-btn" [disabled]="!reservedStartTime || reservationSlots.length === 0" (click)="submitReservation()">
+                      Confirm Reservation
+                    </button>
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+          }
+          @else {
+            <!--courts list-->
+            <div class="courts-list">
+              
+              @for (court of getFilteredCourts(); track court.id) {
+                <div class="court-row">
+                  <div class="court-meta">
+                    <h3>{{ court.name }}</h3>
+                    
+                    <div class="tags-container" style="display: flex; gap: 8px; margin: 4px 0 8px 0; flex-wrap: wrap;">
+                      
+                      @if (court.sportName) {
+                        <span class="court-tag sport-tag">{{ court.sportName }}</span>
+                      }
+                      
+                      <span class="court-tag" [class.open]="court.type === 'OPEN'" [class.closed]="court.type === 'CLOSED'">
+                        {{ court.type === 'OPEN' ? 'Outdoor Court' : 'Indoor Court' }}
+                      </span>
+
+                      <span class="court-tag capacity-tag">
+                        👥 Max capacity: {{ court.capacity }}
+                      </span>
+                    </div>
+                    
+                    <p class="court-desc">{{ court.equipmentDescription }}</p>
+                  </div>
+
+                  <div class="court-price">
+                    <span class="price">{{ court.pricePerHour }} RSD</span>
+                    <span class="unit">/ hour</span>
+                  </div>
+
+                  @if (isAthlete) {
+                    <button class="reserve-btn" (click)="openReservation(court)">
+                      Reserve
+                    </button>
+                  }
+                  
+                </div>
+              } @empty {
+                <p class="no-courts-msg">No courts available for this facility at the moment.</p>
+              }
+
+            </div>
+          }
+          
+        </div>
+ 
+      </div>
+
+      <!--gallery-->
+      <div class="gallery-column">
+
+        <div class="card gallery-card">
+
+          <h2>Facility gallery</h2>
+          
+          <div class="image-gallery">
+
+            @for (img of images; track img) {
+              <div class="gallery-item">
+                <img [src]="baseUrl + img"/>
+              </div>
+            } @empty {
+              <p class="no-images">No images available.</p>
+            }
+
+          </div>
+
+        </div>
+
+        <!--location (could be only if (isAthlete) if needed)-->
+        <div class="card location-card">
+
+          <h2>Location & Hours</h2>
+
+          <div class="location-details">
+              
+            <div class="info-item">
+
+              <span class="info-icon">📍</span>
+              <div class="info-content">
+
+              <span class="label">Address</span>
+              <p>{{ facility.address }}, {{ facility.city }}</p>
+
+            </div>
+
+            </div>
+
+              <!--working hours-->
+              @if (facility.workingHours) {
+                <div class="info-item">
+
+                  <span class="info-icon">⏰</span>
+                  <div class="info-content">
+
+                    <span class="label">Working Hours</span>
+                    <p>{{ facility.workingHours }}</p>
+
+                  </div>
+
+                </div>
+              }
+
+            </div>
+
+            <!--map container-->
+            <div id="facility-map" class="map-container"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+  } @else {
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Loading facility details...</p>
+    </div>
+  }
+</div>

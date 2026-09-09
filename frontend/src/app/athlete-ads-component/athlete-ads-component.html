@@ -1,0 +1,201 @@
+<button class="back-btn" (click)="goBack()">Back</button>
+
+@if (mode === "explore") {
+    <div class="table-title">
+        <span class="title">Explore reservations</span>
+    </div>
+
+    <div class="table-card">
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Facility Name</th>
+                        <th>City</th>
+                        <th>Court Name</th>
+                        <th>Sport</th>
+                        <th>Date & Time</th>
+                        <th class="text-center">Apply?</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (res of exploreReservations; track res.id) {
+                        <tr>
+                            <td class="facility-name">{{ res.facilityName }}</td>
+
+                            <td>
+                                <span class="city-text">{{ res.city }}</span>
+                            </td>
+
+                            <td class="court-name">{{ res.courtName }}</td>
+
+                            <td>
+                                <span class="sport-badge">{{ res.sportName }}</span>
+                            </td>
+
+                            <td class="date-cell">
+                                {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
+                            </td>
+                            <td class="text-center">
+                                @let status = getStatus(res.id);
+                                @if (status === 'ACCEPTED') {
+                                    <span class="status-badge accepted">Accepted</span>
+                                } @else if (status === 'PENDING') {
+                                    <span class="status-badge pending">Pending</span>
+                                } @else if (status === 'REJECTED') {
+                                    <span class="status-badge rejected">Rejected</span>
+                                } @else {
+                                    <button class="apply-btn" (click)="apply(res.id)">Ask</button>
+                                }
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="6" class="no-data">No reservations found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (successMessage) {
+            <span class="success-msg">{{successMessage}}</span>
+        }
+    </div>
+}
+@else if (activeReservationId === 0) {
+    <div class="table-title">
+        <span class="title">My active reservations</span>
+    </div>
+
+
+    <div class="table-card">
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Facility Name</th>
+                        <th>City</th>
+                        <th>Court Name</th>
+                        <th>Sport</th>
+                        <th>Date & Time</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (res of myReservations; track res.id) {
+                        <tr>
+                            <td class="facility-name">{{ res.facilityName }}</td>
+
+                            <td>
+                                <span class="city-text">{{ res.city }}</span>
+                            </td>
+
+                            <td class="court-name">{{ res.courtName }}</td>
+
+                            <td>
+                                <span class="sport-badge">{{ res.sportName }}</span>
+                            </td>
+
+                            <td class="date-cell">
+                                {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
+                            </td>
+                            
+                            <td class="text-center">
+                                @let hasPending = anyActive(res.id);
+                                <button class="action-btn" (click)="check(res.id)">
+                                    <span>Check applications</span>
+                                    @if (hasPending) {
+                                        <span class="badge-dot"></span>
+                                    }
+                                </button>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="6" class="no-data">No reservations found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (successMessage) {
+            <span class="success-msg">{{successMessage}}</span>
+        }
+    </div>
+}
+@else {
+    <div class="table-title">
+        <span class="title">My active reservations</span>
+        <button class="back-btn" (click)="closeCheck()">x</button>
+    </div>
+
+    <div class="table-card">
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Profile picture</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Username</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (app of getApplications(); track app) {
+                        @let athlete = getAthlete(app.athleteId);
+                        <tr>
+                            <td class="pfp-wrapper">
+                                <img [src]="getProfilePicture(athlete)" class="profile-picture">
+                            </td>
+
+                            <td class="facility-name">{{ athlete.firstName }}</td>
+
+                            <td class="facility-name">{{ athlete.lastName }}</td>
+
+                            <td class="facility-name">{{ athlete.username }}</td>
+
+                            <td class="text-center"> 
+                                @if (app.status === 'ACCEPTED') {
+                                    <span class="accepted-status">Accepted</span>
+                                }
+                                @else if (app.status === 'REJECTED') {
+                                    <span class="rejected-status">Rejected</span>
+                                }
+                                @else if (app.status === 'PENDING') {
+                                    @if (showOptions) {
+                                        <select [(ngModel)]="selectedOption" class="inline-select">
+                                            @for (opt of options; track opt) {
+                                                <option [value]="opt">{{ opt }}</option>
+                                            }
+                                        </select>
+
+                                        <button class="btn-respond-confirm" (click)="confirmRespond(athlete.id)">
+                                            Confirm
+                                        </button>
+
+                                        <button class="btn-respond-cancel" (click)="closeOptions()">
+                                            Cancel
+                                        </button>
+                                    }
+                                    @else {
+                                        <button class="action-btn" (click)="openOptions()">Respond</button>
+                                    }
+                                }
+                                @else {
+                                    <span class="no-status">-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (successMessage) {
+            <span class="success-msg">{{successMessage}}</span>
+        }
+    </div>
+}

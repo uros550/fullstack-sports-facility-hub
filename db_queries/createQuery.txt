@@ -1,0 +1,261 @@
+DROP DATABASE IF EXISTS sportshub;
+CREATE DATABASE sportshub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE sportshub;
+
+-- =====================================================
+-- SPORT
+-- =====================================================
+CREATE TABLE Sport (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    requiredPlayers INT NOT NULL
+);
+
+-- =====================================================
+-- USER
+-- =====================================================
+CREATE TABLE User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    profilePicture VARCHAR(255),
+    role VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    resetToken VARCHAR(255) DEFAULT NULL,
+    resetTokenExpiry DATETIME DEFAULT NULL,
+    CONSTRAINT chk_user_role CHECK (role IN ('ADMIN', 'EMPLOYEE', 'ATHLETE')),
+    CONSTRAINT chk_user_status CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED'))
+);
+
+-- =====================================================
+-- USER - SPORT (M:N)
+-- =====================================================
+CREATE TABLE UserSport (
+    userId INT NOT NULL,
+    sportId INT NOT NULL,
+    PRIMARY KEY (userId, sportId),
+    CONSTRAINT fk_usersport_user FOREIGN KEY (userId) REFERENCES User(id),
+    CONSTRAINT fk_usersport_sport FOREIGN KEY (sportId) REFERENCES Sport(id)
+);
+
+-- =====================================================
+-- SPORTS FACILITY
+-- =====================================================
+CREATE TABLE SportsFacility (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    mb VARCHAR(20) NOT NULL UNIQUE,
+    pib VARCHAR(20) NOT NULL UNIQUE,
+    description VARCHAR(500) NOT NULL,
+    latitude DECIMAL(10,7) NOT NULL,
+    longitude DECIMAL(10,7) NOT NULL,
+    workingHours VARCHAR(100) NOT NULL,
+    maxPenalties INT NOT NULL,
+    likesCount INT NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL,
+    CONSTRAINT chk_facility_status CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED'))
+);
+
+-- =====================================================
+-- FACILITY EMPLOYEE (M:N)
+-- =====================================================
+CREATE TABLE FacilityEmployee (
+    facilityId INT NOT NULL,
+    employeeId INT NOT NULL,
+    PRIMARY KEY (facilityId, employeeId),
+    CONSTRAINT fk_facilityemployee_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_facilityemployee_employee FOREIGN KEY (employeeId) REFERENCES User(id)
+);
+
+-- =====================================================
+-- COURT
+-- =====================================================
+CREATE TABLE Court (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    facilityId INT NOT NULL,
+    sportId INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(20) NOT NULL, 
+    capacity INT NOT NULL,
+    equipmentDescription VARCHAR(300) NOT NULL,
+    pricePerHour DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_court_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_court_sport FOREIGN KEY (sportId) REFERENCES Sport(id),
+    CONSTRAINT uq_court_name UNIQUE (facilityId, name),
+    CONSTRAINT chk_court_type CHECK (type IN ('OPEN', 'CLOSED'))
+);
+
+-- =====================================================
+-- FACILITY IMAGE
+-- =====================================================
+CREATE TABLE FacilityImage (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    facilityId INT NOT NULL,
+    imageUrl VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_facilityimage_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id)
+);
+
+-- =====================================================
+-- TRAINER
+-- =====================================================
+CREATE TABLE Trainer (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
+    specialization VARCHAR(100) NOT NULL,
+    rating DECIMAL(3,2) NOT NULL,
+    pricePerHour DECIMAL(10,2) NOT NULL,
+    sportId INT NOT NULL,
+    facilityId INT NOT NULL,
+    isActive BOOLEAN NOT NULL DEFAULT TRUE,
+    CONSTRAINT fk_trainer_sport FOREIGN KEY (sportId) REFERENCES Sport(id),
+    CONSTRAINT fk_trainer_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id)
+);
+
+-- =====================================================
+-- PROMOTION
+-- =====================================================
+CREATE TABLE Promotion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    facilityId INT NOT NULL,
+    sportId INT NOT NULL,
+    discountType VARCHAR(20) NOT NULL,   
+    discountValue DECIMAL(10,2) NOT NULL, 
+    startDate DATETIME NOT NULL,
+    endDate DATETIME NOT NULL,
+    CONSTRAINT fk_promotion_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_promotion_sport FOREIGN KEY (sportId) REFERENCES Sport(id),
+    CONSTRAINT chk_discount_type CHECK (discountType IN ('PERCENTAGE', 'FIXED')),
+    CONSTRAINT chk_discount_value CHECK (discountValue > 0)
+);
+
+-- =====================================================
+-- RESERVATION
+-- =====================================================
+CREATE TABLE Reservation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    facilityId INT NOT NULL,
+    courtId INT NOT NULL,
+    athleteId INT NOT NULL,
+    sportId INT NOT NULL,
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    missingPlayers INT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_reservation_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_reservation_court FOREIGN KEY (courtId) REFERENCES Court(id),
+    CONSTRAINT fk_reservation_athlete FOREIGN KEY (athleteId) REFERENCES User(id),
+    CONSTRAINT fk_reservation_sport FOREIGN KEY (sportId) REFERENCES Sport(id),
+    CONSTRAINT chk_reservation_missing_players CHECK (missingPlayers >= 0),
+    CONSTRAINT chk_reservation_status CHECK (status IN ('PENDING', 'CONFIRMED', 'CANCELLED', 'DIDNT_SHOW')),
+    CHECK (endTime > startTime),
+    CHECK (price > 0)
+);
+
+-- =====================================================
+-- TRAINING
+-- =====================================================
+CREATE TABLE Training (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    trainerId INT NOT NULL,
+    athleteId INT NOT NULL,
+    facilityId INT NOT NULL,
+    courtId INT NOT NULL,
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    CONSTRAINT fk_training_trainer FOREIGN KEY (trainerId) REFERENCES Trainer(id),
+    CONSTRAINT fk_training_athlete FOREIGN KEY (athleteId) REFERENCES User(id),
+    CONSTRAINT fk_training_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_training_court FOREIGN KEY (courtId) REFERENCES Court(id),
+    CHECK (status IN ('PENDING', 'CONFIRMED', 'CANCELLED', 'DIDNT_SHOW')),
+    CHECK (endTime > startTime)
+);
+
+-- =====================================================
+-- JOIN REQUEST
+-- =====================================================
+CREATE TABLE JoinRequest (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reservationId INT NOT NULL,
+    athleteId INT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    CONSTRAINT fk_joinrequest_reservation FOREIGN KEY (reservationId) REFERENCES Reservation(id),
+    CONSTRAINT fk_joinrequest_athlete FOREIGN KEY (athleteId) REFERENCES User(id),
+    CONSTRAINT uq_joinrequest UNIQUE (reservationId, athleteId),
+    CONSTRAINT chk_joinrequest_status CHECK (status IN ('PENDING', 'ACCEPTED', 'REJECTED'))
+);
+
+-- =====================================================
+-- FACILITY REVIEW
+-- =====================================================
+CREATE TABLE FacilityReview (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    facilityId INT NOT NULL,
+    athleteId INT NOT NULL,
+    liked BOOLEAN NOT NULL,
+    comment VARCHAR(500),
+    reviewDate DATETIME NOT NULL,
+    CONSTRAINT fk_review_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_review_athlete FOREIGN KEY (athleteId) REFERENCES User(id)
+);
+
+-- =====================================================
+-- FACILITY BLOCK
+-- =====================================================
+CREATE TABLE FacilityBlock (
+    facilityId INT NOT NULL,
+    athleteId INT NOT NULL,
+    PRIMARY KEY (facilityId, athleteId),
+    CONSTRAINT fk_block_facility FOREIGN KEY (facilityId) REFERENCES SportsFacility(id),
+    CONSTRAINT fk_block_athlete FOREIGN KEY (athleteId) REFERENCES User(id)
+);
+
+-- =====================================================
+-- EQUIPMENT
+-- =====================================================
+CREATE TABLE Equipment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    sportId INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    imageUrl VARCHAR(255),
+    CONSTRAINT fk_equipment_sport FOREIGN KEY (sportId) REFERENCES Sport(id),
+    CONSTRAINT chk_equipment_stock CHECK (stock >= 0)
+);
+
+-- =====================================================
+-- ORDER
+-- =====================================================
+CREATE TABLE `Order` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    athleteId INT NOT NULL,
+    orderDate DATETIME NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    CONSTRAINT fk_order_athlete FOREIGN KEY (athleteId) REFERENCES User(id),
+    CONSTRAINT chk_order_status CHECK (status IN ('ACCEPTED', 'PICKED_UP', 'CANCELLED'))
+);
+
+-- =====================================================
+-- ORDER ITEM
+-- =====================================================
+CREATE TABLE OrderItem (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    orderId INT NOT NULL,
+    equipmentId INT NOT NULL,
+    quantity INT NOT NULL,
+    priceAtPurchase DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_orderitem_order FOREIGN KEY (orderId) REFERENCES `Order`(id),
+    CONSTRAINT fk_orderitem_equipment FOREIGN KEY (equipmentId) REFERENCES Equipment(id),
+    CONSTRAINT chk_orderitem_quantity CHECK (quantity > 0)
+);

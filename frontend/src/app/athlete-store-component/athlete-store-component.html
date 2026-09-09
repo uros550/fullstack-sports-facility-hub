@@ -1,0 +1,269 @@
+<div class="orders-tab-wrapper">
+  <div class="orders-card">
+
+    @if (successMessage) {
+      <div class="alert-message">
+        {{ successMessage }}
+      </div>
+    }
+    @if (showCart) {
+      <div class="card-header">
+        <h3>My Cart</h3>
+        <button class="redirect-btn" (click)="close()">Back</button>
+      </div>
+
+      @if (cart.length > 0) {
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of cart; track item.equipmentId) {
+              <tr>
+                <td>
+                  <img 
+                    [src]="'http://localhost:8080/' + item.equipmentImage" 
+                    [alt]="item.equipmentName" 
+                    class="item-img"
+                    />
+                </td>
+                <td>{{ item.equipmentName }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.priceAtPurchase }} RSD</td>
+                <td>{{ item.priceAtPurchase * item.quantity }} RSD</td>
+                <td>
+                  @if (showQuantitySelection && selectedItemId === item.equipmentId) {
+                    <div class="select-with-buttons">
+                      <select class="sport-select" [(ngModel)]="selectedQuantity">
+                        @for (num of getQuantityRange(item.quantity); track num) {
+                          <option [ngValue]="num">{{ num }}</option>
+                        }
+                      </select> 
+                      <div class="stacked-buttons">
+                        <button class="confirm-btn" (click)="removeFromCart(item)">Confirm</button>
+                        <button class="cancel2-btn" (click)="closeAddition()">Cancel</button>
+                      </div>
+                    </div>
+                  }
+                  @else {
+                    <button class="cancel2-btn" (click)="openAddition(item.equipmentId)">Remove</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div style="text-align: center; margin-top: 15px;">
+          <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+            Final Price: {{ getCartTotal() }} RSD
+          </p>
+          <button class="action2-btn" (click)="pay()">Order Now</button>
+        </div>
+      } @else {
+        <p class="center-txt">Your cart is empty.</p>
+      }
+    }
+    @else if (showItems) {
+        <div class="card-header">
+            <h3>Order Items</h3>
+            <button class="redirect-btn" (click)="closeItems()">Back</button>
+        </div>
+
+        <table class="orders-table">
+            <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (item of orderItems; track item.id) {
+                <tr>
+                <td>
+                    <img 
+                    [src]="'http://localhost:8080/' + item.equipmentImage" 
+                    [alt]="item.equipmentName" 
+                    class="item-img"
+                    />
+                </td>
+                <td class="item-name">{{ item.equipmentName }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.priceAtPurchase }} RSD</td>
+                <td>{{ item.priceAtPurchase * item.quantity }} RSD</td>
+                </tr>
+            } @empty {
+                <tr>
+                <td colspan="4" class="empty-message">No items found for this order.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    @else if (showHistory) {
+      <div class="card-header">
+        <h3>Order History</h3>
+        <button class="redirect-btn" (click)="close()">Back</button>
+      </div>
+
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Status</th>
+            <th>Items</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of historyOrders; track order.id) {
+            <tr>
+              <td>{{ order.orderDate | date: 'dd.MM.yyyy. HH:mm' }}</td>
+              <td>
+                <span class="status-badge" [class]="order.status.toLowerCase()">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td>
+                <button class="action-btn" (click)="openItems(order.id)">Details</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="2" class="empty-message">No previous orders found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+    @else if (showActive) {
+      <div class="card-header">
+        <h3>Active Orders</h3>
+        <button class="redirect-btn" (click)="close()">Back</button>
+      </div>
+
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Status</th>
+            <th>Items</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of activeOrders; track order.id) {
+            <tr>
+              <td>{{ order.orderDate | date: 'dd.MM.yyyy. HH:mm' }}</td>
+              <td>
+                <span class="status-badge accepted">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td>
+                <button class="action-btn" (click)="openItems(order.id)">Details</button>
+              </td>
+              <td>
+                <button class="cancel-btn" (click)="cancelOrder(order.id)">Cancel</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="3" class="empty-message">No active orders found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+    @else {
+      <div class="card-header">
+        <h2>Explore Shop</h2>
+        <div class="btn-group">
+          <button class="redirect-btn" (click)="openHistory()">Order history</button>
+          <button class="redirect-btn" (click)="openActive()">Active orders</button>
+          <button class="redirect-btn" (click)="openCart()">🛒</button>
+        </div>
+      </div>
+      <div class="shop-section">
+        <div class="shop-filter-header">
+            <div class="filter-group">
+                <select class="sport-select" [(ngModel)]="selectedSportId">
+                    <option [value]="0">All Sports</option>
+                    @for (sport of sports; track sport.id) {
+                        <option [value]="sport.id">{{ sport.name }}</option>
+                    }
+                </select>
+                <button class="action-btn" (click)="changeSport()">Confirm</button>
+            </div>
+        </div>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Sport</th>
+                      <th>Price</th>
+                      <th>Stock</th>
+                      <th>Add to cart</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of equipment; track item.id) {
+                    <tr>
+                        <td>
+                          <img 
+                              [src]="'http://localhost:8080/' + item.imageUrl" 
+                              [alt]="item.name" 
+                              class="item-img"
+                          />
+                        </td>
+                        <td class="item-name">{{ item.name }}</td>
+                        <td>{{ item.sportName }}</td>
+                        <td>{{ item.price }} RSD</td>
+                        <td>
+                          <span class="stock-badge" [class.out-of-stock]="item.stock === 0">
+                              {{ item.stock > 0 ? item.stock + ' in stock' : 'Out of stock' }}
+                          </span>
+                        </td>
+                        <td>
+                          @if (showQuantitySelection && selectedItemId === item.id) {
+                            <div class="select-with-buttons">
+                              <select class="sport-select" [(ngModel)]="selectedQuantity">
+                                @for (num of getQuantityRange(item.stock); track num) {
+                                  <option [ngValue]="num">{{ num }}</option>
+                                }
+                              </select> 
+                              <div class="stacked-buttons">
+                                <button class="confirm-btn" (click)="addToCart(item)">Confirm</button>
+                                <button class="cancel2-btn" (click)="closeAddition()">Cancel</button>
+                              </div>
+                            </div>
+                          }
+                          @else if (item.stock > 0){
+                            <button class="action2-btn" (click)="openAddition(item.id)">Add</button>
+                          }
+                          @else {
+                            <p class="center-txt">-</p>
+                          }
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="5" class="empty-message">No equipment available for the selected sport.</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+  </div>
+</div>

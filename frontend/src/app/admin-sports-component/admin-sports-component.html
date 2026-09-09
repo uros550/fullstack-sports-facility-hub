@@ -1,0 +1,86 @@
+<div class="sports-layout">
+  <div class="table-container">
+    <div class="table-header">
+      <div>
+        <h3 class="table-title">Sports List</h3>
+        <p class="table-subtitle">Overview of registered sports categories</p>
+      </div>
+      <span class="count-badge">{{ sports.length }} Total</span>
+    </div>
+
+    @if (successMessage) {
+      <div class="status-message" [class.message-error]="successMessage.toLowerCase().includes('error')">
+        {{ successMessage }}
+      </div>
+    }
+
+    <div class="table-responsive">
+      <table class="sports-table">
+        <thead>
+          <tr>
+            <th>Sport Name</th>
+            <th class="text-center">Required Players</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (sport of sports; track sport.id) {
+            <tr>
+              <td class="font-semibold">{{ sport.name }}</td>
+              <td class="text-center">
+                <span class="players-badge">{{ sport.requiredPlayers }} 👥</span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="2" class="empty-state">No sports available.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-header">
+      <h3 class="form-title">Add New Sport</h3>
+      <p class="form-subtitle">Create a new sport category</p>
+    </div>
+
+    <form (ngSubmit)="addSport()" class="sport-form">
+      <div class="form-group">
+        <label for="sportName" class="form-label">Sport Name</label>
+        <input
+          type="text"
+          id="sportName"
+          name="sportName"
+          class="form-input"
+          placeholder="e.g. Basketball, Tennis..."
+          [(ngModel)]="newSportName"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="reqPlayers" class="form-label">Required Players</label>
+        <input
+          type="number"
+          id="reqPlayers"
+          name="reqPlayers"
+          class="form-input"
+          min="1"
+          [(ngModel)]="newSportReqPlayers"
+          required
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-action btn-add" [disabled]="!newSportName.trim()">
+          ADD
+        </button>
+        <button type="button" class="btn-action btn-cancel" (click)="cancelSport()">
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

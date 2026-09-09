@@ -1,0 +1,495 @@
+USE sportshub;
+
+-- =====================================================
+-- 1. SPORT
+-- =====================================================
+INSERT INTO Sport (id, name, requiredPlayers) VALUES
+(1, 'Football', 12),
+(2, 'Basketball', 10),
+(3, 'Tennis', 2),
+(4, 'Volleyball', 12),
+(5, 'Swimming', 1),
+(6, 'Padel', 4),
+(7, 'Table Tennis', 2),
+(8, 'Handball', 14);
+
+-- =====================================================
+-- 2. USER
+-- =====================================================
+INSERT INTO User (id, firstName, lastName, username, email, password, phone, profilePicture, role, status) VALUES
+-- Admin
+(1, 'Admin', 'Adminovic', 'admin', 'admin@sportshub.com', '$2b$10$Ah33jJEMmSzYVxbg5v5CF.dTNGY3yvV4SerMqtRU5uJ2sOQjfl3s2', '0600000000', 'uploads/profilePictures/admin.jpg', 'ADMIN', 'APPROVED'),
+
+-- Employee
+(2, 'Marko', 'Markovic', 'marko', 'marko@sportshub.com', '$2b$10$zF9TJBhpvgsjjRaAvej0u.r/xlBoWD68FXRspzJZf2vUYHRy523HG', '0610000000', 'uploads/profilePictures/marko.jpg', 'EMPLOYEE', 'APPROVED'),
+(3, 'Jovan', 'Jovanovic', 'jovan', 'jovan@sportshub.com', '$2b$10$zRZvecXHQZVOVSf6pbsK7.x4.Vv4pHSLMpkRWLvSI39uhFE0c0oxW', '0610000001', 'uploads/profilePictures/jovan.jpg', 'EMPLOYEE', 'APPROVED'),
+(4, 'Petar', 'Petrovic', 'petar', 'petar@sportshub.com', '$2b$10$hWXa4LMsqvTW9z/AfH4EVO1OZF2pHDCxuo8wc1knVOmB5JCR1/LKS', '0610000002', NULL, 'EMPLOYEE', 'APPROVED'),
+(5, 'Nikola', 'Nikolic', 'nikola', 'nikola@sportshub.com', '$2b$10$VrjJnV7NNoLN1uZ4EQ0SkOw6I197hwJ5TJwVlrjKF8CaSxTQAA8Dy', '0610000003', 'uploads/profilePictures/nikola.jpg', 'EMPLOYEE', 'APPROVED'),
+(6, 'Milan', 'Milanovic', 'milan', 'milan@sportshub.com', '$2b$10$0Hw3tQHGGNH4A6TIcBQAlOO.cgmFK7J7hTk7WuJ8vqisrVQ9upmjG', '0610000004', NULL, 'EMPLOYEE', 'APPROVED'),
+(7, 'Dejan', 'Dejanovic', 'dejan', 'dejan@sportshub.com', '$2b$10$CYC3FOvhu1noyXruqeG2L.m7St6cPvXKkXzpfna.yVm1zaVcSBkPy', '0610000005', 'uploads/profilePictures/dejan.jpg', 'EMPLOYEE', 'APPROVED'),
+
+-- Athlete
+(8, 'Luka', 'Lukic', 'luka', 'luka@gmail.com', '$2b$10$ccnY5dHiuw8pfd.G.h6DTOALoEld87PBhRc6TD/gxaK52SDjT8sEO', '0620000000', 'uploads/profilePictures/luka.jpg', 'ATHLETE', 'APPROVED'),
+(9, 'Bogdan', 'Bogdanovic', 'bogdan', 'bogdan@gmail.com', '$2b$10$Avt8jVplYMfMArD97ShVcuKe786Yogm9M9YoS/y8rj9aL4nLAUegy', '0620000001', 'uploads/profilePictures/bogdan.jpg', 'ATHLETE', 'APPROVED'),
+(10, 'Ana', 'Anic', 'ana', 'ana@gmail.com', '$2b$10$poAeuHHzIZi7am2HVff55u5ADrS5hXovRFeGTkCXaF7N8IHm2SNf.', '0620000002', 'uploads/profilePictures/ana.jpg', 'ATHLETE', 'APPROVED'),
+(11, 'Milos', 'Milosevic', 'milos', 'milos@gmail.com', '$2b$10$73pP/OLS05Vb6zuzVkHbkeoBS/bkUBay7JKzSxDp2cGrygt.drLIC', '0620000003', 'uploads/profilePictures/milos.jpg', 'ATHLETE', 'PENDING'),
+(12, 'Stefan', 'Stefanovic', 'stefan', 'stefan@gmail.com', '$2b$10$W/BHHetZYtqCGDG4UFZYVetnsB5aKIajtm.2IXmKwx5gfLFyy1VQy', '0620000004', NULL, 'ATHLETE', 'APPROVED'),
+(13, 'Jelena', 'Jankovic', 'jelena', 'jelena@gmail.com', '$2b$10$Fl5WZkmg1DuUfCVr2O6une3poeQMBOwDdscRa0IbIsBkCgTO577d2', '0620000005', 'uploads/profilePictures/jelena.jpg', 'ATHLETE', 'APPROVED'),
+(14, 'Sara', 'Saric', 'sara', 'sara@gmail.com', '$2b$10$owetNzoBp.t5Qb1uJpj6fesJjXbU93sTCQ3I4UkSZY6xDt/Pxd6E.', '0620000006', NULL, 'ATHLETE', 'APPROVED'),
+(15, 'Milica', 'Milankovic', 'milica', 'milica@gmail.com', '$2b$10$ES3Sn26Z1qnHkwN4KpPXr.maFO/xVYvFYYdJnfAtdc/2ur8V5CrF.', '0620000007', 'uploads/profilePictures/milica.jpg', 'ATHLETE', 'APPROVED'),
+(16, 'Viktor', 'Viktorovic', 'viktor', 'viktor@gmail.com', '$2b$10$YxXioHUsyhUWA1IlfqoMQed0.JfwJX/3RxqHd6iccClAnOmrVg45C', '0620000008', NULL, 'ATHLETE', 'APPROVED'),
+(17, 'Djordje', 'Djordjevic', 'djordje', 'djordje@gmail.com', '$2b$10$PLIFKpbUTlhFHqu8MrsJhejw.6Bg/dtYwE9MFCPsNtU5SN0W2/5Zi', '0620000009', 'uploads/profilePictures/djordje.jpg', 'ATHLETE', 'APPROVED');
+
+-- =====================================================
+-- 3. USER - SPORT (M:N)
+-- =====================================================
+INSERT INTO UserSport (userId, sportId) VALUES
+
+(8, 1), (8, 2), (8, 6),
+(9, 2), (9, 5),
+(10, 3), (10, 6),
+(12, 1), (12, 8),
+(13, 3), (13, 7),
+(14, 1), (14, 3), (14, 4), (14, 5), (14, 6),
+(15, 6), (15, 2),
+(16, 5), (16, 1),
+(17, 8), (17, 2);
+
+-- =====================================================
+-- 4. SPORTS FACILITY (12 Objekata širom Srbije)
+-- =====================================================
+INSERT INTO SportsFacility (id, name, address, city, mb, pib, description, latitude, longitude, workingHours, maxPenalties, likesCount, status) VALUES
+(1, 'Zavod za sport i medicinu sporta RS - Košutnjak', 'Kneza Višeslava 72', 'Beograd', '07012345', '100012345', 'Nacionalni trenažni centar sa otvorenim bazenima, atletskom stazom, tenisom i trim stazom u prirodi.', 44.764118, 20.429888, '07:00 - 22:00', 3, 1, 'APPROVED'),
+(2, 'SC Tašmajdan', 'Beogradska 71', 'Beograd', '07054321', '100054321', 'Kultni sportski centar sa zatvorenim i otvorenim bazenom, halom za košarku i teretanom.', 44.809684, 20.472457, '06:00 - 23:00', 3, 2, 'APPROVED'),
+(3, 'SC Milan Gale Muškatirović - 25. Maj', 'Tadeuša Košćuška 63', 'Beograd', '07099887', '100099887', 'Prelep kompleks na obali Dunava sa olimpijskim bazenima, tenisom i padel terenima.', 44.830516, 20.455607, '07:00 - 22:00', 2, 3, 'APPROVED'),
+(4, 'SC 11. April', 'Autoput za Zagreb 2', 'Novi Beograd', '07112233', '100112233', 'Centralni sportski objekat Novog Beograda sa otvorenim bazenima, tenisom i zatvorenim salama.', 44.825919, 20.394138, '07:00 - 22:00', 3, 0, 'APPROVED'),
+(5, 'SPC Vojvodina - SPENS', 'Sutjeska 2', 'Novi Sad', '87654321', '987654321', 'Najveći sportsko-poslovni centar u Vojvodini sa velikom dvoranom, ledenim dvoranom i bazenima.', 45.247127, 19.845485, '07:00 - 22:00', 2, 2, 'APPROVED'),
+(6, 'SC Sajmište', 'Novosadskog sajma 37', 'Novi Sad', '87611223', '987112233', 'Otvoreni tereni za fudbal, tenis, košarku i bazenski kompleks u blizini Novosadskog sajma.', 45.253368, 19.825278, '08:00 - 21:00', 3, 2, 'APPROVED'),
+(7, 'SC Čair', 'Devete brigade', 'Niš', '56473829', '556677889', 'Glavni sportski kompleks u Nišu sa velikom halom, zatvorenim bazenom i terenskim kompleksom.', 43.3167, 21.907836, '08:00 - 22:00', 4, 2, 'APPROVED'),
+(8, 'SPD Radnički', 'Kragujevačkog oktobra', 'Kragujevac', '34011223', '234011223', 'Kragujevački sportski centar SBB Hala Jezero i zatvoreni bazeni sa vrhunskim uslovima za dvoranske sportove.', 44.020346, 20.90073, '07:00 - 23:00', 3, 2, 'APPROVED'),
+(9, 'SRC Prozivka', 'Nade Dimić 2', 'Subotica', '24055667', '345055667', 'Moderan sportsko-rekreativni centar u Subotici sa vaterpolo bazenima i salama za fitnes.', 46.089257, 19.673904, '07:00 - 21:00', 2, 1, 'APPROVED'),
+(10, 'SC Mladost', 'Miloša Trebinjca 10', 'Pančevo', '13088990', '456088990', 'Gradski sportski centar Pančevo sa namenskim terenima za rukomet, fudbal i tenis.', 44.869293, 20.649613, '08:00 - 22:00', 3, 1, 'APPROVED'),
+(11, 'SC Park', 'Vojvode Stepe 40', 'Inđija', '22033445', '567033445', 'Savremena sportska hala i tereni u Inđiji prilagođeni rekreativcima i profesionalcima.', 45.0489, 20.0811, '08:00 - 21:00', 3, 1, 'APPROVED'),
+(12, 'SC Bobana Momčilović Veličković', 'Zeleni bulevar 37', 'Bor', '19044556', '678044556', 'Višenamenski sportski objekat na istoku Srbije sa velikim kapacitetom za košarku i rukomet.', 44.058552 , 22.102357, '08:00 - 21:00', 3, 0, 'PENDING');
+
+-- =====================================================
+-- 5. FACILITY EMPLOYEE (M:N)
+-- =====================================================
+INSERT INTO FacilityEmployee (facilityId, employeeId) VALUES
+(1, 2), (1, 4),
+(2, 2), (2, 4),
+(3, 3),
+(4, 5),
+(5, 3), (5, 6),
+(6, 6),
+(7, 2), (7, 7),
+(8, 7),
+(9, 4),
+(10, 5),
+(11, 6),
+(12, 7);
+
+-- =====================================================
+-- 6. COURT
+-- =====================================================
+INSERT INTO Court (id, facilityId, sportId, name, type, capacity, equipmentDescription, pricePerHour) VALUES
+-- Košutnjak (1)
+(1, 1, 5, 'Olimpijski Bazen na otvorenom', 'OPEN', 50, 'Standardna 50m staza, skakaonica, prateća oprema.', 500.00),
+(2, 1, 3, 'Teniski Teren Košutnjak 1', 'OPEN', 4, 'Šljaka, reflektori.', 1500.00),
+(3, 1, 6, 'Padel Teren 1', 'OPEN', 4, 'Panoramsko staklo, veštačka trava najnovije generacije.', 3500.00),
+
+-- Tašmajdan (2)
+(4, 2, 2, 'Glavna Hala Tašmajdan', 'CLOSED', 20, 'Parket, profi zglobni obruči, semafor.', 5000.00),
+(5, 2, 5, 'Zatvoreni Bazen Tašmajdan', 'CLOSED', 30, 'Grejana voda 26C, staze 25m.', 700.00),
+
+-- 25. Maj (3)
+(6, 3, 5, 'Bazen sa pogledom na Dunav', 'OPEN', 40, 'Olimpijske dimenzije, ležaljke.', 800.00),
+(7, 3, 6, 'Padel 25. Maj A', 'CLOSED', 4, 'Zatvorena padel konstrukcija, klimatizovano.', 3200.00),
+
+-- 11. April (4)
+(8, 4, 3, 'Teniski Teren Beton 1', 'CLOSED', 4, 'Tvrda podloga, klimatizovano.', 1300.00),
+(9, 4, 1, 'Mali Fudbal Balon', 'CLOSED', 12, 'Veštačka trava, svlačionice sa tuševima.', 4500.00),
+
+-- SPENS (5)
+(10, 5, 2, 'SPENS Mala Dvorana', 'CLOSED', 20, 'Vrhunski parket, semafor.', 4500.00),
+(11, 5, 7, 'Sala za Stoni Tenis', 'CLOSED', 6, '4 profesionalna Stiga stola.', 1000.00),
+
+-- Sajmište (6)
+(12, 6, 1, 'Fudbalski Teren Sajmište', 'OPEN', 14, 'Prirodna trava, reflektori.', 6500.00),
+
+-- Čair (7)
+(13, 7, 1, 'Čair Otvoreni Fudbal', 'OPEN', 14, 'Prirodna trava, golovi standardnih dimenzija.', 5000.00),
+(14, 7, 3, 'Zatvoreni Tenis Čair', 'CLOSED', 4, 'Betonska podloga, klimatizovano.', 1700.00),
+(15, 7, 8, 'Hala Čair - Rukomet', 'CLOSED', 20, 'Sertifikovan rukometni parket i golovi.', 4800.00),
+
+-- SPD Radnički (8)
+(16, 8, 2, 'Hala Jezero Kragujevac', 'CLOSED', 20, 'Olimpijski standardi košarka.', 4000.00),
+(17, 8, 8, 'Rukometna Sala Radnički', 'CLOSED', 20, 'Semafor, golovi, guma podloga.', 3800.00),
+
+-- Prozivka (9)
+(18, 9, 5, 'Prozivka Vaterpolo Bazen', 'CLOSED', 30, 'Dubina 2m, vaterpolo golovi.', 1500.00),
+
+-- Mladost Pančevo (10)
+(19, 10, 1, 'Mladost Balon Fudbal', 'CLOSED', 12, 'Veštačka trava sa gumenim granulatom.', 4800.00),
+
+-- SC Park Inđija (11)
+(20, 11, 4, 'Odbojkaška Sala Park', 'CLOSED', 12, 'Mreža sa podešavanjem visine, profi podloga.', 3000.00),
+
+-- SC Bor (12)
+(21, 12, 2, 'Košarkaška Hala Bor', 'CLOSED', 20, 'Standardni tereni za treninge i utakmice.', 3000.00);
+
+-- =====================================================
+-- 7. FACILITY IMAGE (Slike na: 'uploads/facilityPictures/...')
+-- =====================================================
+INSERT INTO FacilityImage (id, facilityId, imageUrl) VALUES
+(1, 1, 'uploads/facilityPictures/kosutnjak_bazen.jpg'),
+(2, 1, 'uploads/facilityPictures/kosutnjak_tenis.jpg'),
+(3, 1, 'uploads/facilityPictures/kosutnjak_padel.jpg'),
+(4, 2, 'uploads/facilityPictures/tasmajdan_hala.jpg'),
+(5, 2, 'uploads/facilityPictures/tasmajdan_bazen.jpg'),
+(6, 3, 'uploads/facilityPictures/25maj_bazen.jpg'),
+(7, 3, 'uploads/facilityPictures/25maj_padel.jpg'),
+(8, 4, 'uploads/facilityPictures/11april_spolja.jpg'),
+(9, 4, 'uploads/facilityPictures/11april_tenis.jpg'),
+(10, 5, 'uploads/facilityPictures/spens_spolja.jpg'),
+(11, 5, 'uploads/facilityPictures/spens_dvorana.jpg'),
+(12, 6, 'uploads/facilityPictures/sajmiste_fudbal.jpg'),
+(13, 7, 'uploads/facilityPictures/cair_fudbal.jpg'),
+(14, 7, 'uploads/facilityPictures/cair_bazen.jpg'),
+(15, 8, 'uploads/facilityPictures/radnicki_jezero.jpg'),
+(16, 9, 'uploads/facilityPictures/prozivka_bazen.jpg'),
+(17, 10, 'uploads/facilityPictures/mladost_pancevo.jpg'),
+(18, 11, 'uploads/facilityPictures/indjija_park.jpg'),
+(19, 12, 'uploads/facilityPictures/bor_hala.jpg');
+
+-- =====================================================
+-- 8. TRAINER
+-- =====================================================
+INSERT INTO Trainer (id, firstName, lastName, specialization, rating, pricePerHour, sportId, facilityId, isActive) VALUES
+(1, 'Zeljko', 'Obradovic', 'Košarkaška taktika i napredni treninzi', 4.95, 6000.00, 2, 2, 1),
+(2, 'Nenad', 'Zimonjic', 'Tenis - dubl i singl tehnika', 4.80, 3500.00, 3, 1, 1),
+(3, 'Nemanja', 'Vidic', 'Fudbal - čitanje igre i pozicioniranje', 4.98, 6500.00, 1, 7, 1),
+(4, 'Milorad', 'Cavic', 'Tehnika plivanja i kraul stil', 4.92, 4500.00, 5, 3, 1),
+(5, 'Dusan', 'Mandic', 'Vaterpolo i kondiciona priprema u vodi', 4.75, 4000.00, 5, 9, 1),
+(6, 'Viktor', 'Troicki', 'Padel i tenis taktička priprema', 4.65, 3800.00, 6, 3, 1),
+(7, 'Novak', 'Djokovic', 'Tenis - napredni treninzi', 4.98, 5000.00, 3, 1, 1),
+(8, 'Miomir', 'Kecmanovic', 'Tenis - tehnika udarca', 4.65, 3500.00, 3, 4, 0),
+(9, 'Boban', 'Marjanovic', 'Košarka - skokovi i zakucavanja', 4.75, 3600.00, 2, 12, 1),
+(10, 'Maja', 'Ognjenovic', 'Odbojka - privatni treninzi', 4.85, 3200.00, 4, 11, 1);
+
+-- =====================================================
+-- 9. PROMOTION (Uključuju jul 2026.)
+-- =====================================================
+INSERT INTO Promotion (id, name, facilityId, sportId, discountType, discountValue, startDate, endDate) VALUES
+-- AKTIVNE PROMOCIJE
+(1, 'Letnja košarkaška akcija', 1, 6, 'PERCENTAGE', 20.00, '2026-06-01 00:00:00', '2026-09-30 23:59:59'),
+(2, 'POPUST!!! Tenis Niš', 7, 3, 'FIXED', 500.00, '2026-07-10 10:00:00', '2026-09-20 14:00:00'),
+(3, 'SPENS godisnji popust', 5, 2, 'PERCENTAGE', 15.00, '2026-01-01 00:00:00', '2026-12-31 23:59:59'),
+(4, 'Tro-mesečna akcija za Padel', 3, 6, 'PERCENTAGE', 10.00, '2026-07-01 00:00:00', '2026-09-30 23:59:59'),
+(5, 'Letnji semestar termini popust', 2, 5, 'FIXED', 300.00, '2026-05-01 00:00:00', '2026-09-30 23:59:59'),
+
+-- ISTEKLE PROMOCIJE
+(6, 'Zimska čarolija 2025', 5, 2, 'PERCENTAGE', 25.00, '2025-12-01 00:00:00', '2026-01-15 23:59:59'),
+
+-- BUDUĆE PROMOCIJE
+(7, 'Jesenji odbojkaški kup', 11, 4, 'PERCENTAGE', 30.00, '2026-10-01 00:00:00', '2026-11-30 23:59:59');
+
+-- =====================================================
+-- 10. RESERVATION
+-- =====================================================
+INSERT INTO Reservation (id, facilityId, courtId, athleteId, sportId, startTime, endTime, price, status, missingPlayers) VALUES
+-- =====================================================
+-- PROŠLE REZERVACIJE (pre 10.09.2026.)
+-- =====================================================
+
+-- --- 1. Zavod za sport i medicinu sporta RS - Košutnjak ---
+(1, 1, 2, 8, 3, '2026-06-10 11:00:00', '2026-06-10 13:00:00', 3000.00, 'CONFIRMED', 0),
+(2, 1, 2, 10, 3, '2026-06-15 14:00:00', '2026-06-15 16:00:00', 3000.00, 'CONFIRMED', 0),
+(3, 1, 3, 11, 6, '2026-07-05 11:00:00', '2026-07-05 13:00:00', 5600.00, 'DIDNT_SHOW', 1), -- Popust 20% (2x3500*0.80)
+(4, 1, 3, 11, 6, '2026-07-12 15:00:00', '2026-07-12 17:00:00', 5600.00, 'DIDNT_SHOW', 0), -- Popust 20%
+(5, 1, 3, 11, 6, '2026-07-13 15:00:00', '2026-07-13 17:00:00', 5600.00, 'DIDNT_SHOW', 0), -- Popust 20% + nije se pojavio athleteID 11 3. put
+
+-- --- 2. SC Tašmajdan ---
+(6, 2, 4, 8, 2, '2026-06-10 15:00:00', '2026-06-10 17:00:00', 10000.00, 'CONFIRMED', 2), 
+(7, 2, 4, 11, 2, '2026-07-10 16:00:00', '2026-07-10 18:00:00', 1000.00, 'DIDNT_SHOW', 3),
+(8, 2, 4, 11, 2, '2026-07-10 16:00:00', '2026-07-10 18:00:00', 1000.00, 'DIDNT_SHOW', 3),
+(9, 2, 5, 15, 5, '2026-07-20 18:00:00', '2026-07-20 19:00:00', 900.00, 'CONFIRMED', 0), -- Popust 300RSD
+(10, 2, 5, 11, 5, '2026-07-10 16:00:00', '2026-07-10 18:00:00', 2100.00, 'DIDNT_SHOW', 0), -- Popust 300RSD + nije se pojavio athleteId 11 3. put
+
+-- --- 3. SC Milan Gale Muškatirović - 25. Maj ---
+(11, 3, 6, 9, 5, '2026-06-01 11:00:00', '2026-06-01 13:00:00', 2000.00, 'CONFIRMED', 0),
+(12, 3, 7, 10, 6, '2026-06-15 16:00:00', '2026-06-15 18:00:00', 5600.00, 'CONFIRMED', 1), -- Popust jos nije poceo
+(13, 3, 6, 14, 5, '2026-07-10 12:00:00', '2026-07-10 14:00:00', 2000.00, 'CONFIRMED', 0),
+(14, 3, 7, 15, 6, '2026-08-01 17:00:00', '2026-08-01 19:00:00', 5040.00, 'CANCELLED', 0), -- Popust 10%
+(15, 3, 6, 16, 5, '2026-08-20 11:00:00', '2026-08-20 12:00:00', 1000.00, 'CONFIRMED', 0),
+
+-- --- 4. SC 11. April ---
+(16, 4, 8, 10, 3, '2026-06-05 11:00:00', '2026-06-05 13:00:00', 4000.00, 'CONFIRMED', 0),
+(17, 4, 9, 12, 1, '2026-06-18 17:00:00', '2026-06-18 19:00:00', 9000.00, 'CONFIRMED', 4),
+(18, 4, 8, 13, 3, '2026-07-02 14:00:00', '2026-07-02 16:00:00', 4000.00, 'CONFIRMED', 0),
+(19, 4, 9, 14, 1, '2026-07-15 15:00:00', '2026-07-15 17:00:00', 9000.00, 'DIDNT_SHOW', 2),
+(20, 4, 8, 10, 3, '2026-08-10 11:00:00', '2026-08-10 13:00:00', 4000.00, 'CANCELLED', 0),
+
+-- --- 5. SPC Vojvodina - SPENS ---
+(21, 5, 10, 8, 2, '2026-06-02 14:00:00', '2026-06-02 16:00:00', 7140.00, 'CONFIRMED', 1), -- Popust 15%
+(22, 5, 11, 13, 7, '2026-06-25 11:00:00', '2026-06-25 13:00:00', 2400.00, 'CONFIRMED', 0),
+(23, 5, 10, 15, 2, '2026-07-14 16:00:00', '2026-07-14 18:00:00', 7140.00, 'CONFIRMED', 0), -- Popust 15%
+(24, 5, 11, 13, 7, '2026-08-02 12:00:00', '2026-08-02 14:00:00', 2400.00, 'CANCELLED', 0),
+(25, 5, 10, 17, 2, '2026-08-25 17:00:00', '2026-08-25 19:00:00', 7140.00, 'CONFIRMED', 2), -- Popust 15%
+
+-- --- 6. SC Sajmište ---
+(26, 6, 12, 8, 1, '2026-06-04 15:00:00', '2026-06-04 17:00:00', 7000.00, 'CONFIRMED', 3),
+(27, 6, 12, 12, 1, '2026-06-22 17:00:00', '2026-06-22 19:00:00', 7000.00, 'CONFIRMED', 0),
+(28, 6, 12, 14, 1, '2026-07-08 14:00:00', '2026-07-08 16:00:00', 7000.00, 'CANCELLED', 5),
+(29, 6, 12, 16, 1, '2026-07-29 16:00:00', '2026-07-29 18:00:00', 7000.00, 'CONFIRMED', 2),
+(30, 6, 12, 8, 1, '2026-08-18 11:00:00', '2026-08-18 13:00:00', 7000.00, 'CONFIRMED', 1),
+
+-- --- 7. SC Čair ---
+(31, 7, 13, 12, 1, '2026-06-11 16:00:00', '2026-06-11 18:00:00', 6000.00, 'CONFIRMED', 2),
+(32, 7, 14, 10, 3, '2026-07-16 11:00:00', '2026-07-16 13:00:00', 3900.00, 'CONFIRMED', 0), -- Fiksni popust 500RSD
+(33, 7, 15, 17, 8, '2026-07-22 17:00:00', '2026-07-22 19:00:00', 9600.00, 'CONFIRMED', 4),
+(34, 7, 13, 14, 1, '2026-08-04 15:00:00', '2026-08-04 17:00:00', 6000.00, 'CANCELLED', 0),
+(35, 7, 15, 12, 8, '2026-08-20 18:00:00', '2026-08-20 20:00:00', 9600.00, 'CONFIRMED', 1),
+
+-- --- 8. SPD Radnički ---
+(36, 8, 16, 8, 2, '2026-06-08 14:00:00', '2026-06-08 16:00:00', 8000.00, 'CONFIRMED', 0),
+(37, 8, 17, 12, 8, '2026-06-28 16:00:00', '2026-06-28 18:00:00', 7600.00, 'CONFIRMED', 5),
+(38, 8, 16, 15, 2, '2026-07-18 11:00:00', '2026-07-18 13:00:00', 8000.00, 'CANCELLED', 0),
+(39, 8, 17, 17, 8, '2026-07-28 14:00:00', '2026-07-28 16:00:00', 7600.00, 'CONFIRMED', 2),
+(40, 8, 16, 9, 2, '2026-08-12 17:00:00', '2026-08-12 19:00:00', 8000.00, 'CONFIRMED', 0),
+
+-- --- 9. SRC Prozivka ---
+(41, 9, 18, 9, 5, '2026-06-03 11:00:00', '2026-06-03 13:00:00', 3000.00, 'CONFIRMED', 0),
+(42, 9, 18, 14, 5, '2026-06-19 13:00:00', '2026-06-19 15:00:00', 3000.00, 'CONFIRMED', 0),
+(43, 9, 18, 16, 5, '2026-07-07 12:00:00', '2026-07-07 14:00:00', 3000.00, 'CANCELLED', 0),
+(44, 9, 18, 9, 5, '2026-07-25 15:00:00', '2026-07-25 17:00:00', 3000.00, 'CONFIRMED', 0),
+(45, 9, 18, 16, 5, '2026-08-14 11:00:00', '2026-08-14 13:00:00', 3000.00, 'CONFIRMED', 0),
+
+-- --- 10. SC Mladost ---
+(46, 10, 19, 8, 1, '2026-06-06 16:00:00', '2026-06-06 18:00:00', 7600.00, 'CONFIRMED', 2),
+(47, 10, 19, 12, 1, '2026-06-24 14:00:00', '2026-06-24 16:00:00', 7600.00, 'CONFIRMED', 0),
+(48, 10, 19, 14, 1, '2026-07-11 17:00:00', '2026-07-11 19:00:00', 7600.00, 'CONFIRMED', 1),
+(49, 10, 19, 16, 1, '2026-07-30 15:00:00', '2026-07-30 17:00:00', 7600.00, 'CANCELLED', 0),
+(50, 10, 19, 8, 1, '2026-08-16 12:00:00', '2026-08-16 14:00:00', 7600.00, 'CONFIRMED', 3),
+
+-- --- 11. SC Park ---
+(51, 11, 20, 14, 4, '2026-06-12 13:00:00', '2026-06-12 15:00:00', 6400.00, 'CONFIRMED', 2),
+(52, 11, 20, 14, 4, '2026-06-29 15:00:00', '2026-06-29 17:00:00', 6400.00, 'CONFIRMED', 0),
+(53, 11, 20, 14, 4, '2026-07-17 11:00:00', '2026-07-17 13:00:00', 6400.00, 'CANCELLED', 0),
+(54, 11, 20, 14, 4, '2026-08-03 16:00:00', '2026-08-03 18:00:00', 6400.00, 'CONFIRMED', 4),
+(55, 11, 20, 14, 4, '2026-08-22 14:00:00', '2026-08-22 16:00:00', 6400.00, 'CONFIRMED', 1),
+
+-- =====================================================
+-- BUDUĆE REZERVACIJE (posle 10.09.2026.)
+-- =====================================================
+
+-- --- 1. Zavod za sport i medicinu sporta RS - Košutnjak ---
+(61, 1, 1, 8, 5, '2026-09-10 11:00:00', '2026-09-10 13:00:00', 800.00, 'CONFIRMED', 0),
+(62, 1, 2, 10, 3, '2026-09-11 14:00:00', '2026-09-11 16:00:00', 3000.00, 'CONFIRMED', 0),
+(63, 1, 3, 14, 6, '2026-09-15 15:00:00', '2026-09-15 17:00:00', 5600.00, 'PENDING', 2), -- Popust 20%
+(64, 1, 1, 9, 5, '2026-09-22 12:00:00', '2026-09-22 13:00:00', 800.00, 'CONFIRMED', 0),
+(65, 1, 3, 15, 6, '2026-09-28 16:00:00', '2026-09-28 18:00:00', 5600.00, 'CANCELLED', 0), -- Popust 20%
+
+-- --- 2. SC Tašmajdan ---
+(66, 2, 4, 8, 2, '2026-09-10 16:00:00', '2026-09-10 18:00:00', 10000.00, 'CONFIRMED', 1),
+(67, 2, 5, 9, 5, '2026-09-11 11:00:00', '2026-09-11 12:00:00', 900.00, 'CONFIRMED', 0), -- Popust 300RSD
+(68, 2, 4, 15, 2, '2026-09-18 17:00:00', '2026-09-18 19:00:00', 10000.00, 'PENDING', 4), 
+(69, 2, 5, 16, 5, '2026-09-25 13:00:00', '2026-09-25 15:00:00', 2100.00, 'CONFIRMED', 0), -- Popust 300RSD
+(70, 2, 5, 17, 5, '2026-10-02 15:00:00', '2026-10-02 17:00:00', 2400.00, 'PENDING', 0), -- Promocija istekla 30.09.
+
+-- --- 3. SC Milan Gale Muškatirović - 25. Maj ---
+(71, 3, 6, 14, 5, '2026-09-10 12:00:00', '2026-09-10 14:00:00', 2000.00, 'CONFIRMED', 0),
+(72, 3, 7, 10, 6, '2026-09-11 16:00:00', '2026-09-11 18:00:00', 5040.00, 'CONFIRMED', 1), -- Popust 10%
+(73, 3, 6, 9, 5, '2026-09-20 11:00:00', '2026-09-20 13:00:00', 2000.00, 'PENDING', 0),
+(74, 3, 7, 15, 6, '2026-09-27 17:00:00', '2026-09-27 19:00:00', 5040.00, 'CONFIRMED', 0), -- Popust 10%
+(75, 3, 6, 16, 5, '2026-10-05 14:00:00', '2026-10-05 16:00:00', 2000.00, 'CANCELLED', 0),
+
+-- --- 4. SC 11. April ---
+(76, 4, 8, 10, 3, '2026-09-10 13:00:00', '2026-09-10 15:00:00', 4000.00, 'CONFIRMED', 0),
+(77, 4, 9, 12, 1, '2026-09-11 17:00:00', '2026-09-11 19:00:00', 9000.00, 'PENDING', 3),
+(78, 4, 8, 13, 3, '2026-09-19 11:00:00', '2026-09-19 13:00:00', 4000.00, 'CONFIRMED', 0),
+(79, 4, 9, 14, 1, '2026-09-26 15:00:00', '2026-09-26 17:00:00', 9000.00, 'CONFIRMED', 2),
+(80, 4, 8, 10, 3, '2026-10-03 14:00:00', '2026-10-03 16:00:00', 4000.00, 'PENDING', 0),
+
+-- --- 5. SPC Vojvodina - SPENS ---
+(81, 5, 10, 8, 2, '2026-09-10 15:00:00', '2026-09-10 17:00:00', 7140.00, 'CONFIRMED', 0), -- Popust 15%
+(82, 5, 11, 13, 7, '2026-09-11 12:00:00', '2026-09-11 14:00:00', 2400.00, 'CONFIRMED', 1), 
+(83, 5, 10, 15, 2, '2026-09-21 16:00:00', '2026-09-21 18:00:00', 7140.00, 'PENDING', 2), -- Popust 15%
+(84, 5, 11, 13, 7, '2026-09-29 11:00:00', '2026-09-29 13:00:00', 2400.00, 'CONFIRMED', 0),
+(85, 5, 10, 17, 2, '2026-10-06 17:00:00', '2026-10-06 19:00:00', 7140.00, 'CANCELLED', 0), -- Popust 15%
+
+-- --- 6. SC Sajmište ---
+(86, 6, 12, 12, 1, '2026-09-10 17:00:00', '2026-09-10 19:00:00', 7000.00, 'CONFIRMED', 4),
+(87, 6, 12, 8, 1, '2026-09-11 15:00:00', '2026-09-11 17:00:00', 7000.00, 'PENDING', 1),
+(88, 6, 12, 14, 1, '2026-09-23 14:00:00', '2026-09-23 16:00:00', 7000.00, 'CONFIRMED', 0),
+(89, 6, 12, 16, 1, '2026-09-30 16:00:00', '2026-09-30 18:00:00', 7000.00, 'CONFIRMED', 2),
+(90, 6, 12, 12, 1, '2026-10-08 15:00:00', '2026-10-08 17:00:00', 7000.00, 'PENDING', 0),
+
+-- --- 7. SC Čair ---
+(91, 7, 13, 12, 1, '2026-09-10 14:00:00', '2026-09-10 16:00:00', 6000.00, 'CONFIRMED', 3),
+(92, 7, 14, 10, 3, '2026-09-11 11:00:00', '2026-09-11 13:00:00', 3900.00, 'CONFIRMED', 0), -- Popust 500RSD
+(93, 7, 15, 17, 8, '2026-09-17 17:00:00', '2026-09-17 19:00:00', 9600.00, 'PENDING', 1),
+(94, 7, 13, 14, 1, '2026-09-24 16:00:00', '2026-09-24 18:00:00', 6000.00, 'CONFIRMED', 0),
+(95, 7, 14, 13, 3, '2026-10-04 12:00:00', '2026-10-04 14:00:00', 3900.00, 'PENDING', 0), -- Popust 500RSD
+
+-- --- 8. SPD Radnički ---
+(96, 8, 16, 8, 2, '2026-09-10 18:00:00', '2026-09-10 20:00:00', 8000.00, 'CONFIRMED', 0),
+(97, 8, 17, 12, 8, '2026-09-11 16:00:00', '2026-09-11 18:00:00', 7600.00, 'CONFIRMED', 2),
+(98, 8, 16, 15, 2, '2026-09-22 11:00:00', '2026-09-22 13:00:00', 8000.00, 'PENDING', 0),
+(99, 8, 17, 17, 8, '2026-09-29 14:00:00', '2026-09-29 16:00:00', 7600.00, 'CONFIRMED', 5),
+(100, 8, 16, 9, 2, '2026-10-07 17:00:00', '2026-10-07 19:00:00', 8000.00, 'CANCELLED', 0),
+
+-- --- 9. SRC Prozivka ---
+(101, 9, 18, 9, 5, '2026-09-10 12:00:00', '2026-09-10 14:00:00', 3000.00, 'CONFIRMED', 0),
+(102, 9, 18, 14, 5, '2026-09-11 13:00:00', '2026-09-11 15:00:00', 3000.00, 'CONFIRMED', 0),
+(103, 9, 18, 16, 5, '2026-09-18 11:00:00', '2026-09-18 13:00:00', 3000.00, 'PENDING', 0),
+(104, 9, 18, 9, 5, '2026-09-26 14:00:00', '2026-09-26 16:00:00', 3000.00, 'CONFIRMED', 0),
+(105, 9, 18, 16, 5, '2026-10-01 15:00:00', '2026-10-01 17:00:00', 3000.00, 'PENDING', 0),
+
+-- --- 10. SC Mladost ---
+(106, 10, 19, 8, 1, '2026-09-10 15:00:00', '2026-09-10 17:00:00', 7600.00, 'CONFIRMED', 1),
+(107, 10, 19, 12, 1, '2026-09-11 18:00:00', '2026-09-11 20:00:00', 7600.00, 'CONFIRMED', 0),
+(108, 10, 19, 14, 1, '2026-09-20 14:00:00', '2026-09-20 16:00:00', 7600.00, 'PENDING', 2),
+(109, 10, 19, 16, 1, '2026-09-27 16:00:00', '2026-09-27 18:00:00', 7600.00, 'CONFIRMED', 0),
+(110, 10, 19, 8, 1, '2026-10-05 11:00:00', '2026-10-05 13:00:00', 7600.00, 'PENDING', 3),
+
+-- --- 11. SC Park ---
+(111, 11, 20, 14, 4, '2026-09-10 14:00:00', '2026-09-10 16:00:00', 6400.00, 'CONFIRMED', 0),
+(112, 11, 20, 14, 4, '2026-09-11 15:00:00', '2026-09-11 17:00:00', 6400.00, 'PENDING', 3),
+(113, 11, 20, 14, 4, '2026-09-21 12:00:00', '2026-09-21 14:00:00', 6400.00, 'CONFIRMED', 1),
+(114, 11, 20, 14, 4, '2026-09-28 17:00:00', '2026-09-28 19:00:00', 6400.00, 'CONFIRMED', 0),
+(115, 11, 20, 14, 4, '2026-10-06 13:00:00', '2026-10-06 15:00:00', 4800.00, 'PENDING', 2); -- Popust buduci 25%
+
+-- =====================================================
+-- 11. TRAINING
+-- =====================================================
+INSERT INTO Training (id, trainerId, athleteId, facilityId, courtId, startTime, endTime, price, status) VALUES
+-- Prosli treninzi (pre 10.09.2026.)
+(1, 1, 8, 2, 4, '2026-07-18 10:00:00', '2026-07-18 12:00:00', 12000.00, 'CONFIRMED'),
+(2, 4, 10, 3, 6, '2026-07-19 08:00:00', '2026-07-19 09:00:00', 4500.00, 'DIDNT_SHOW'),
+(3, 6, 15, 1, 3, '2026-07-22 18:00:00', '2026-07-22 19:00:00', 3800.00, 'CONFIRMED'),
+(4, 7, 10, 1, 2, '2026-07-25 10:00:00', '2026-07-25 12:00:00', 10000.00, 'CONFIRMED'),
+(5, 10, 14, 11, 20, '2026-07-29 15:00:00', '2026-07-29 17:00:00', 6400.00, 'DIDNT_SHOW'),
+(6, 3, 12, 7, 13, '2026-07-30 18:00:00', '2026-07-30 20:00:00', 13000.00, 'CANCELLED'),
+
+-- Buduci treninzi (posle 10.09.2026.)
+(7, 4, 16, 3, 6, '2026-09-11 09:00:00', '2026-09-11 11:00:00', 9000.00, 'CONFIRMED'),
+(8, 1, 9, 2, 4, '2026-09-12 16:00:00', '2026-09-12 18:00:00', 12000.00, 'CONFIRMED'),
+(9, 2, 13, 1, 2, '2026-09-14 17:00:00', '2026-09-14 19:00:00', 7000.00, 'PENDING'),
+(10, 3, 8, 7, 13, '2026-09-18 10:00:00', '2026-09-18 12:00:00', 13000.00, 'CONFIRMED'),
+(11, 5, 14, 9, 18, '2026-09-22 11:00:00', '2026-09-22 12:00:00', 4000.00, 'PENDING'),
+(12, 10, 15, 11, 20, '2026-08-25 16:00:00', '2026-08-25 18:00:00', 6400.00, 'CONFIRMED');
+
+-- =====================================================
+-- 12. JOIN REQUEST
+-- =====================================================
+INSERT INTO JoinRequest (id, reservationId, athleteId, status) VALUES
+(1, 63, 8, 'ACCEPTED'),
+(2, 66, 9, 'PENDING'),
+(3, 68, 12, 'ACCEPTED'),
+(4, 72, 15, 'REJECTED'),
+(5, 77, 8, 'PENDING'),
+(6, 86, 14, 'ACCEPTED'),
+(7, 99, 12, 'PENDING');
+
+-- =====================================================
+-- 13. FACILITY REVIEW
+-- =====================================================
+INSERT INTO FacilityReview (id, facilityId, athleteId, liked, comment, reviewDate) VALUES
+(1, 1, 10, 1, 'Teren za tenis u Košutnjaku odlično pripremljen, šljaka ravna i sveža.', '2026-06-16 09:30:00'),
+(2, 2, 8, 1, 'Glavna hala na Tašmajdanu klimatizovana, obruči i parket perfektni.', '2026-06-11 10:15:00'),
+(3, 2, 15, 1, 'Termin na zatvorenom bazenu prošao odlično, voda prijatna i čista.', '2026-07-21 11:00:00'),
+(4, 3, 9, 1, 'Bazen na 25. Maju fantastičan, osoblje veoma ljubazno.', '2026-06-02 08:45:00'),
+(5, 3, 10, 1, 'Padel teren A je nov i čist, stakla i veštačka trava besprekorne.', '2026-06-16 12:20:00'),
+(6, 3, 16, 1, 'Lepo iskustvo na bazenu, bez gužve u jutarnjim terminima.', '2026-08-21 14:00:00'),
+(7, 4, 12, 1, 'Balon za mali fudbal na 11. Aprilu je top, dobra trava i uredne svlačionice.', '2026-06-19 09:10:00'),
+(8, 4, 13, 0, 'Betonski teren za tenis ok, ali bi svlačionice mogle češće da se čiste.', '2026-07-03 16:45:00'),
+(9, 5, 8, 1, 'SPENS mala dvorana ima vrhunski parket, super uslovi za basket.', '2026-06-03 18:30:00'),
+(10, 5, 15, 1, 'Sve po dogovoru na SPENS-u, termin ispoštovan u minut.', '2026-07-15 10:00:00'),
+(11, 6, 12, 1, 'Prirodna trava na Sajmištu dobro održavana, reflektori odlični uveče.', '2026-06-23 11:20:00'),
+(12, 6, 8, 1, 'Super teren za vikend fudbal sa društvom.', '2026-08-19 15:00:00'),
+(13, 7, 12, 1, 'Otvoreni teren na Čairu u dobrom stanju, golovi i mreže kompletni.', '2026-06-12 10:00:00'),
+(14, 7, 12, 1, 'Hala Čair prostrana, rukometni parket odličan.', '2026-08-21 19:30:00'),
+(15, 8, 8, 1, 'Radnički Kragujevac ima sjajne uslove za dvoranske sportove.', '2026-06-09 13:15:00'),
+(16, 8, 9, 1, 'Odlično osvetljenje i kvalitetan parket u hali Jezero.', '2026-08-13 10:00:00'),
+(17, 9, 14, 1, 'Vaterpolo bazen na Prozivci odličan, temperatura vode uvek stabilna.', '2026-06-20 16:40:00'),
+(18, 10, 12, 1, 'Balon za fudbal u Pančevu solidan, veštačka trava podnosi brz tempo.', '2026-06-25 09:50:00'),
+(19, 11, 14, 1, 'Odbojkaška sala u Inđiji prostrana, čista i lepo osvetljena.', '2026-06-13 11:30:00'),
+(20, 12, 8, 1, 'Košarkaška hala u Boru uredna, osoblje izuzetno korektno.', '2026-06-10 14:20:00');
+
+-- =====================================================
+-- 14. FACILITY BLOCK
+-- =====================================================
+INSERT INTO FacilityBlock (facilityId, athleteId) VALUES
+(1, 11),
+(2, 11);
+
+-- =====================================================
+-- 15. EQUIPMENT
+-- =====================================================
+INSERT INTO Equipment (id, name, sportId, price, stock, imageUrl) VALUES
+(1, 'Spalding TF-1000 Košarkaška lopta', 2, 8500.00, 15, 'uploads/equipment/spalding_tf1000.jpg'),
+(2, 'Babolat Pure Drive Teniski reket', 3, 21000.00, 5, 'uploads/equipment/babolat_pure_drive.jpg'),
+(3, 'Nike Strike Fudbalska lopta', 1, 3200.00, 30, 'uploads/equipment/nike_strike.jpg'),
+(4, 'Babolat Padel Reket Technical Viper', 6, 24500.00, 8, 'uploads/equipment/padel_reket.jpg'),
+(5, 'Speedo Naočare za plivanje Fastskin', 5, 4200.00, 20, 'uploads/equipment/speedo_naocare.jpg'),
+(6, 'Markeri za ekipu (10 komada)', 1, 1500.00, 0, 'uploads/equipment/markeri.jpg');
+
+-- =====================================================
+-- 16. ORDER
+-- =====================================================
+INSERT INTO `Order` (id, athleteId, orderDate, status) VALUES
+(1, 8, '2026-07-11 16:00:00', 'PICKED_UP'),
+(2, 9, '2026-07-13 14:00:00', 'ACCEPTED'),
+(3, 15, '2026-07-18 11:20:00', 'CANCELLED'),
+(4, 10, '2026-08-01 09:30:00', 'ACCEPTED'),
+(5, 12, '2026-08-02 14:15:00', 'ACCEPTED'),
+(6, 13, '2026-08-03 18:00:00', 'ACCEPTED'),
+(7, 14, '2026-08-04 10:45:00', 'PICKED_UP'),
+(8, 16, '2026-08-05 12:00:00', 'ACCEPTED'),
+(9, 17, '2026-08-06 15:30:00', 'PICKED_UP'),
+(10, 8, '2026-08-07 17:10:00', 'CANCELLED'),
+(11, 9, '2026-08-08 10:00:00', 'ACCEPTED'),
+(12, 10, '2026-08-08 13:20:00', 'ACCEPTED'),
+(13, 13, '2026-08-09 09:15:00', 'PICKED_UP'),
+(14, 15, '2026-08-09 11:40:00', 'ACCEPTED'),
+(15, 12, '2026-08-09 16:00:00', 'CANCELLED');
+
+-- =====================================================
+-- 17. ORDER ITEM
+-- =====================================================
+INSERT INTO OrderItem (id, orderId, equipmentId, quantity, priceAtPurchase) VALUES
+-- Order 1
+(1, 1, 1, 1, 8500.00),
+(2, 1, 3, 2, 3200.00),
+-- Order 2
+(3, 2, 2, 1, 21000.00),
+-- Order 3
+(4, 3, 4, 1, 24500.00),
+-- Order 4
+(5, 4, 5, 2, 4200.00),
+(6, 4, 2, 1, 21000.00),
+-- Order 5
+(7, 5, 3, 3, 3200.00),
+-- Order 6
+(8, 6, 4, 1, 24500.00),
+-- Order 7
+(9, 7, 1, 2, 8500.00),
+-- Order 8
+(10, 8, 5, 1, 4200.00),
+(11, 8, 3, 1, 3200.00),
+-- Order 9
+(12, 9, 2, 1, 21000.00),
+-- Order 10
+(13, 10, 1, 1, 8500.00),
+-- Order 11
+(14, 11, 4, 1, 24500.00),
+(15, 11, 5, 1, 4200.00),
+-- Order 12
+(16, 12, 3, 2, 3200.00),
+-- Order 13
+(17, 13, 2, 1, 21000.00),
+-- Order 14
+(18, 14, 5, 3, 4200.00),
+-- Order 15
+(19, 15, 1, 1, 8500.00);

@@ -1,0 +1,235 @@
+@if (isLoading) {
+  <div class="loader-overlay">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+  </div>
+}
+
+<div class="page-container">
+
+    <div class="search-card">
+
+        @if (isAthlete) {
+
+            <h2>Search & Reserve Sports Facilities</h2>
+
+        }
+        @else {
+
+            <h2>Search Sports Facilities</h2>
+
+        }
+
+        <div class="search-grid" [class.athlete-grid]="isAthlete">
+
+            <input type="text" placeholder="Facility name" [(ngModel)]="searchName">
+
+            <select multiple [(ngModel)]="selectedCities">
+
+                @for (city of allCities; track city) {
+
+                    <option [value]="city">
+                        {{ city }}
+                    </option>
+
+                }
+            </select>
+
+            <select [(ngModel)]="selectedSportId">
+                <option [ngValue]="0">
+                    All Sports
+                </option>
+
+                @for(sport of allSports; track sport.id){
+
+                    <option [ngValue]="sport.id">
+                        {{sport.name}}
+                    </option>
+
+                }
+            </select>
+
+            <select [(ngModel)]="selectedCourtType">
+                <option value="">
+                    All Courts
+                </option>
+
+                <option value="OPEN">
+                    Open
+                </option>
+
+                <option value="CLOSED">
+                    Closed
+                </option>
+            </select>
+
+            @if (isAthlete) {
+                <label class="today-checkbox">
+
+                    <input type="checkbox" [(ngModel)]="onlyFreeToday">
+                    <span>Only available today</span>
+
+                </label>
+            }
+
+            <button (click)="searchFacilities()">Search</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="content-layout">
+
+        <div class="table-card">
+
+            <h1>Sports Facilities</h1>
+
+            <table>
+                
+                <thead>
+
+                    <tr>
+                        <!--name sort-->
+                        <th (click)="sortFacilities('name')" style="cursor: pointer; user-select: none;">
+                            Name 
+                            @if (sortColumn === 'name') {
+                                <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+                            }
+                        </th>
+                        <!--city sort-->
+                        <th (click)="sortFacilities('city')" style="cursor: pointer; user-select: none;">
+                            City 
+                            @if (sortColumn === 'city') {
+                                <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+                            }
+                        </th>
+                        <!--likes sort-->
+                        <th (click)="sortFacilities('likesCount')" style="cursor: pointer; user-select: none;">
+                            Rating 
+                            @if (sortColumn === 'likesCount') {
+                                <span>{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+                            }
+                        </th>
+                        <th></th> <!--for button-->
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for (facility of displayedFacilities; track facility.id) {
+
+                        <tr>
+
+                            <td>{{facility.name}}</td>
+                            <td>{{facility.city}}</td>
+                            <td>
+                                {{facility.likesCount}}
+                                
+                                @if (facility.likesCount < 0) {
+                                    👎
+                                }
+                                @else {
+                                    👍
+                                }
+                                
+                            </td>
+
+                            <td>
+
+                                <button class="details-btn" (click)="goToDetails(facility.id)">
+                                    Details
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        @if (!isAthlete) {
+
+            <div class="sidebar">
+
+                <div class="info-card">
+
+                    <h3>Active Sports Facilities</h3>
+
+                    <div class="big-number">
+
+                        {{activeFacilitiesCount}}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>Current Promotions</h3>
+
+                    @for (promotion of activePromotions; track promotion.id) {
+
+                        <div class="promotion">
+
+                            <strong>{{promotion.name}}</strong>
+
+                            <span>{{promotion.facilityName}}, {{promotion.sportName}}</span>
+
+                            <span>
+
+                                @if (promotion.discountType == 'PERCENTAGE') {
+
+                                    {{promotion.discountValue}} %
+
+                                } @else {
+
+                                    {{promotion.discountValue}} RSD
+
+                                }
+
+                            </span>
+
+                            <span>
+                                {{ promotion.startDate | date:'dd.MM.yyyy. HH:mm' }} – {{ promotion.endDate | date:'dd.MM.yyyy. HH:mm' }}
+                            </span>
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>Top Rated Facilities</h3>
+
+                    @for (facility of topFacilities; track facility.id) {
+
+                        <div class="top-facility">
+
+                            <strong>{{facility.name}}</strong>
+
+                            <span>{{facility.likesCount}} 👍</span>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+        }
+    
+    </div>
+

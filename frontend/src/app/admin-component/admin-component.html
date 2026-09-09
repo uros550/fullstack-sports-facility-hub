@@ -1,0 +1,71 @@
+<div class="page-container">
+
+  <div class="dashboard-layout">
+
+    <!--sidebar menu-->
+    <aside class="sidebar">
+
+      <div class="admin-badge">SYSTEM ADMIN</div>
+
+      <h2 class="sidebar-title">
+        Admin Control Panel
+      </h2>
+
+      <button class="menu-item active" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+        👥
+        <span>User Accounts</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'registration'" (click)="setActiveTab('registration')">
+        📩
+        <span>Registration Requests</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'facilities'" (click)="setActiveTab('facilities')">
+        🏢
+        <span>Facility Approvals</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'coaches'" (click)="setActiveTab('coaches')">
+        👟
+        <span>Coaches Directory</span>
+      </button>
+
+      <button class="menu-item" [class.active]="activeTab === 'sports'" (click)="setActiveTab('sports')">
+        ⚽
+        <span>Sports Categories</span>
+      </button>
+
+    </aside>
+
+    <!--content part-->
+    <section class="content-card">
+
+      <div class="content-header">
+        <h1>System Administration</h1>
+      </div>
+
+      <!--dynamic content based on activeTab-->
+      @switch (activeTab) {
+          @case ('users') {
+            <app-admin-users-component></app-admin-users-component>
+          }
+          @case ('registration') {
+            <app-admin-pending-users-component></app-admin-pending-users-component>
+          }
+          @case ('facilities') {
+            <app-admin-facilities-component></app-admin-facilities-component>
+          }
+          @case ('coaches') {
+            <app-admin-coaches-component></app-admin-coaches-component>
+          }
+          @case ('sports') {
+            <app-admin-sports-component></app-admin-sports-component>
+          }
+      }
+
+    </section>
+
+  </div>
+
+</div>

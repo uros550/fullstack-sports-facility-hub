@@ -1,0 +1,304 @@
+/*for displayed facilities*/
+body{
+    background-color: azure;
+    margin: 0;
+}
+
+/*titles*/
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: rgb(15, 23, 42);
+}
+
+h2 {
+    text-align: left;
+    margin-bottom: 35px;
+    color: rgb(15, 23, 42);
+}
+
+h3 {
+    background-color: rgb(15, 23, 42);
+    border-radius: 18px; /*rounded*/
+    text-align: center;
+    margin-bottom: 35px;
+    color: white;
+    padding: 10px;
+}
+
+/*page*/
+.page-container{
+    /*image url*/
+    background-image: url("/background-default.jpg");
+    /*cover whole screen*/
+    background-size: cover;
+    /*center image*/
+    background-position: center;
+    /*dont place 2 pictures if larger*/
+    background-repeat: no-repeat;
+    /*doesnt scroll with the page*/
+    background-attachment: fixed;
+    max-width: 1500px;
+    margin: auto; /*centers page if wider than max*/
+    padding: 40px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/*search box*/
+.search-card{
+    background-color: azure;
+    border-radius: 18px; /*rounded*/
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    margin-bottom: 35px;
+}
+
+/*forms box - default for non-athlete (5 fields in 1 row)*/
+.search-grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /*5 columns in 1 row on laptop*/
+    gap: 15px;
+    margin-top: 20px;
+    align-items: center; /*vertically aligns all elements*/
+}
+
+/*forms box - when athlete is logged in (6 fields split into 2 rows of 3)*/
+.search-grid.athlete-grid {
+    grid-template-columns: repeat(3, 1fr); /*3 columns per row -> 2 neat rows*/
+}
+
+/*for input and select fields*/
+.search-grid input[type="text"],
+.search-grid select{
+    width: 100%;
+    height: 45px; /*same height for all search elements*/
+    padding: 0 12px;
+    border-radius: 10px; /*rounded*/
+    border: 1px solid #ddd;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: white;
+    outline: none;
+    transition: .2s;
+}
+
+.search-grid input[type="text"]:focus,
+.search-grid select:focus {
+    border-color: rgb(47, 181, 130);
+}
+
+/*for multiple select*/
+.search-grid select[multiple] {
+    height: 45px;
+    padding: 5px;
+}
+
+/*for checkbox only free today*/
+.today-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 45px; /*same height as input fields*/
+    padding: 0 12px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px; /*rounded*/
+    cursor: pointer; /*cursor change when hovered*/
+    user-select: none;
+    font-size: 15px;
+    color: rgb(15, 23, 42);
+    box-sizing: border-box;
+}
+
+.today-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: rgb(47, 181, 130);
+}
+
+/*search button*/
+.search-grid button{
+    height: 45px; /*same height as input fields*/
+    border: none;
+    border-radius: 10px; /*rounded*/
+    background-color: rgb(15, 23, 42);
+    color: white;
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s; /*smooth color change*/
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/*button when hovered*/
+.search-grid button:hover{
+    background-color: rgb(47, 181, 130);
+    transform: scale(1.02);
+}
+
+/*content (table + sidebar)*/
+.content-layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /*table 3:1 sidebar size*/
+    gap: 30px;
+}
+
+/*full width table if no sidebar*/
+.content-layout:not(:has(.sidebar)) {
+    grid-template-columns: 1fr;
+}
+
+/*table of facilities*/
+.table-card{
+    background: white;
+    border-radius: 18px; /*rounded*/
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    padding: 25px;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse; /*no double lines*/
+    margin-top: 15px;
+}
+
+th{
+    background-color: rgb(243, 240, 236);
+    padding: 15px;
+    text-align: left;
+}
+
+td{
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+tbody tr{
+    transition: .2s;
+}
+
+tbody tr:hover{
+    background-color: rgb(243, 240, 236);
+}
+
+/*details button*/
+.details-btn{
+    border: none;
+    background-color: rgb(15, 23, 42);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 8px; /*rounded*/
+    cursor: pointer; /*cursor change when hovered*/
+    transition: .2s;
+}
+
+.details-btn:hover{
+    background-color: rgb(47, 181, 130);
+    transform: scale(1.05);
+}
+
+/*sidebar box*/
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/*number of active facilities*/
+.info-card{
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    padding: 20px;
+}
+
+/*that number*/
+.big-number{
+    font-size: 50px;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(15, 23, 42);
+    margin-top: 15px;
+}
+
+/*top promotions*/
+.promotion{
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/*top3 facilities*/
+.top-facility{
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/*adaptation for smaller screens*/
+@media (max-width: 1200px) {
+    /*5 columns become too tight on medium screens, switch non-athlete to 3 cols*/
+    .search-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1000px){
+    .content-layout{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    /*tablets get 2 columns for both modes*/
+    .search-grid,
+    .search-grid.athlete-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    /*phones get 1 column for all elements*/
+    .search-grid,
+    .search-grid.athlete-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: azure;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    gap: 15px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #e0e0e0;
+    border-top: 5px solid rgb(47, 181, 130);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+    color: rgb(15, 23, 42);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
