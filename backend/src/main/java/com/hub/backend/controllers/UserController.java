@@ -37,7 +37,7 @@ public class UserController {
         return new UserRepo().register(u);
     }
 
-    @PutMapping("/upload-image")
+    @PostMapping("/upload-image")
     public String uploadProfilePicture(@RequestParam("username") String username, @RequestParam("image") MultipartFile file) {
         return new UserRepo().saveProfilePicture(username, file);
     }

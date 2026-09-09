@@ -25,6 +25,8 @@ CREATE TABLE User (
     profilePicture VARCHAR(255),
     role VARCHAR(20) NOT NULL,
     status VARCHAR(20) NOT NULL,
+    resetToken VARCHAR(255) DEFAULT NULL,
+    resetTokenExpiry DATETIME DEFAULT NULL,
     CONSTRAINT chk_user_role CHECK (role IN ('ADMIN', 'EMPLOYEE', 'ATHLETE')),
     CONSTRAINT chk_user_status CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED'))
 );

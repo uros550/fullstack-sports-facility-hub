@@ -195,7 +195,7 @@ public class UserRepo implements UserRepoInterface {
         try {
             //check if user already has a photo
             AthleteProfile currentProfile = getProfileByUsername(username);
-            if (currentProfile != null && currentProfile.getProfilePicture() != null) {
+            if (currentProfile != null && currentProfile.getProfilePicture() != null && !currentProfile.getProfilePicture().trim().isEmpty()) {
                 Path oldPath = Paths.get(currentProfile.getProfilePicture());
                 Files.deleteIfExists(oldPath); //delete if exists
             }

@@ -19,7 +19,6 @@
           <th>Photo</th>
           <th>Name & Surname</th>
           <th>Username</th>
-          <th>Password</th>
           <th>Email</th>
           <th>Phone</th>
           <th>Role</th>
@@ -38,7 +37,6 @@
             </td>
             <td class="font-semibold">{{ user.firstName }} {{ user.lastName }}</td>
             <td class="text-secondary">@{{ user.username }}</td>
-            <td><code class="password-code">{{ user.password }}</code></td>
             <td>{{ user.email }}</td>
             <td class="text-secondary">{{ user.phone ? user.phone : '-' }}</td>
             <td>
