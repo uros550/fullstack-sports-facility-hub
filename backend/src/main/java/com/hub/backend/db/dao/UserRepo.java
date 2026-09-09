@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.backend.db.DB;
@@ -20,33 +21,40 @@ import com.hub.backend.models.User;
 
 public class UserRepo implements UserRepoInterface {
 
+    private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9])[A-Za-z].{7,11}$";
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     @Override
     public User login(User user) {
 
-        String query = "SELECT * FROM user WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM user WHERE username = ?";
 
         try (
             Connection conn = DB.source().getConnection();
             PreparedStatement stm = conn.prepareStatement(query);
         ){
             stm.setString(1, user.getUsername());
-            stm.setString(2, user.getPassword());
             
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                User u = new User(
-                    rs.getInt("id"),
-                    rs.getString("firstName"),
-                    rs.getString("lastName"),
-                    rs.getString("username"),
-                    rs.getString("email"),
-                    rs.getString("password"),
-                    rs.getString("phone"),
-                    rs.getString("profilePicture"),
-                    rs.getString("role"),
-                    rs.getString("status")
-                );
-                return u;
+                String storedHash = rs.getString("password");
+
+                if (user.getPassword() != null && PASSWORD_ENCODER.matches(user.getPassword(), storedHash)) {
+                    User u = new User(
+                        rs.getInt("id"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("phone"),
+                        rs.getString("profilePicture"),
+                        rs.getString("role"),
+                        rs.getString("status")
+                    );
+                    u.setPassword(null);
+                    return u;
+                }   
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,6 +64,10 @@ public class UserRepo implements UserRepoInterface {
 
     @Override
     public String register(User user) {
+        //password format validation
+        if (user.getPassword() == null || !user.getPassword().matches(PASSWORD_REGEX)) {
+            return "Password must be 8-12 characters, start with a letter, and contain at least one uppercase letter, one digit and one special character.";
+        }
         //queries 
         String qCheckUser = "select 1 from user where username = ?";
         String qCheckEmail = "select 1 from user where email = ?";
@@ -123,13 +135,16 @@ public class UserRepo implements UserRepoInterface {
                 }
             }
 
+            //hash password before storing
+            String hashedPassword = PASSWORD_ENCODER.encode(user.getPassword());
+
             //insert new user pending
             int generatedUserId = -1;
             stmInsertUser.setString(1, user.getFirstName());
             stmInsertUser.setString(2, user.getLastName());
             stmInsertUser.setString(3, user.getUsername());
             stmInsertUser.setString(4, user.getEmail());
-            stmInsertUser.setString(5, user.getPassword());
+            stmInsertUser.setString(5, hashedPassword);
             stmInsertUser.setString(6, user.getPhone());
             stmInsertUser.setString(7, user.getProfilePicture());
             stmInsertUser.setString(8, user.getRole());

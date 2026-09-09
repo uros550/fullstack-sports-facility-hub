@@ -13,6 +13,8 @@ import { Sport } from '../models/Sport';
 })
 export class AuthenticationComponent implements OnInit {
 
+  private readonly passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z].{7,11}$/;
+
   username = '';
   password = '';
   firstName = '';
@@ -171,6 +173,10 @@ export class AuthenticationComponent implements OnInit {
     //validation
     if (!this.username || !this.password || !this.firstName || !this.lastName || !this.phone || !this.email) {
       this.errorMessage = 'Please fill in all fields.';
+      return;
+    }
+    if (!this.passwordPattern.test(this.password)) {
+      this.errorMessage = 'Password must be 8-12 characters, start with a letter, and contain at least one uppercase letter, one digit and one special character.';
       return;
     }
     this.errorMessage = '';
