@@ -18,10 +18,13 @@ import com.hub.backend.db.dao.UserRepo;
 import com.hub.backend.models.AthleteProfile;
 import com.hub.backend.models.Reservation;
 import com.hub.backend.models.User;
+import com.hub.backend.models.ForgotPasswordRequest;
+import com.hub.backend.models.ForgotPasswordResponse;
+import com.hub.backend.models.ResetPasswordRequest;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     
     @PostMapping("/login")
@@ -79,5 +82,20 @@ public class UserController {
     @GetMapping("/reservations/blocked/{userId}/{facilityId}")
     public boolean checkIfBlocked(@PathVariable int userId, @PathVariable int facilityId) {
         return new UserRepo().checkIfBlocked(userId, facilityId);
+    }
+
+    @PostMapping("/forgot-password")
+    public ForgotPasswordResponse forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        return new UserRepo().forgotPassword(request.getUsernameOrEmail());
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestBody ResetPasswordRequest request) {
+        return new UserRepo().resetPassword(request.getToken(), request.getNewPassword());
+    }
+
+    @PostMapping("/request-password-change/{userId}")
+    public ForgotPasswordResponse requestPasswordChange(@PathVariable int userId) {
+        return new UserRepo().requestPasswordChangeForUser(userId);
     }
 }

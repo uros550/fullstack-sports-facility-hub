@@ -11,12 +11,16 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.backend.db.DB;
 import com.hub.backend.models.AthleteProfile;
+import com.hub.backend.models.ForgotPasswordResponse;
 import com.hub.backend.models.User;
 
 public class UserRepo implements UserRepoInterface {
@@ -442,6 +446,123 @@ public class UserRepo implements UserRepoInterface {
         }
 
         return false;
+    }
+
+    @Override
+    public ForgotPasswordResponse forgotPassword(String usernameOrEmail) {
+
+        if (usernameOrEmail == null || usernameOrEmail.isBlank()) {
+            return new ForgotPasswordResponse(false, "Please enter your username or email.", null);
+        }
+
+        String query = "select id from user where username = ? or email = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setString(1, usernameOrEmail);
+            stm.setString(2, usernameOrEmail);
+
+            ResultSet rs = stm.executeQuery();
+            if (!rs.next()) {
+                return new ForgotPasswordResponse(false, "No account found with that username or email.", null);
+            }
+
+            int userId = rs.getInt("id");
+            String token = generateAndStoreResetToken(userId);
+
+            return new ForgotPasswordResponse(true, "Reset link generated.", token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ForgotPasswordResponse(false, "Something went wrong. Please try again.", null);
+    }
+
+    @Override
+    public ForgotPasswordResponse requestPasswordChangeForUser(int userId) {
+
+        String query = "select id from user where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            if (!rs.next()) {
+                return new ForgotPasswordResponse(false, "User not found.", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ForgotPasswordResponse(false, "Something went wrong. Please try again.", null);
+        }
+
+        String token = generateAndStoreResetToken(userId);
+        return new ForgotPasswordResponse(true, "Reset link generated.", token);
+    }
+
+    private String generateAndStoreResetToken(int userId) {
+
+        String token = UUID.randomUUID().toString();
+        String query = "update user set resetToken = ?, resetTokenExpiry = ? where id = ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setString(1, token);
+            stm.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now().plusMinutes(30)));
+            stm.setInt(3, userId);
+            stm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return token;
+    }
+
+    @Override
+    public String resetPassword(String token, String newPassword) {
+
+        if (token == null || token.isBlank()) {
+            return "Invalid or expired reset link.";
+        }
+        if (newPassword == null || !newPassword.matches(PASSWORD_REGEX)) {
+            return "Password must be 8-12 characters, start with a letter, and contain at least one uppercase letter, one digit and one special character.";
+        }
+
+        String query = "select id from user where resetToken = ? and resetTokenExpiry > ?";
+
+        try (
+            Connection conn = DB.source().getConnection();
+            PreparedStatement stm = conn.prepareStatement(query);
+        ) {
+            stm.setString(1, token);
+            stm.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+
+            ResultSet rs = stm.executeQuery();
+            if (!rs.next()) {
+                return "Invalid or expired reset link.";
+            }
+
+            int userId = rs.getInt("id");
+            String hashedPassword = PASSWORD_ENCODER.encode(newPassword);
+
+            String updateQuery = "update user set password = ?, resetToken = null, resetTokenExpiry = null where id = ?";
+            try (PreparedStatement updateStm = conn.prepareStatement(updateQuery)) {
+                updateStm.setString(1, hashedPassword);
+                updateStm.setInt(2, userId);
+                updateStm.executeUpdate();
+            }
+
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "Something went wrong. Please try again.";
     }
     
 }

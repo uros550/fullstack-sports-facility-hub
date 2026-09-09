@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.backend.models.AthleteProfile;
+import com.hub.backend.models.ForgotPasswordResponse;
 import com.hub.backend.models.User;
 
 public interface UserRepoInterface {
@@ -20,5 +21,8 @@ public interface UserRepoInterface {
     String updateUserSportIds(int userId, List<Integer> newSportIds);
     String removeProfilePicture(String username);
     boolean checkIfBlocked(int userId, int facilityId);
+    ForgotPasswordResponse forgotPassword(String usernameOrEmail);
+    ForgotPasswordResponse requestPasswordChangeForUser(int userId);
+    String resetPassword(String token, String newPassword);
 
 }

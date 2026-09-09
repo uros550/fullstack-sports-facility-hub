@@ -51,4 +51,16 @@ export class AuthenticationService {
     return this.http.put(`${this.path}/upload-image`, data, { responseType: 'text' });
   }
 
+  forgotPassword(usernameOrEmail: string) {
+    return this.http.post<{ success: boolean; message: string; token: string | null }>(`${this.path}/forgot-password`, { usernameOrEmail });
+  }
+
+  resetPassword(token: string, newPassword: string) {
+    return this.http.post(`${this.path}/reset-password`, { token, newPassword }, { responseType: 'text' });
+  }
+
+  requestPasswordChange(userId: number) {
+    return this.http.post<{ success: boolean; message: string; token: string | null }>(`${this.path}/request-password-change/${userId}`, {});
+  }
+
 }

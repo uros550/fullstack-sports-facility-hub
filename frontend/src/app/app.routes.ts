@@ -5,6 +5,7 @@ import { SecretComponent } from './secret-component/secret-component';
 import { AthleteComponent } from './athlete-component/athlete-component';
 import { EmployeeComponent } from './employee-component/employee-component';
 import { AdminComponent } from './admin-component/admin-component';
+import { NewPasswordComponent } from './new-password-component/new-password-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,4 +15,5 @@ export const routes: Routes = [
     { path: 'admin-dashboard', component: AdminComponent},
     { path: 'employee-dashboard', component: EmployeeComponent},
     { path: 'athlete-dashboard', component: AthleteComponent},
+    { path: 'reset-password', component: NewPasswordComponent }
 ];

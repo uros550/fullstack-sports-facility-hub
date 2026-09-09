@@ -231,9 +231,28 @@ export class AuthenticationComponent implements OnInit {
     }
   }
 
-  //RESETS
   resetPassword() {
+    if (!this.email) {
+      alert('Please enter your email address.');
+      return;
+    }
 
+    console.log('sending forgot-password request for', this.email);
+
+    this.authenticationService.forgotPassword(this.email).subscribe({
+      next: (data) => {
+        console.log('forgot-password response:', data);
+        if (data.success && data.token) {
+          this.close();
+          this.router.navigate(['reset-password'], { queryParams: { token: data.token } });
+        } else {
+          this.errorMessage = data.message || 'Could not send recovery link.';
+        }
+      },
+      error: (err) => {
+        console.error('forgot-password error:', err);
+      }
+    });
   }
 
   resetFields() {
