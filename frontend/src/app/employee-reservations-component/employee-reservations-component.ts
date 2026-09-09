@@ -4,11 +4,11 @@ import { Training } from '../models/Training';
 import { UserService } from '../services/user-service';
 import { TrainingService } from '../services/training-service';
 import { User } from '../models/User';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-employee-reservations-component',
-  imports: [DatePipe],
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './employee-reservations-component.html',
   styleUrl: './employee-reservations-component.css',
 })

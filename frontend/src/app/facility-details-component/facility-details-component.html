@@ -172,6 +172,31 @@
 
                 </div>
 
+                <!--estimated price-->
+                @if (reservedCourt) {
+                  <div class="price-summary">
+
+                    @if (currentPromotion) {
+                      <div class="price-row original">
+                        <span>Base price ({{ selectedDuration }} {{ selectedDuration === 1 ? 'hour' : 'hours' }})</span>
+                        <span class="strikethrough">{{ reservedCourt.pricePerHour * selectedDuration | number:'1.2-2' }} RSD</span>
+                      </div>
+                      <div class="price-row promo">
+                        <span>🏷️ {{ currentPromotion.name }}</span>
+                        <span>
+                          {{ currentPromotion.discountType === 'PERCENTAGE' ? '-' + currentPromotion.discountValue + '%' : '-' + currentPromotion.discountValue + ' RSD' }}
+                        </span>
+                      </div>
+                    }
+
+                    <div class="price-row total">
+                      <span>Total price</span>
+                      <span class="total-amount">{{ getEstimatedPrice() | number:'1.2-2' }} RSD</span>
+                    </div>
+
+                  </div>
+                }
+
                 <div class="form-actions">
 
                   @if (isAthleteBlocked) {

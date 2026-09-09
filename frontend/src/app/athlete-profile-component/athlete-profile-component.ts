@@ -7,13 +7,13 @@ import { SportService } from '../services/sport-service';
 import { Sport } from '../models/Sport';
 import { AuthenticationService } from '../services/authentication-service';
 import { Reservation } from '../models/Reservation';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-athlete-profile-component',
   standalone: true,
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, DecimalPipe],
   templateUrl: './athlete-profile-component.html',
   styleUrl: './athlete-profile-component.css',
 })

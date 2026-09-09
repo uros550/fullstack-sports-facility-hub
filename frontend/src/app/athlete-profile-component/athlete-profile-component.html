@@ -170,6 +170,11 @@
                 <span class="sort-icon">{{ sortColumn === 'sportName' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
                 </th>
 
+                <th (click)="sort('price')">
+                Price (RSD)
+                <span class="sort-icon">{{ sortColumn === 'price' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+                </th>
+
                 <th (click)="sort('startTime')">
                 Time
                 <span class="sort-icon">{{ sortColumn === 'startTime' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
@@ -191,6 +196,7 @@
                     <td>{{ res.city }}</td>
                     <td>{{ res.courtName }}</td>
                     <td>{{ res.sportName }}</td>
+                    <td>{{ res.price | number:'1.2-2' }}</td>
                     <td>
                         {{ res.startTime | date:'dd.MM.yyyy. HH:mm' }} – {{ res.endTime | date:'HH:mm' }}
                     </td>

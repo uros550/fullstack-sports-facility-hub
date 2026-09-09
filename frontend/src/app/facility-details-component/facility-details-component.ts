@@ -11,11 +11,12 @@ import { Reservation } from '../models/Reservation';
 import * as L from 'leaflet';
 import { Promotion } from '../models/Promotion';
 import { PromotionService } from '../services/promotion-service';
+import { DecimalPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-facility-details-component',
-  imports: [FormsModule],
+  imports: [FormsModule, DecimalPipe],
   templateUrl: './facility-details-component.html',
   styleUrl: './facility-details-component.css',
 })
@@ -381,6 +382,23 @@ export class FacilityDetailsComponent implements OnInit, AfterViewInit, OnDestro
         this.errorMessage = 'Reservation error.';
       }
     })
+  }
+
+  getEstimatedPrice() {
+    if (!this.reservedCourt) return 0;
+
+    let price = this.reservedCourt.pricePerHour * this.selectedDuration;
+
+    if (this.currentPromotion) {
+      if (this.currentPromotion.discountType === 'PERCENTAGE') {
+        price = price - (price * this.currentPromotion.discountValue / 100);
+      } else if (this.currentPromotion.discountType === 'FIXED') {
+        price = price - this.currentPromotion.discountValue;
+      }
+      if (price < 0) price = 0;
+    }
+
+    return price;
   }
 
   return() {

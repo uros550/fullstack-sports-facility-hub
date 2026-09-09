@@ -10,6 +10,7 @@ export class Reservation {
   sportName!: string;
   startTime!: string;
   endTime!: string;
+  price!: number;
   status!: string;
   missingPlayers!: number;
 }

@@ -21,6 +21,7 @@
                 <div>Missing</div>
                 <div>Players</div>
             </th>
+            <th>Price (RSD)</th>
             <th>Status</th>
             <th class="actions-txt">Actions</th>
           </tr>
@@ -38,6 +39,9 @@
                 <div class="time-text">{{ res.startTime | date:'HH:mm' }} - {{ res.endTime | date:'HH:mm' }}</div>
               </td>
               <td class="time-cell">{{ res.missingPlayers > 0 ? res.missingPlayers : '-' }}</td>
+              <td>
+                <div class="primary-text">{{ res.price | number:'1.2-2' }}</div>
+              </td>
               <td>
                 <span class="status-badge" [class]="res.status.toLowerCase()">
                   {{ res.status }}

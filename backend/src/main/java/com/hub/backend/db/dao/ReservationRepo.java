@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,6 +14,7 @@ import java.util.List;
 import com.hub.backend.db.DB;
 import com.hub.backend.models.Application;
 import com.hub.backend.models.AvailabilitySlot;
+import com.hub.backend.models.Promotion;
 import com.hub.backend.models.Reservation;
 
 public class ReservationRepo implements ReservationRepoInterface {
@@ -22,7 +24,7 @@ public class ReservationRepo implements ReservationRepoInterface {
 
         List<Reservation> allReservations = new ArrayList<>();
         String query = "SELECT r.id, r.facilityId, sf.name AS facilityName, sf.city, r.courtId, c.name AS courtName, " +
-                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.status, r.missingPlayers " +
+                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.price, r.status, r.missingPlayers " +
                        "FROM reservation r " +
                        "JOIN sportsfacility sf ON sf.id = r.facilityId " +
                        "JOIN court c ON c.id = r.courtId " +
@@ -57,6 +59,7 @@ public class ReservationRepo implements ReservationRepoInterface {
                     rs.getString("sportName"),
                     startDate,
                     endDate,
+                    rs.getDouble("price"),
                     rs.getString("status"),
                     rs.getInt("missingPlayers")
                 );
@@ -74,7 +77,7 @@ public class ReservationRepo implements ReservationRepoInterface {
 
         List<Reservation> allReservations = new ArrayList<>();
         String query = "SELECT r.id, r.facilityId, sf.name AS facilityName, sf.city, r.courtId, c.name AS courtName, " +
-                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.status, r.missingPlayers " +
+                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.price, r.status, r.missingPlayers " +
                        "FROM reservation r " +
                        "JOIN sportsfacility sf ON sf.id = r.facilityId " +
                        "JOIN court c ON c.id = r.courtId " +
@@ -109,6 +112,7 @@ public class ReservationRepo implements ReservationRepoInterface {
                     rs.getString("sportName"),
                     startDate,
                     endDate,
+                    rs.getDouble("price"),
                     rs.getString("status"),
                     rs.getInt("missingPlayers")
                 );
@@ -127,7 +131,7 @@ public class ReservationRepo implements ReservationRepoInterface {
 
         List<Reservation> allReservations = new ArrayList<>();
         String query = "SELECT r.id, r.facilityId, sf.name AS facilityName, sf.city, r.courtId, c.name AS courtName, " +
-                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.status, r.missingPlayers " +
+                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.price, r.status, r.missingPlayers " +
                        "FROM reservation r " +
                        "JOIN sportsfacility sf ON sf.id = r.facilityId " +
                        "JOIN court c ON c.id = r.courtId " +
@@ -163,6 +167,7 @@ public class ReservationRepo implements ReservationRepoInterface {
                     rs.getString("sportName"),
                     startDate,
                     endDate,
+                    rs.getDouble("price"),
                     rs.getString("status"),
                     rs.getInt("missingPlayers")
                 );
@@ -280,22 +285,48 @@ public class ReservationRepo implements ReservationRepoInterface {
 
     @Override
     public String addReservation(Reservation newReservation) {
-        
-        String query = "insert into reservation (facilityId, courtId, athleteId, sportId, startTime, endTime, status, missingPlayers) values (?, ?, ?, ?, ?, ?, 'PENDING', ?)";
+
+        String courtQuery = "select pricePerHour from court where id = ?";
+        String query = "insert into reservation (facilityId, courtId, athleteId, sportId, startTime, endTime, price, status, missingPlayers) values (?, ?, ?, ?, ?, ?, ?, 'PENDING', ?)";
 
         try (
             Connection conn = DB.source().getConnection();
+            PreparedStatement courtStm = conn.prepareStatement(courtQuery);
             PreparedStatement stm = conn.prepareStatement(query);
         ){
+            //get the courts hourly price
+            courtStm.setInt(1, newReservation.getCourtId());
+            ResultSet courtRs = courtStm.executeQuery();
+            if (!courtRs.next()) {
+                return "Court not found.";
+            }
+            double pricePerHour = courtRs.getDouble("pricePerHour");
+
+            //calculate duration in hours
+            long hours = Duration.between(newReservation.getStartTime(), newReservation.getEndTime()).toHours();
+            double price = pricePerHour * hours;
+
+            //apply active promotion for this facility/sport, if any, so the discounted price is locked in at booking time
+            Promotion promo = new PromotionRepo().getCurrentPromotion(newReservation.getFacilityId(), newReservation.getSportId());
+            if (promo != null) {
+                if ("PERCENTAGE".equals(promo.getDiscountType())) {
+                    price = price - (price * promo.getDiscountValue() / 100.0);
+                } else if ("FIXED".equals(promo.getDiscountType())) {
+                    price = price - promo.getDiscountValue();
+                }
+                if (price < 0) {
+                    price = 0;
+                }
+            }
+
             stm.setInt(1, newReservation.getFacilityId());
             stm.setInt(2, newReservation.getCourtId());
             stm.setInt(3, newReservation.getAthleteId());
             stm.setInt(4, newReservation.getSportId());
             stm.setTimestamp(5, Timestamp.valueOf(newReservation.getStartTime()));
             stm.setTimestamp(6, Timestamp.valueOf(newReservation.getEndTime()));
-            stm.setInt(7, newReservation.getMissingPlayers());
-            
-            //ovde ce biti samo check da li je facility block koji vraca Blocked
+            stm.setDouble(7, price);
+            stm.setInt(8, newReservation.getMissingPlayers());
 
             if (stm.executeUpdate() > 0) {
                 return "Success";
@@ -308,6 +339,7 @@ public class ReservationRepo implements ReservationRepoInterface {
         }
         
         return "";
+    
     }
 
     @Override
@@ -440,12 +472,12 @@ public class ReservationRepo implements ReservationRepoInterface {
         
         List<Reservation> allReservations = new ArrayList<>();
         String query = "SELECT r.id, r.facilityId, sf.name AS facilityName, sf.city, r.courtId, c.name AS courtName, " +
-                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.status, r.missingPlayers " +
+                       "r.athleteId, r.sportId, s.name AS sportName, r.startTime, r.endTime, r.price, r.status, r.missingPlayers " +
                        "FROM reservation r " +
                        "JOIN sportsfacility sf ON sf.id = r.facilityId " +
                        "JOIN court c ON c.id = r.courtId " +
                        "JOIN sport s ON s.id = r.sportId " +
-                       "WHERE r.athleteId <> ? AND r.status = 'CONFIRMED' and r.missingPlayers > 0 " + //DODAJ START TIME > NOW()
+                       "WHERE r.athleteId <> ? AND r.status = 'CONFIRMED' and r.missingPlayers > 0 and r.startTime > NOW()" +
                        "ORDER BY r.startTime ASC";
 
         try (
@@ -475,6 +507,7 @@ public class ReservationRepo implements ReservationRepoInterface {
                     rs.getString("sportName"),
                     startDate,
                     endDate,
+                    rs.getDouble("price"),
                     rs.getString("status"),
                     rs.getInt("missingPlayers")
                 );

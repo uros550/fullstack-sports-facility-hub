@@ -15,13 +15,14 @@ public class Reservation {
     private String sportName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private double price;
     private String status;
     private int missingPlayers;
 
     //constructors
     public Reservation() {}
 
-    public Reservation(int id, int facilityId, String facilityName, String city, int courtId, String courtName, int athleteId, int sportId, String sportName, LocalDateTime startTime, LocalDateTime endTime, String status, int missingPlayers) {
+    public Reservation(int id, int facilityId, String facilityName, String city, int courtId, String courtName, int athleteId, int sportId, String sportName, LocalDateTime startTime, LocalDateTime endTime, double price, String status, int missingPlayers) {
         this.id = id;
         this.facilityId = facilityId;
         this.facilityName = facilityName;
@@ -33,6 +34,7 @@ public class Reservation {
         this.sportName = sportName;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.price = price;
         this.status = status;
         this.missingPlayers = missingPlayers;
     }
@@ -104,6 +106,12 @@ public class Reservation {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
     public String getStatus() {
         return status;
     }
@@ -116,4 +124,5 @@ public class Reservation {
     public void setMissingPlayers(int missingPlayers) {
         this.missingPlayers = missingPlayers;
     }
+    
 }
