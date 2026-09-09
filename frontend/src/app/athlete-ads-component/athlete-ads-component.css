@@ -24,6 +24,14 @@
   margin-bottom: 16px;
 }
 
+.custom-table th:first-child,
+.custom-table td:first-child {
+    width: 240px;
+    min-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
 .table-title .title {
   font-size: 1.5rem;
   font-weight: 800;

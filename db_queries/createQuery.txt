@@ -41,7 +41,7 @@ CREATE TABLE UserSport (
 );
 
 -- =====================================================
--- SPORTS FACILITY (Dodata kolona likesCount)
+-- SPORTS FACILITY
 -- =====================================================
 CREATE TABLE SportsFacility (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,7 +55,7 @@ CREATE TABLE SportsFacility (
     longitude DECIMAL(10,7) NOT NULL,
     workingHours VARCHAR(100) NOT NULL,
     maxPenalties INT NOT NULL,
-    likesCount INT NOT NULL DEFAULT 0, -- Može ići i u minus, nema check-a!
+    likesCount INT NOT NULL DEFAULT 0,
     status VARCHAR(20) NOT NULL,
     CONSTRAINT chk_facility_status CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED'))
 );

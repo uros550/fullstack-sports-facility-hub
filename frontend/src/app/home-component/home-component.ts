@@ -19,6 +19,9 @@ import { AuthenticationService } from '../services/authentication-service';
 })
 export class HomeComponent implements OnInit {
 
+  isLoading: boolean = true;
+  bgImageUrl = '/background-default.jpg';
+
   displayedFacilities: SportsFacility[] = [];
   topFacilities: SportsFacility[] = [];
   activePromotions: Promotion[] = [];
@@ -47,7 +50,9 @@ export class HomeComponent implements OnInit {
   private authService = inject(AuthenticationService);
   private router = inject(Router);
 
-  ngOnInit(): void {
+  ngOnInit() {
+    //wait background pic loading
+    this.preloadBackgroundImage();
 
     //if athlete logged in
     const user = this.authService.currentUser();
@@ -100,6 +105,19 @@ export class HomeComponent implements OnInit {
       this.allCities = data;
     });
 
+  }
+
+  preloadBackgroundImage() {
+    const img = new Image();
+    img.src = this.bgImageUrl;
+
+    img.onload = () => {
+      this.isLoading = false;
+    };
+
+    img.onerror = () => {
+      this.isLoading = false;
+    };
   }
 
   searchFacilities() {

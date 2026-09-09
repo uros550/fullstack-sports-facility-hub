@@ -26,6 +26,14 @@
   border-radius: 2px;
 }
 
+.custom-table th:first-child,
+.custom-table td:first-child {
+    width: 240px;
+    min-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
 .redirect-btn {
   background-color: var(--bg-dark, rgb(15, 23, 42));
   color: rgb(255, 255, 255);
