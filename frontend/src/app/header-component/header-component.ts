@@ -19,6 +19,7 @@ export class HeaderComponent {
   currentUser = this.authenticationService.currentUser;
   isAthlete: boolean = false;
   isEmployee: boolean = false;
+  isAdmin: boolean = false;
   isDropdownOpen = false;
 
   openAuthentication() {
@@ -33,6 +34,7 @@ export class HeaderComponent {
     }
     if (user.role === 'ATHLETE') this.isAthlete = true;
     else if (user.role === 'EMPLOYEE') this.isEmployee = true;
+    else if (user.role === 'ADMIN') this.isAdmin = true;
     //has pfp
     return `http://localhost:8080/${user.profilePicture}`;
   }
@@ -48,7 +50,7 @@ export class HeaderComponent {
     else if (this.isEmployee) {
       this.router.navigate(['/employee-dashboard']);
     }
-    else {
+    else if (this.isAdmin) { 
       this.router.navigate(['/admin-dashboard']);
     }
   }

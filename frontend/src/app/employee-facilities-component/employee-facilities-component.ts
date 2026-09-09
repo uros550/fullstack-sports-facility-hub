@@ -56,6 +56,7 @@ export class EmployeeFacilitiesComponent implements OnInit {
       this.facilities = data;
       if (this.facilities.length > 0) {
         this.selectedFacility = this.facilities[0];
+        this.loadCourtsForFacility(this.selectedFacility.id);
       }
     })
   }
